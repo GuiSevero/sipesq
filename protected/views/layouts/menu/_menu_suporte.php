@@ -1,0 +1,23 @@
+<ul class="nav pull-right">
+	<li class="dropdown pull-right"><a href="#" class="dropdown-toggle"
+		data-toggle="dropdown"><i class="icon icon-cogs icon-white"></i> <b
+			class="caret"></b> </a>
+		<ul class="dropdown-menu">
+			<li class="nav-header">Relatórios</li>
+			<li><a href="<?php echo $this->createUrl('/relatorio/projeto')?>">Relatório
+					de Projetos</a></li>
+			<li><a href="<?php echo $this->createUrl('/relatorio/atividade')?>">Relatório
+					de Atividades</a></li>
+			<li><a href="<?php echo $this->createUrl('/relatorio/pessoa')?>">Relatório
+					de Pessoas</a></li>
+			<li class="divider"></li>
+			<li class="nav-header">Configurações do SIPESQ</li>
+			<li><a href="<?php echo $this->createUrl('/rubrica')?>">Rubricas</a>
+			</li>
+			<li><a href="<?php echo $this->createUrl('/atividadeCategoria')?>">Categorias
+					de Atividades</a></li>
+			<li><a href="<?php echo $this->createUrl('/site/permissoes')?>">Permissões
+					do Sistema</a></li>
+		</ul>
+	</li>
+</ul>
