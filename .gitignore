@@ -213,3 +213,18 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+##User Ignore
+assets/
+protected/runtime/
+protected/temp/
+protected/libs/
+protected/data
+protected/commands/
+protected/migrations/
+themes/classic/views/
+files/
+images/
+jScroolPane/
+themes/
+*.tar
