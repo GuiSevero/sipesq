@@ -1,4 +1,4 @@
-<div class="form">
+
 
 <?php Yii::app()->clientScript->registerScript('multiple-select',"
 
@@ -9,9 +9,33 @@
     	$(this).data(\"selected\").attr(\"selected\", \"selected\");
     	e.target.selected = $(this).data(\"remove\");
   		});
+
+		
 ");
+
+
+Yii::app()->clientScript->registerScript('cep',"
+
+	$('#Pessoa_cep').change(function(){
+		console.log('carregando cep');
+		$.getJSON('http://cep.republicavirtual.com.br/web_cep.php'
+		,	{ cep: $(this).val() , formato: 'json' }
+		,	function(data){
+			$('#Pessoa_cidade').val(data.cidade);
+			$('#Pessoa_rua_complemento').val([data.tipo_logradouro, data.logradouro].join(' '));
+			$('#Pessoa_bairro').val(data.bairro);
+		
+		});
+
+	});
+
+
+");
+
 ?>
 
+
+<div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'pessoa-form',
 	'enableAjaxValidation'=>false,
@@ -21,7 +45,8 @@
 
 	<?php echo $form->errorSummary($model); ?>
 	
-<div class="span-19 last view">
+<div class="row-fluid">
+<div class="span12 view">
 <?php if($model->isNewRecord || Sipesq::isSupport()):?>
 	<div class="input">
 		<?php echo $form->labelEx($model,'login'); ?>
@@ -45,9 +70,10 @@
 		<?php echo $form->error($model,'nivel_acesso'); ?>
 	</div>
 	<?php endif;?>
+</div>
 </div>	
-
-	<div class="span-9">
+<div class="row-fluid">
+	<div class="span6">
 	
 		<div class="input">
 			<?php echo $form->labelEx($model,'nome'); ?>
@@ -81,12 +107,11 @@
 			<?php echo $form->checkBox($model,'equipe_atual'); ?>
 			<?php echo $form->error($model,'equipe_atual'); ?>
 		</div>
-		
-	</div>
 	*/?>
+	</div>
 	
 	
-	<div class="span-9 last">
+	<div class="span6">
 	
 	<div class="input">
 			<?php echo $form->labelEx($model,'data_nascimento'); ?>
@@ -134,18 +159,24 @@
 	</div>
 	
 	<?php if(Sipesq::isSupport()):?>
-	<div class="span-19 last view">	
+	<div class="span11">	
 		<div class="input">
 		<?php echo $form->labelEx($model,'projetos_atuante'); ?>
 			<div class="checkboxlist">
-			<?php echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10",)  ); ?>
+			<?php echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-block-level',)  ); ?>
 			</div>
 		</div>
 		<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de um projeto.</div><br>
 	</div>
 	<?php endif;?>
 		
-	<div class="span-9">
+	<div class="span5">
+		<div class="input">
+			<?php echo $form->labelEx($model,'cep'); ?>
+			<?php echo $form->textField($model,'cep'); ?>
+			<?php echo $form->error($model,'cep'); ?>
+		</div>
+	
 		<div class="input">
 			<?php echo $form->labelEx($model,'cidade'); ?>
 			<?php echo $form->textField($model,'cidade'); ?>
@@ -165,19 +196,13 @@
 		</div>
 	
 		<div class="input">
-			<?php echo $form->labelEx($model,'cep'); ?>
-			<?php echo $form->textField($model,'cep'); ?>
-			<?php echo $form->error($model,'cep'); ?>
-		</div>
-	
-		<div class="input">
 			<?php echo $form->labelEx($model,'banco'); ?>
 			<?php echo $form->textField($model,'banco'); ?>
 			<?php echo $form->error($model,'banco'); ?>
 		</div>
 	</div>
 	
-	<div class="span-9 last">
+	<div class="span5">
 		<div class="input">
 			<?php echo $form->labelEx($model,'agencia'); ?>
 			<?php echo $form->textField($model,'agencia'); ?>
@@ -210,12 +235,13 @@
 		</div>
 	</div>
 		
-	<div class="span-19 last">
+	<div class="span12">
 		<div class="input buttons">
 			<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar', array('class'=>'btn btn-small')); ?>
 		</div>
 	</div>
-
+</div><!-- /row-fluid -->
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+			</div>
