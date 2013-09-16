@@ -37,7 +37,7 @@ class PermissaoGerencialForm extends CFormModel
 	}
 	
 	public static function load($data){
-		$perm = new PermissaoAcervoForm();
+		$perm = new PermissaoGerencialForm();
 		foreach($data as $key=>$val) $perm->$key = $val;
 		return $perm;
 	}

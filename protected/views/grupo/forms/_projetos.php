@@ -3,27 +3,27 @@
 <div class="row-fluid">
 	<div class="span6">
 		<?php echo $form->labelEx($projeto,'informacoes'); ?>
-		<?php echo $form->dropDownList($projeto, 'informacoes', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'informacoes', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'informacoes'); ?>
 	
 		<?php echo $form->labelEx($projeto,'atividades'); ?>
-		<?php echo $form->dropDownList($projeto, 'atividades', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'atividades', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'atividades'); ?>
 	
 		<?php echo $form->labelEx($projeto,'financeiro'); ?>
-		<?php echo $form->dropDownList($projeto, 'financeiro', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'financeiro', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'financeiro'); ?>
 	
 		<?php echo $form->labelEx($projeto,'documentos'); ?>
-		<?php echo $form->dropDownList($projeto, 'documentos', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'documentos', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'documentos'); ?>
 	
 		<?php echo $form->labelEx($projeto,'gerencial'); ?>
-		<?php echo $form->dropDownList($projeto, 'gerencial', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'gerencial', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'gerencial'); ?>
-	
+		
 		<?php echo $form->labelEx($projeto,'deletar'); ?>
-		<?php echo $form->dropDownList($projeto, 'deletar', PermissaoProjeto::listPermitionData());?>
+		<?php echo $form->dropDownList($projeto, 'deletar', Grupo::defaultPermitions());?>
 		<?php echo $form->error($projeto,'deletar'); ?>
 	</div>
 	
@@ -36,6 +36,16 @@
 		
 		<table class="table" id="rubrica_added" style="margin-top: 10px;">
 			<tr><th>Rubrica</th><th>Permissão</th><th></th></tr>
+			<?php $default_permitions = Grupo::defaultPermitions();?>
+			<?php foreach($projeto->rubricas as $r): ?>
+				<?php $rubrica = json_decode($r); ?>
+				<tr id="perm_rubrica_<?php echo $rubrica->cod_rubrica?>">
+					<td><?php echo $rubrica->nome?></td>
+					<td><?php echo $default_permitions[$rubrica->permissao]?></td>
+					<td><button class="btn btn-danger btn-small del_perm" data-target="<?php echo $rubrica->cod_rubrica?>">Remover</button></td>	
+					<?php echo CHtml::hiddenField("PermissaoProjetoForm[rubricas][]", $r, array('id'=>"PermissaoProjetoForm_rubrica" .$rubrica->cod_rubrica))?>
+				</tr>
+			<?php endforeach;?>					
 		</table>
 		<div class="view alert-info">
 		<p>Observação: Caso o grupo tenha <b>Controle Total</b> da página <b>Financeiro</b> as permissões específicas de rubricas serão ignoradas, pois o grupo já possui controle total desta parte do projeto.
@@ -45,8 +55,19 @@
 
 <script>
 (function(){
-	$('#rubrica_add').click(function(){
+	$('.del_perm').click(function(){
+		$('#perm_rubrica_' + $(this).attr('data-target')).remove();
+	});
 
+	
+	$('#rubrica_add').click(function(){
+		
+		if($('#rubrica_id option').length < 1){
+			alert('Não há mais rubricas disponíveis');
+			return;	
+		}
+		
+		
 		var rubrica = {
 			'cod_rubrica': $('#rubrica_id option:selected').val(),
 			'nome':$('#rubrica_id option:selected').text(),
@@ -58,14 +79,25 @@
 		$(input)
 		.attr('type', 'hidden')
 		.attr('disable', true)
-		.attr('name', 'PermissaoProjetoForm[rubricas][' + rubrica.cod_rubrica + ']')
+		.attr('name', 'PermissaoProjetoForm[rubricas][]')
 		.attr('id', 'PermissaoProjetoForm_rubrica' + rubrica.cod_rubrica)
 		.val(JSON.stringify(rubrica)); 
 			
-		var item_remove = document.createElement('i');
-		$(item_remove).addClass('icon icon-trash tip')
+		var item_remove = document.createElement('button');
+		$(item_remove).addClass('btn btn-danger btn-small')
+		.html("Remover")
 		.attr('title', 'Remover')
-		.click(function(){ $('#perm_rubrica_' + rubrica.cod_rubrica).remove(); })
+		.click(function(){
+			
+			$('#perm_rubrica_' + rubrica.cod_rubrica).remove();
+			$('#rubrica_id').prepend(['<option value="'
+			             			, rubrica.cod_rubrica
+			             			, '">'
+			             			,rubrica.nome
+			             			,'</option>'].join('')); 
+
+			 
+		})
 		.tooltip();
 
 		var container = document.createElement('tr');
@@ -76,7 +108,10 @@
 		.append(input);
 
 		$('#rubrica_added').append(container);
-	
+
+
+		//Remove a rubrica ja utilizada
+		$('#rubrica_id option:selected').remove();
 	}); 
 })();
 

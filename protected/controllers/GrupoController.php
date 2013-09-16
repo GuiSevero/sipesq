@@ -66,6 +66,8 @@ class GrupoController extends Controller
 		$model->atividade = new PermissaoAtividadeForm();
 		$model->pessoa = new PermissaoPessoaForm();
 		$model->projeto = new PermissaoProjetoForm();
+		$model->gerencial = new PermissaoGerencialForm();
+		$model->acervo = new PermissaoAcervoForm();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -81,11 +83,22 @@ class GrupoController extends Controller
 				
 			if(isset($_POST['PermissaoAtividadeForm']))
 				$perm['pessoa'] = $_POST['PermissaoPessoaForm'];
+			
+			if(isset($_POST['PermissaoProjetoForm']))
+				$perm['projeto'] = $_POST['PermissaoProjetoForm'];
+			
+			if(isset($_POST['PermissaoAcervoForm']))
+				$perm['acervo'] = $_POST['PermissaoAcervoForm'];
+			
+			if(isset($_POST['PermissaoGerencialForm']))
+				$perm['gerencial'] = $_POST['PermissaoGerencialForm'];
 				
 			$model->permissao = json_encode($perm);
 			
+			
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->cod_grupo));
+			
 			
 		}
 
@@ -107,6 +120,8 @@ class GrupoController extends Controller
 		$model->atividade = PermissaoAtividadeForm::load($permissoes->atividade);
 		$model->pessoa = PermissaoPessoaForm::load($permissoes->pessoa);
 		$model->projeto = PermissaoProjetoForm::load($permissoes->projeto);
+		$model->gerencial = PermissaoGerencialForm::load($permissoes->gerencial);
+		$model->acervo = PermissaoAcervoForm::load($permissoes->acervo);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -114,6 +129,26 @@ class GrupoController extends Controller
 		if(isset($_POST['Grupo']))
 		{
 			$model->attributes=$_POST['Grupo'];
+			
+			$perm = array();
+			if(isset($_POST['PermissaoAtividadeForm']))
+				$perm['atividade'] = $_POST['PermissaoAtividadeForm'];
+			
+			if(isset($_POST['PermissaoAtividadeForm']))
+				$perm['pessoa'] = $_POST['PermissaoPessoaForm'];
+				
+			if(isset($_POST['PermissaoProjetoForm']))
+				$perm['projeto'] = $_POST['PermissaoProjetoForm'];
+				
+			if(isset($_POST['PermissaoAcervoForm']))
+				$perm['acervo'] = $_POST['PermissaoAcervoForm'];
+				
+			if(isset($_POST['PermissaoGerencialForm']))
+				$perm['gerencial'] = $_POST['PermissaoGerencialForm'];
+			
+			$model->permissao = json_encode($perm);
+				
+			
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->cod_grupo));
 		}

@@ -110,7 +110,7 @@ class Grupo extends CActiveRecord
 				self::DENIED_PERMITION => 'Acesso Negado',
 				self::READ_PERMITION => 'Leitura',
 				self::READ_WRITE_PERMITION => 'Leitura e Edição',
-				self::READ_WRITE_DELETE_PERMITION => 'Controle Total',
+				self::READ_WRITE_DELETE_PERMITION => 'Leitura, Edição e Exclusão',
 		);
 	}
 	
@@ -118,7 +118,7 @@ class Grupo extends CActiveRecord
 		return array(
 				//self::DENIED_PERMITION => 'Permissão Negada',
 				self::DENIED_PERMITION => 'Acesso Negado',
-				self::READ_WRITE_DELETE_PERMITION => 'Controle Total',
+				self::READ_WRITE_DELETE_PERMITION => 'Permitido',
 		);
 	}
 }
