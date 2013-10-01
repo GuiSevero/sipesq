@@ -28,36 +28,53 @@ class PessoaController extends Controller
 	public function accessRules()
 	{
 		return array(
-			/*	
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('create'),
-				'users'=>array('@'),
-			), */
-				
-			array('allow','actions'=>array('create'), 'expression'=>function(){
-				return (Sipesq::getPermition('pessoa.informacoes') >= 1);
+
+			array('allow','actions'=>array('create', 'view'), 'expression'=>function(){
+				if (Sipesq::getPermition('pessoa.informacoes') >= 1) return true;
+			
 			}),	
 			
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('update', 'changePassword'),
-				'expression'=>function(){
+			array('allow','actions'=>array('update'), 'expression'=>function(){
+				$user = Yii::app()->user->getId();
+				
+				if (Sipesq::getPermition('pessoa.informacoes_avancadas', $user) >= 2) return true;
+				
+				if($_GET['id'] == $user) return true;
+				
+				
+				return false;
+			}),
 			
-					if(Sipesq::isSupport())
-						return true;
-						
-					if($_GET['id'] == Yii::app()->user->getId())
-						return true;
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('changePassword'),
+				'expression'=>function(){
+					if (Sipesq::getPermition('pessoa.informacoes_avancadas') >= 100) return true;
 					
+					if ($_GET['id'] == Yii::app()->user->getId()) return true;
+					
+					return false;
 				}
 			),
+			
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('admin','delete'),
+					'expression'=>function(){
+						if (Sipesq::getPermition('pessoa.deletar') >= 100) return true;
+							
+						return false;
+					}
+			),
+			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('myself', 'index', 'equipe','view', 'search','json',),
+				'actions'=>array('myself', 'index', 'equipe', 'search','json',),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('bolsistas', 'restorePassword', 'ajaxpessoa', 'admin','delete', 'search', 'addprojetoatuante'),
+				'actions'=>array('restorePassword', 'admin','delete', 'search', 'addprojetoatuante'),
 				'expression'=>function(){
-					return Sipesq::isAdmin();
+					if (Sipesq::getPermition('pessoa.informacoes_avancadas') >= 100) return true;
+					
+					return false;
 				}
 			),
 			
@@ -219,51 +236,13 @@ class PessoaController extends Controller
 		));
 	}
 	
-	public function actionAjaxPessoa($id){
-			$data = Pessoa::model()->findByPk($id);
-			$data->getActiveRelation('pessoa_financeiro');
-			$this->layout=false;
-			
-		 $this->render('_info_financeiro',array(
-			'data'=>$data,
-		));
-	}
-	
 	/**
 	 * 
 	 * Carrega a pÃ¡gina pessoal de uma pessoa logada no sistema.
 	 */
 	public function actionMyself(){
-		$pessoa = Yii::app()->user->name;
-		$model = Pessoa::model()->find("login = '{$pessoa}'");
-		
-		if($model == null)
-			throw new CHttpException(404,'NÃ£o hÃ¡ pÃ¡gina para o usuÃ¡rio ' .Yii::app()->user->name);
-			
-		$this->render('_fullview',array(
-			'data'=>$model,
-		));
-		 
+		$this->redirect(array("/pessoa/view/", 'id'=>Yii::app()->user->getId()));
 	}
-	
-	public function actionAutocompleteTest() {
-    $res = array();
- 	
-    if (isset($_GET['term'])) {
-        // http://www.yiiframework.com/doc/guide/database.dao
-        $qtxt ="SELECT nome FROM pessoa WHERE nome LIKE :nome";
-        $command =Yii::app()->db->createCommand($qtxt);
-        $command->bindValue(":nome", '%'.$_GET['test1'].'%', PDO::PARAM_STR);
-        $res =$command->queryColumn();
-    }
-
-
-    echo CJSON::encode($res);
-
-    Yii::app()->end();
-}
-	
-	
 	
 	/**
 	 * JSON Test
@@ -338,27 +317,6 @@ class PessoaController extends Controller
 	}
 	
 	
-/**
- * Mostra todas as pessoas que tem recebimentos financeiros.
- */
-public function actionBolsistas()
-	{
-		
-		$dataProvider=new CActiveDataProvider('Pessoa',array(
-			                'criteria' => array(
-			                 'with' => array('pessoa_financeiro'=>array( 'joinType'=>'LEFT JOIN')),
-			                'together'=>true,
-			                'condition'=>'pessoa_financeiro.cod_pessoa = t.cod_pessoa',
-							'order'=>'nome, data_fim DESC',
-			   				), 
-			   				'pagination'=>array('pageSize'=>999,),
-			   				)); 
-		
-		$this->render('bolsistas',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
-
 	/**
 	 * Mostra todos os membros atuais da equipe
 	*/

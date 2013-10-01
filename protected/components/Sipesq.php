@@ -50,6 +50,8 @@ class Sipesq
 	
 	
 	public static function getPermition($route, $id=null){
+		
+		if (Yii::app()->user->isGuest) return 0;
 		//verify the user
 		if ( $id == null ) $id = Yii::app()->user->getId();
 		

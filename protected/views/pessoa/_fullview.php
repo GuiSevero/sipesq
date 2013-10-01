@@ -73,7 +73,8 @@ $('.tip').tooltip();
 <div class="tab-content">
 	<div class="tab-pane active" id="info">
 		<?php 
-			if(Sipesq::isSupport())
+			if(Sipesq::getPermition("pessoas.informacoes_avancadas") >= 2
+				|| Yii::app()->user->getId() == $_GET['id'])
 		 		$this->renderPartial('_info', array('data'=>$data));
 			else 
 				$this->renderPartial('_info_basica', array('data'=>$data));
