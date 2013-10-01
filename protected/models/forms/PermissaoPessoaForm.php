@@ -8,6 +8,7 @@
 class PermissaoPessoaForm extends CFormModel
 {
 	public $informacoes;
+	public $informacoes_avancadas;
 	public $financeiro;
 	public $atividades;
 	public $deletar;
@@ -18,8 +19,8 @@ class PermissaoPessoaForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('informacoes, deletar', 'required'),
-			array('informacoes, deletar', 'numerical', 'integerOnly'=>true),
+			array('informacoes, financeiro, atividades, informacoes_avancadas deletar', 'required'),
+			array('informacoes, financeiro, atividades, informacoes_avancadas deletar', 'numerical', 'integerOnly'=>true),
 		);
 	}
 
@@ -27,12 +28,21 @@ class PermissaoPessoaForm extends CFormModel
 	 * Declares customized attribute labels.
 	 * If not declared here, an attribute would have a label that is
 	 * the same as its name with the first letter in upper case.
+	 * public $informacoes;
+	public $informacoes_avancadas;
+	public $financeiro;
+	public $atividades;
+	public $deletar;
 	 */
 	public function attributeLabels()
 	{
 		return array(
-			'informacoes'=>'Informações',
-			'deletar'=>'Deleção'
+			'informacoes'=>'Acesso as Informações Básicas',
+			'informacoes_avancadas'=>'Acesso as Informações Avançadas',
+			'deletar'=>'Deletar um Usuário',
+			'atividades'=>'Acesso as Atividades',
+			'financeiro'=>'Acessso ao Financeiro'
+			
 		);
 	}
 	

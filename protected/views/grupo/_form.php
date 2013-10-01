@@ -9,9 +9,22 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'grupo-form',
 	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'errorMessageCssClass'=>'alert',
 )); ?>
 	
-	<?php echo $form->errorSummary($model); ?>
+	<?php CHtml::$errorCss = 'control-group warning';?>
+
+	<div class="alert alert-info">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  Campos com <strong>*</strong> são obrigatórios.
+	</div>
+	
+	<?php
+		 $header = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>";
+		 $footer = "</div>";
+		echo $form->errorSummary($model, $header, $footer); 
+	?>
 	
 	<div class="input">
 		<?php echo $form->labelEx($model,'nome'); ?>
@@ -33,7 +46,7 @@
 	<?php $this->renderPartial('/grupo/forms/_permissoes', array('form'=>$form, 'model'=>$model))?>
 
 	<div class="input buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar Grupo' : 'Salvar Grupo', array('class'=>'btn btn-small btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

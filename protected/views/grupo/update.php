@@ -4,18 +4,15 @@
 
 $this->breadcrumbs=array(
 	'Grupos'=>array('index'),
-	$model->cod_grupo=>array('view','id'=>$model->cod_grupo),
-	'Update',
+	$model->nome
 );
 
 $this->menu=array(
-	array('label'=>'List Grupo', 'url'=>array('index')),
-	array('label'=>'Create Grupo', 'url'=>array('create')),
-	array('label'=>'View Grupo', 'url'=>array('view', 'id'=>$model->cod_grupo)),
-	array('label'=>'Manage Grupo', 'url'=>array('admin')),
+	array('label'=>'Listar Grupos', 'url'=>array('index')),
+	array('label'=>'Adicionar Grupo', 'url'=>array('create')),
 );
 ?>
 
-<h1>Update Grupo <?php echo $model->cod_grupo; ?></h1>
+<h3>Grupo: <?php echo $model->nome; ?></h3>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

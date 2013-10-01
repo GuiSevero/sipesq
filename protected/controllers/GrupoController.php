@@ -28,7 +28,7 @@ class GrupoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'pessoas'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,16 +44,15 @@ class GrupoController extends Controller
 			),
 		);
 	}
-
+	
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
+	 * Renderiza as pessoas do grupo 
+	 * @param unknown $id
 	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+	public function actionPessoas($id){
+		$model = $this->loadModel($id);
+		$this->renderPartial('_pessoas', array('pessoas'=>$model->pessoas));
+		Yii::app()->end();
 	}
 
 	/**
@@ -96,8 +95,17 @@ class GrupoController extends Controller
 			$model->permissao = json_encode($perm);
 			
 			
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->cod_grupo));
+			if($model->save()){
+				
+				//Valida pessoas
+				if(isset($_POST['Grupo']['pessoas'])){
+					$model->pessoas = $_POST['Grupo']['pessoas'];
+					$this->salvaPessoas($model->cod_grupo, $model->pessoas);
+				}
+				
+				$this->redirect(array('index'));
+			}
+				
 			
 			
 		}
@@ -149,8 +157,16 @@ class GrupoController extends Controller
 			$model->permissao = json_encode($perm);
 				
 			
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->cod_grupo));
+			if($model->save()){
+				
+				//Valida pessoas
+				if(isset($_POST['Grupo']['pessoas'])){
+					$model->pessoas = $_POST['Grupo']['pessoas'];
+					$this->salvaPessoas($model->cod_grupo, $model->pessoas);
+				}
+				
+				$this->redirect(array('update','id'=>$model->cod_grupo));
+			}
 		}
 
 		$this->render('update',array(
@@ -184,21 +200,6 @@ class GrupoController extends Controller
 	}
 
 	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Grupo('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Grupo']))
-			$model->attributes=$_GET['Grupo'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
@@ -221,6 +222,23 @@ class GrupoController extends Controller
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+	
+	/**
+	 *
+	 * Salvas as pessoas que fazem parte deste grupo
+	 * @param integer $cod_grupo
+	 * @param Array $pessoas
+	 */
+	private function salvaPessoas($cod_grupo,$pessoas){
+		PessoaGrupo::model()->deleteAll('cod_grupo = '.$cod_grupo);
+		foreach ($pessoas as $p){
+			$a = new PessoaGrupo();
+			$a->cod_grupo = $cod_grupo;
+			$a->cod_pessoa = $p;
+			$a->save();
+			unset($a);
 		}
 	}
 }

@@ -61,6 +61,7 @@ $('.tip').tooltip();
 
 <ul class="nav nav-tabs">
       <li class="active"><a href="#info" data-toggle="tab">Informações Gerais</a></li>
+      <li><a href="#projetos" data-toggle="tab">Projetos</a></li>
       <li><a href="#atividades" data-toggle="tab">Atividades</a></li>
       <?php if(Sipesq::isSupport() || ($data->cod_pessoa === Yii::app()->user->getId()) ):?>
       <li><a href="#financeiro" data-toggle="tab">Pagamentos</a></li>
@@ -71,13 +72,22 @@ $('.tip').tooltip();
 
 <div class="tab-content">
 	<div class="tab-pane active" id="info">
-		<?php $this->renderPartial('_info', array('data'=>$data));?>
+		<?php 
+			if(Sipesq::isSupport())
+		 		$this->renderPartial('_info', array('data'=>$data));
+			else 
+				$this->renderPartial('_info_basica', array('data'=>$data));
+		
+		?>
 	</div> <!-- Fim Tab Informações -->
+	
+	<div class="tab-pane" id="projetos">
+		<?php $this->renderPartial('_projetos', array('data'=>$data))?>	
+	</div> <!-- Fim tab  Projetos -->
 	
 	<div class="tab-pane" id="atividades">
 		<?php $this->renderPartial('_atividades_json', array('data'=>$data))?>	
 	</div> <!-- Fim tab  Atividades -->
-	
 	
 	<div class="tab-pane" id="financeiro">
 		<?php $this->renderPartial('_financeiro', array('data'=>$data))?>

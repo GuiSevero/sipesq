@@ -66,7 +66,7 @@ class Grupo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'pessoa_grupo(cod_grupo, cod_pessoa)'),
+			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'pessoa_grupo(cod_grupo, cod_pessoa)', 'order'=>'pessoas.nome'),
 		);
 	}
 
@@ -114,7 +114,7 @@ class Grupo extends CActiveRecord
 		);
 	}
 	
-	public static function deletePermitions(){
+	public static function binaryPermitions(){
 		return array(
 				//self::DENIED_PERMITION => 'Permissão Negada',
 				self::DENIED_PERMITION => 'Acesso Negado',

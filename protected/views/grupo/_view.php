@@ -2,20 +2,10 @@
 /* @var $this GrupoController */
 /* @var $data Grupo */
 ?>
+<dt>
+<?php echo CHtml::link(CHtml::encode($data->nome), array('update', 'id'=>$data->cod_grupo)); ?>
 
-<div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('cod_grupo')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->cod_grupo), array('view', 'id'=>$data->cod_grupo)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('permissao')); ?>:</b>
-	<?php echo CHtml::encode($data->permissao); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('descricao')); ?>:</b>
-	<?php echo CHtml::encode($data->descricao); ?>
-	<br />
-
-
-</div>
+</dt>
+<dd><?php echo CHtml::encode($data->descricao)?></dd>
+<dd><a data-toggle="modal"  data-target="#modal" class="modal-trigger" href="<?php echo $this->createUrl('pessoas', array('id'=>$data->cod_grupo))?>"><i class="icon icon-group"></i> Pessoas</a></dd>
+<br>

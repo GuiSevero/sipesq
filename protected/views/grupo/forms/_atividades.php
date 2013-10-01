@@ -7,6 +7,6 @@
 </div>
 <div class="input">
 	<?php echo $form->labelEx($atividade,'deletar'); ?>
-	<?php echo $form->dropDownList($atividade, 'deletar', Grupo::deletePermitions());?>
+	<?php echo $form->dropDownList($atividade, 'deletar', Grupo::binaryPermitions());?>
 	<?php echo $form->error($atividade,'deletar'); ?>
 </div>

@@ -48,6 +48,6 @@
             <?php $this->renderPartial("/layouts/menu/_search_form")?>
             <?php if(count($this->menu) > 0) $this->renderPartial('/layouts/menu/_menu_acoes');?>
           </div><!--/.nav-collapse -->
-        </div>
+        </div><!-- /container -->
       </div>
-    </div>
+</div>

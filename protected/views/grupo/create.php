@@ -4,12 +4,11 @@
 
 $this->breadcrumbs=array(
 		'Grupos'=>array('index'),
-		'Create',
+		'Adicionar Grupo',
 );
 
 $this->menu=array(
-		array('label'=>'List Grupo', 'url'=>array('index')),
-		array('label'=>'Manage Grupo', 'url'=>array('admin')),
+		array('label'=>'Listar Grupos', 'url'=>array('index')),
 );
 ?>
 <div class="row-fluid">

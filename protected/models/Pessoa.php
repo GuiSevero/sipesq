@@ -101,6 +101,7 @@ class Pessoa extends CActiveRecord
 				'categoria' => array(self::BELONGS_TO, 'PessoaCategoria', 'cod_categoria'),
 				//'projeto_atuante' => array(self::BELONGS_TO, 'Projeto', 'cod_projeto_atuante'),
 				'projetos_atuante' => array(self::MANY_MANY, 'Projeto', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)'),
+				'grupos' => array(self::MANY_MANY, 'Grupo', 'pessoa_grupo(cod_pessoa, cod_grupo)'),
 				'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_pessoa(cod_pessoa, cod_atividade)'),
 				'atividades_responsavel' => array(self::HAS_MANY, 'Atividade', 'cod_pessoa'),
 				'permissao_projeto' => array(self::MANY_MANY, 'Projeto', 'permissao_projeto(cod_pessoa, cod_projeto)'),

@@ -19,11 +19,11 @@
 		<?php echo $form->error($projeto,'documentos'); ?>
 	
 		<?php echo $form->labelEx($projeto,'gerencial'); ?>
-		<?php echo $form->dropDownList($projeto, 'gerencial', Grupo::defaultPermitions());?>
+		<?php echo $form->dropDownList($projeto, 'gerencial', Grupo::binaryPermitions());?>
 		<?php echo $form->error($projeto,'gerencial'); ?>
 		
 		<?php echo $form->labelEx($projeto,'deletar'); ?>
-		<?php echo $form->dropDownList($projeto, 'deletar', Grupo::defaultPermitions());?>
+		<?php echo $form->dropDownList($projeto, 'deletar', Grupo::binaryPermitions());?>
 		<?php echo $form->error($projeto,'deletar'); ?>
 	</div>
 	
@@ -31,21 +31,23 @@
 		<h5>Rubricas</h5>
 		<?php $data = CHtml::listData(Rubrica::model()->findAll(array('select'=>'cod_rubrica, nome')), 'cod_rubrica', 'nome')?>
 		<?php echo CHtml::dropDownList("Rubrica", null, $data, array('id'=>'rubrica_id'))?><br>
-		<?php echo CHtml::dropDownList("RubricaPermissao", null, Grupo::defaultPermitions(), array('id'=>'rubrica_permissao'))?><br>
+		<?php echo CHtml::dropDownList("RubricaPermissao", null, Grupo::binaryPermitions(), array('id'=>'rubrica_permissao'))?><br>
 		<?php echo CHtml::button("Adicionar", array('class'=>'btn btn-small', 'id'=>'rubrica_add'))?><br>
 		
 		<table class="table" id="rubrica_added" style="margin-top: 10px;">
 			<tr><th>Rubrica</th><th>Permissão</th><th></th></tr>
-			<?php $default_permitions = Grupo::defaultPermitions();?>
-			<?php foreach($projeto->rubricas as $r): ?>
-				<?php $rubrica = json_decode($r); ?>
-				<tr id="perm_rubrica_<?php echo $rubrica->cod_rubrica?>">
-					<td><?php echo $rubrica->nome?></td>
-					<td><?php echo $default_permitions[$rubrica->permissao]?></td>
-					<td><button class="btn btn-danger btn-small del_perm" data-target="<?php echo $rubrica->cod_rubrica?>">Remover</button></td>	
-					<?php echo CHtml::hiddenField("PermissaoProjetoForm[rubricas][]", $r, array('id'=>"PermissaoProjetoForm_rubrica" .$rubrica->cod_rubrica))?>
-				</tr>
-			<?php endforeach;?>					
+			<?php $permition = Grupo::binaryPermitions();?>
+			<?php if(isset($projeto->rubricas)):?>
+				<?php foreach($projeto->rubricas as $r): ?>
+					<?php $rubrica = json_decode($r); ?>
+					<tr id="perm_rubrica_<?php echo $rubrica->cod_rubrica?>">
+						<td><?php echo $rubrica->nome?></td>
+						<td><?php echo $permition[$rubrica->permissao]?></td>
+						<td><button class="btn btn-danger btn-small del_perm" data-target="<?php echo $rubrica->cod_rubrica?>">Remover</button></td>	
+						<?php echo CHtml::hiddenField("PermissaoProjetoForm[rubricas][]", $r, array('id'=>"PermissaoProjetoForm_rubrica" .$rubrica->cod_rubrica))?>
+					</tr>
+				<?php endforeach;?>	
+			<?php endif;?>				
 		</table>
 		<div class="view alert-info">
 		<p>Observação: Caso o grupo tenha <b>Controle Total</b> da página <b>Financeiro</b> as permissões específicas de rubricas serão ignoradas, pois o grupo já possui controle total desta parte do projeto.
@@ -66,7 +68,12 @@
 			alert('Não há mais rubricas disponíveis');
 			return;	
 		}
-		
+
+		if($('#PermissaoProjetoForm_rubrica' +  $('#rubrica_id option:selected').val()).length > 0){
+			console.log($('#PermissaoProjetoForm_rubrica' +  $('#rubrica_id option:selected').val()).length);
+			alert("Rubrica já adicionada");
+			return;
+		}
 		
 		var rubrica = {
 			'cod_rubrica': $('#rubrica_id option:selected').val(),
@@ -86,7 +93,6 @@
 		var item_remove = document.createElement('button');
 		$(item_remove).addClass('btn btn-danger btn-small')
 		.html("Remover")
-		.attr('title', 'Remover')
 		.click(function(){
 			
 			$('#perm_rubrica_' + rubrica.cod_rubrica).remove();
@@ -97,8 +103,7 @@
 			             			,'</option>'].join('')); 
 
 			 
-		})
-		.tooltip();
+		});
 
 		var container = document.createElement('tr');
 		$(container).attr('id', 'perm_rubrica_' + rubrica.cod_rubrica)
@@ -108,7 +113,6 @@
 		.append(input);
 
 		$('#rubrica_added').append(container);
-
 
 		//Remove a rubrica ja utilizada
 		$('#rubrica_id option:selected').remove();

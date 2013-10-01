@@ -1,4 +1,4 @@
-	<p align="left"><b>Informações Pessoais</b></p>
+	<h5>Informações Pessoais</h5>
 	<div class="view">
 	<b><?php  echo CHtml::encode($data->getAttributeLabel('nome')); ?>:</b>
 	<?php echo CHtml::encode($data->nome); ?>
@@ -46,7 +46,7 @@
 	
 	</div> <!-- Informações Pessoais -->
 	
-	<p align="left"><b>Informações Bancárias</b></p>
+	<h5>Informações Bancárias</h5>
 	<div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('banco')); ?>:</b>
@@ -68,17 +68,11 @@
 	<?php endif;?>
 	</div> <!-- Informações Bancárias -->
 	
-	<p align="left"><b>Informações Acadêmicas</b></p>
+	<h5>Informações Acadêmicas</h5>
 	<div class="view">
 	
 	<b><?php echo CHtml::encode($data->getAttributeLabel('cartao_ufrgs')); ?>:</b>
 	<?php echo CHtml::encode($data->cartao_ufrgs); ?>
-	<br />
-	
-	<b><?php echo CHtml::encode("Projetos em que atua"); ?>:</b>
-	<?php for($i=0; $i< count($data->projetos_atuante);$i++):?>
-		<?php echo CHtml::link(CHtml::encode($data->projetos_atuante[$i]->nome),array('/projeto/view', 'id'=>$data->projetos_atuante[$i]->cod_projeto)); if($i < count($data->projetos_atuante	) -1) echo ","?>
-	<?php endfor;?>
 	<br />
 	
 	<?php if(isset($data->categoria)):?>
@@ -86,7 +80,6 @@
 		<?php echo CHtml::encode($data->categoria->nome); ?>
 		<br />
 	<?php endif;?>
-	
 	
 	<b><?php echo CHtml::encode($data->getAttributeLabel('lattes')); ?>:</b>
 	<b><?php echo CHtml::link(CHtml::encode($data->lattes), $data->lattes, array('target'=>'_blank')); ?></b>
@@ -97,4 +90,4 @@
 	<b><?php echo CHtml::encode($data->getAttributeLabel('cod_vinculo_institucional')); ?>:</b>
 	<?php echo CHtml::encode($data->vinculo_institucional->nome); ?>
 	<?php endif;?>
-	</div> <!-- Informações Acadêmicas -->
+	</div> <!-- Informações Acadêmicas -->	

@@ -28,10 +28,15 @@ class PessoaController extends Controller
 	public function accessRules()
 	{
 		return array(
+			/*	
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('create'),
-				'users'=>array('*'),
-			),
+				'users'=>array('@'),
+			), */
+				
+			array('allow','actions'=>array('create'), 'expression'=>function(){
+				return (Sipesq::getPermition('pessoa.informacoes') >= 1);
+			}),	
 			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('update', 'changePassword'),
@@ -68,6 +73,8 @@ class PessoaController extends Controller
 	 */
 	public function actionView($id)
 	{
+		
+		
 		$this->render('_fullview',array(
 			'data'=>$this->loadModel($id),
 		));
@@ -507,7 +514,7 @@ public function actionEquipe()
 				}
 				
 			}else{
-				$model->addError('old_password','Sua senha antiga nÃ£o confere');
+				$model->addError('old_password','Sua senha antiga nao confere');
 				
 			}
 				

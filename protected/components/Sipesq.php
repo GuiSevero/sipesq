@@ -49,6 +49,34 @@ class Sipesq
 	}
 	
 	
+	public static function getPermition($route, $id=null){
+		//verify the user
+		if ( $id == null ) $id = Yii::app()->user->getId();
+		
+		$user = Pessoa::model()->with('grupos')->findByPk($id, array('select'=>'cod_pessoa, nome'));
+		$routes = split('\.', $route);
+		
+		//permissao global para a rota
+		//Algoritmo tem que pegar a maior permissao possível
+		$permissao = 0;
+		
+		foreach($user->grupos as $grupo){
+			$perm_grupo = json_decode($grupo->permissao);
+			
+			foreach($routes as $r){
+				if(property_exists($perm_grupo, $r))
+					$perm_grupo = $perm_grupo->$r;
+				else 
+				 return -1; //Rota inexistente
+			}
+			if($perm_grupo > $permissao) 
+				$permissao = $perm_grupo;
+		}
+
+		return $permissao;
+	}
+	
+	
 	/**
 	 * 
 	 * Retorna um array associativo com os valores => nomes das permissões do sistema.
