@@ -27,12 +27,7 @@ $this->menu=array(
 </script>
 
 <h1>Projetos</h1>
-<?php if(Sipesq::isSupport()):?>
 	<?php echo CHtml::dropDownList('dropDownProjeto','',CHtml::listData(Projeto::model()->findAll(array('order'=>'situacao, nome')), 'cod_projeto', 'nome', 'situacao_text'), array('prompt'=>"Selecione um projeto",'onchange'=>'filtraProjeto();', 'class'=>'input-xxlarge')); ?><br>
-<?php else:?>
-	<?php echo CHtml::dropDownList('dropDownProjeto','',CHtml::listData( Projeto::findAllOfUser() , 'cod_projeto', 'nome'), array('prompt'=>"Selecione um projeto",'onchange'=>'filtraProjeto();', 'class'=>'input-xxlarge')); ?><br>
-<?php endif;?>
-
 	
 	<div class="tabbable tabs-left">
 	<ul class="nav nav-tabs" id="tab-projetos">

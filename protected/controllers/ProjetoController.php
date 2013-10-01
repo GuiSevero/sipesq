@@ -41,27 +41,11 @@ class ProjetoController extends Controller
 			), 
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('gerencial', 'docs', 'info', 'atividades', 'financeiro', 'view', 'tabAtividades',  'jsonFinanceiro', 'chartRows', 'setupDespesas','updateFile', 'createFile', 'deleteFile','calendar', 'renderChart'),
-				//'users'=>array(Yii::app()->user->name) ,//array('grsevero'),
+				'actions'=>array('docs', 'info', 'atividades', 'financeiro', 'view', 'tabAtividades',  'jsonFinanceiro', 'chartRows', 'setupDespesas','updateFile', 'createFile', 'deleteFile','calendar', 'renderChart'),
 				'expression'=> function(){
 			
 							//	Se for admin já retorna permissão de acesso
 							if(Sipesq::isAdmin() || Sipesq::isSupport())
-								return true;
-					
-							$projeto = $_GET['id'];
-							$pessoa = Yii::app()->user->getId();
-							
-							//Verifica se atua no projeto
-							if(ProjetoPessoaAtuante::model()->count('cod_projeto = :proj AND cod_pessoa = :id', array('id'=>$pessoa, 'proj'=>$projeto)) > 0)
-								return true;
-								
-							//verifica se é um dos coordenadores
-							if(Projeto::model()->count('cod_projeto = :proj AND (cod_professor = :id OR cod_grad = :id OR cod_pos_grad = :id)', array('id'=>$pessoa, 'proj'=>$projeto)))
-								return true;
-								
-							//verifica se alguem delegou uma permissão a este usuário
-							if(PermissaoProjeto::model()->count('cod_projeto = :projeto AND cod_pessoa = :id', array('id'=>$pessoa, 'projeto'=>$projeto)))
 								return true;
 							
 							//o usuário não é permitido
@@ -70,26 +54,36 @@ class ProjetoController extends Controller
 				
 				
 			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('atividades'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 1));
+					},
+						
+						
+			),
+			
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('info', 'view'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 1));
+					},
+			
+			
+			),
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'tabFinanceiro', 'relatorio', 'tabAtividades'),
-				//'users'=>array(Yii::app()->user->name) ,//array('grsevero'),
+				'actions'=>array('update'),
 				'expression'=> function(){
 						
 							//Se for admin já retorna permissão de acesso
-							if(Sipesq::isAdmin() || Sipesq::isSupport())
+							if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 2))
 								return true;
 			
-							$projeto = $_GET['id'];
-							$pessoa = Yii::app()->user->getId();
-							
 							//verifica se o usuario é um dos coordenadores
-							if(Projeto::model()->count('cod_projeto = :proj AND (cod_professor = :id OR cod_grad = :id OR cod_pos_grad = :id)', array('id'=>$pessoa, 'proj'=>$projeto)) > 0)
-								return true;
-								
+							//if(Projeto::model()->count('cod_projeto = :proj AND (cod_professor = :id OR cod_grad = :id OR cod_pos_grad = :id)', array('id'=>$pessoa, 'proj'=>$projeto)) > 0) return true;
 							//verifica se o usuário está inscrito em uma permissão maiour ou igual a de SUPORTE.	
-							if(PermissaoProjeto::model()->count('cod_projeto = :projeto AND cod_pessoa = :id AND nivel_permissao >= :nivel', array('id'=>$pessoa, 'projeto'=>$projeto, 'nivel'=>Sipesq::SUPPORT_PERMITION)) > 0)
-								return true;
+							//if(PermissaoProjeto::model()->count('cod_projeto = :projeto AND cod_pessoa = :id AND nivel_permissao >= :nivel', array('id'=>$pessoa, 'projeto'=>$projeto, 'nivel'=>Sipesq::SUPPORT_PERMITION)) > 0) return true;
 								
 							//Usuario negado
 							return false;				
@@ -99,31 +93,30 @@ class ProjetoController extends Controller
 			),
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('permissoes', 'deletePermissao','delete', 'tabFinanceiro'),
+				'actions'=>array('permissoes', 'deletePermissao', 'gerencial'),
 				'expression'=> function(){
-					
 							//Se for admin já retorna permissão de acesso
-							if(Sipesq::isAdmin())
-								return true;
-								
-							$projeto = $_GET['id'];
-							$pessoa = Yii::app()->user->getId();
-							
-							//verifica se o usuario é um dos coordenadores
-							$countCoordenadores = Projeto::model()->count('cod_projeto = :proj AND cod_professor = :id', array('id'=>$pessoa, 'proj'=>$projeto));
-							$countPermitidos = PermissaoProjeto::model()->count('cod_projeto = :projeto AND cod_pessoa = :id AND nivel_permissao = :nivel',array('id'=>$pessoa, 'projeto'=>$projeto, 'nivel'=>Sipesq::ADMIN_PERMITION));
-							if($countCoordenadores + $countPermitidos > 0)
-								return true;
-							else
-								return false;				
+							if(Sipesq::isAdmin() ||Sipesq::getPermition('projetos.gerencial') >= 100) return true;
+							return false;
 				},
 			
 			),
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin'),
+					'actions'=>array('tabFinanceiro','relatorio'),
+					'expression'=> function(){
+						//Se for admin já retorna permissão de acesso
+						if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.financeiro') >= 1)
+							return true;
+						
+						return false;
+					},
+			),
+			
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin', 'delete'),
 				'expression'=> function(){
-						return Sipesq::isAdmin() || Sipesq::isSupport();			
+						return Sipesq::isAdmin() || (Sipesq::getPermition('projetos.deletar') >= 100);			
 				},
 			
 			),
