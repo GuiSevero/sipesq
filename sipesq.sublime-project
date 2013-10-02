@@ -1,9 +1,28 @@
 {
+	"name":"SIPESQ",
+
 	"folders":
 	[
-		
 		{
-			"path": "/C/Apache/apache/www/sipesq"
+			"path": "/C/Apache/apache/www/sipesq/protected/components"			
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/protected/config"
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/js"
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/css"
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/protected/models"
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/protected/controllers"
+		},
+		{
+			"path": "/C/Apache/apache/www/sipesq/protected/views"
 		}
 	]
 }

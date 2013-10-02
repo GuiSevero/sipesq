@@ -135,13 +135,49 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "protected/controllers/ProjetoController.php",
+			"settings":
+			{
+				"buffer_size": 31528,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Guilherme/Desktop/SIPESQ/template.json",
+			"settings":
+			{
+				"buffer_size": 517,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "protected/controllers/ProjetoDespesaController.php",
+			"settings":
+			{
+				"buffer_size": 14316,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 380.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"Yii",
+				"Yii Docs Search"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in	",
+				"Package Control: Install Package"
+			],
 			[
 				"packa",
 				"Package Control: Install Package"
@@ -166,12 +202,18 @@
 		"menu_visible": true,
 		"show_minimap": false,
 		"show_open_files": false,
-		"show_tabs": false,
-		"side_bar_visible": false,
+		"show_tabs": true,
+		"side_bar_visible": true,
 		"status_bar_visible": false
 	},
 	"file_history":
 	[
+		"/C/Apache/apache/www/sipesq/protected/models/Grupo.php",
+		"/C/Apache/apache/www/sipesq/protected/models/Projeto.php",
+		"/C/Apache/apache/www/sipesq/js/tiny_mce/tiny_mce_popup.js",
+		"/C/Apache/apache/www/sipesq/sipesq.sublime-project",
+		"/C/Apache/apache/www/sipesq/protected/controllers/AtividadeController.php",
+		"/C/Apache/apache/www/sipesq/sipesq.sublime-workspace",
 		"/C/Apache/apache/www/gtech/protected/views/home/index.php",
 		"/C/Apache/apache/www/gtech/css/main.less",
 		"/C/Apache/apache/www/gtech/protected/views/layouts/main.php",
@@ -219,7 +261,6 @@
 		"/C/Apache/apache/www/oquetavalendo/protected/config/main.php",
 		"/C/Apache/apache/www/sipesq/protected/views/atividade/view.php",
 		"/C/Apache/apache/www/modal-form.html",
-		"/C/Apache/apache/www/sipesq/protected/controllers/AtividadeController.php",
 		"/C/Apache/apache/www/sipesq/protected/views/atividade/passo/_passo.php",
 		"/C/Apache/apache/www/sipesq/protected/views/atividade/_kanban_item.php",
 		"/C/Apache/apache/www/sipesq/protected/views/atividade/index.php",
@@ -294,12 +335,7 @@
 		"/C/Users/Guilherme/Desktop/.htaccess",
 		"/C/Users/Guilherme/Desktop/Publicacao.php",
 		"/C/Users/Guilherme/Desktop/pub.html",
-		"/C/Apache/apache/www/seguranca/ebcdic.html",
-		"/C/Apache/apache/www/seguranca/index.php",
-		"/C/Apache/apache/www/yii/framework/yii.php",
-		"/C/Apache/apache/www/seminario/js/atlas.js",
-		"/C/Apache/apache/www/seminario/auditorio.html",
-		"/C/Users/Guilherme/Desktop/main.php"
+		"/C/Apache/apache/www/seguranca/ebcdic.html"
 	],
 	"find":
 	{
@@ -319,6 +355,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"setupDes",
 			"body",
 			"nav",
 			"checked",
@@ -424,8 +461,90 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "protected/controllers/ProjetoController.php",
+					"settings":
+					{
+						"buffer_size": 31528,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1121,
+								1121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 177.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Guilherme/Desktop/SIPESQ/template.json",
+					"settings":
+					{
+						"buffer_size": 517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								298,
+								301
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "protected/controllers/ProjetoDespesaController.php",
+					"settings":
+					{
+						"buffer_size": 14316,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								395
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -470,6 +589,34 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"",
+				"models/Grupo.php"
+			],
+			[
+				"grupo",
+				"models/Grupo.php"
+			],
+			[
+				"contro",
+				"controllers/ProjetoController.php"
+			],
+			[
+				"projeto",
+				"models/Projeto.php"
+			],
+			[
+				"proj",
+				"models/Projeto.php"
+			],
+			[
+				"tp",
+				"js/tiny_mce/tiny_mce_popup.js"
+			],
+			[
+				"controllers/projet",
+				"controllers/ProjetoController.php"
+			]
 		],
 		"width": 0.0
 	},
@@ -485,6 +632,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 296.0,
+	"side_bar_width": 201.0,
 	"status_bar_visible": true
 }

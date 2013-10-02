@@ -29,40 +29,65 @@ class ProjetoController extends Controller
 	public function accessRules()
 	{
 		return array(
-				
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('json'),
-					'users'=>array('*') ,
-			),
-				
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','index', 'ativos', 'finalizados', 'grantt', 'oldGrantt'),
-				'users'=>array('@') ,//array('grsevero'),
-			), 
-			
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('docs', 'info', 'atividades', 'financeiro', 'view', 'tabAtividades',  'jsonFinanceiro', 'chartRows', 'setupDespesas','updateFile', 'createFile', 'deleteFile','calendar', 'renderChart'),
-				'expression'=> function(){
-			
-							//	Se for admin já retorna permissão de acesso
-							if(Sipesq::isAdmin() || Sipesq::isSupport())
-								return true;
-							
-							//o usuário não é permitido
-							return false;				
-				},
-				
-				
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('atividades'),
+
+			/**
+			*==============================
+			* FINANCEIRO
+			*==============================
+			**/
+		
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'jsonFinanceiro', 'chartRows'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 1));
+						//Se for admin já retorna permissão de acesso
+						if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.financeiro') >= 1)
+							return true;
+						
+						return false;
 					},
-						
-						
 			),
+
+			/**
+			*==============================
+			* DOCUMENTOS
+			*==============================
+			**/
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('deleteFile'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 100));
+					},
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('updateFile', 'createFile'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 2));
+					},
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('docs'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 1));
+					},
+			),
+			/**
+			*==============================
+			* ATIVIDADES
+			*==============================
+			**/
 			
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('atividades', 'tabAtividades'),
+					'expression'=> function(){
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.atividades' >= 1));
+					},
+			),
+
+			/**
+			*==============================
+			* INFORMACOES
+			*==============================
+			**/
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('info', 'view'),
 					'expression'=> function(){
@@ -73,7 +98,7 @@ class ProjetoController extends Controller
 			),
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update'),
+				'actions'=>array('update', 'create'),
 				'expression'=> function(){
 						
 							//Se for admin já retorna permissão de acesso
@@ -91,6 +116,12 @@ class ProjetoController extends Controller
 				
 				
 			),
+
+			/**
+			*==============================
+			* GERENCIAL
+			*==============================
+			**/
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('permissoes', 'deletePermissao', 'gerencial'),
@@ -102,16 +133,7 @@ class ProjetoController extends Controller
 			
 			),
 			
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-					'actions'=>array('tabFinanceiro','relatorio'),
-					'expression'=> function(){
-						//Se for admin já retorna permissão de acesso
-						if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.financeiro') >= 1)
-							return true;
-						
-						return false;
-					},
-			),
+			
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin', 'delete'),
@@ -120,9 +142,20 @@ class ProjetoController extends Controller
 				},
 			
 			),
+
+			/**
+			*==============================
+			* COMPORTAMENTO PADRAO
+			*==============================
+			**/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 				'message'=>'Você não tem permissão para realizar esta operação. Entre em contato com o coordenador do projeto',
+			),
+
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('json', 'calendar', 'grantt', 'oldGrantt', 'index', 'renderChart'),
+					'users'=>array('@') ,					
 			),
 		);
 	}
@@ -140,6 +173,7 @@ class ProjetoController extends Controller
 		$this->render('view',array(
 			'model'=>$model,
 		));*/
+	
 	}
 
 	/**
@@ -183,7 +217,7 @@ class ProjetoController extends Controller
 			
 			$this->layout = false;
 
-			//$this->renderPartial("_view_financeiro_new", array("model"=>$model));
+			$this->renderPartial("_view_financeiro_new", array("model"=>$model));
 			
 			Yii::app()->end();		
 	}
@@ -869,35 +903,7 @@ public function actionRelatorio($id)
 		if($model == null) throw new CHttpException(404);
 		
 	}
-	
-	/**
-	 * Coloca cada despesa do projeto em um pote correspondente com a rubrica
-	 * @param unknown $id
-	 */
-	public function actionSetupDespesas($id){
-		$this->layout = false;
-		
-		$projeto = new Projeto();
-		$projeto = Projeto::model()->findByPk($id);
-		
-		if($projeto == null)
-			throw new CHttpException(404);
-		
-		foreach($projeto->despesas as $despesa){
-			
-			foreach($projeto->receitas as $rec){
-				
-				foreach($rec->rubricas as $rub){
-					//Salva a rubrica na despesas
-					$this->saveRubrica($rub, $despesa, $rec);
-					
-				}
-			}
-			
-		}
-		
-	}
-	
+
 	private function saveRubrica($rubrica, $despesa, $receita){
 		
 		if($rubrica->cod_rubrica == $despesa->cod_rubrica){
