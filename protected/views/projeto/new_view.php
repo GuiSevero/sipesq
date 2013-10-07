@@ -20,7 +20,7 @@ Yii::app()->clientScript->registerScript("activeTabs", "
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs" id="myTab">
   <li id="tab-info"><?php echo CHtml::link("Informações", array('/projeto/info', 'id'=>$model->cod_projeto))?></li>
-  <?php if($model->isSupport()):?>
+  <?php if($model->isSupport() || Sipesq::getPermition('projeto.financeiro')):?>
     <li id="tab-financeiro"><?php echo CHtml::link("Financeiro", array('/projeto/financeiro', 'id'=>$model->cod_projeto))?></li>
   <?php endif;?>
   <li id="tab-atividades"><?php echo CHtml::link("Atividades", array('/projeto/atividades', 'id'=>$model->cod_projeto))?></li>
