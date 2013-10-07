@@ -105,7 +105,8 @@ class ProjetoDespesaController extends Controller
 	
 	
 	/**
-	 * Cria uma nova despesa
+	 * Cria uma nova despesa 
+	 * Oferece escolha de receita antes
 	 * @param integer $id Projeto.cod_projeto
 	 */
 	public function actionCreate($id)
