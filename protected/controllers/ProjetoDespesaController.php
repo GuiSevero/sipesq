@@ -28,6 +28,7 @@ class ProjetoDespesaController extends Controller
 	public function accessRules()
 	{
 		return array(
+			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('create','add', 'json', 'update', 'admin', 'delete', 'downloadFile', 'index','view', 'viewAjax', 'formAdicional', 'infoRubrica', 'geraXml'),
 				//'users'=>array('*'),
@@ -50,7 +51,29 @@ class ProjetoDespesaController extends Controller
 								return false;
 							}
 			),
-		
+			
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('json', 'downloadFile', 'index','view', 'viewAjax', 'geraXml'),				
+				'expression'=>function(){												
+					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1);					
+				}
+			),
+			
+			
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('create','add', 'update','formAdicional', 'infoRubrica'),				
+				'expression'=>function(){												
+					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 2);
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('admin', 'delete'),				
+				'expression'=>function(){												
+					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 100);
+				}
+			),
+			 
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -420,7 +443,7 @@ class ProjetoDespesaController extends Controller
 		//header('Content-type: application/json');
 
 		$criteria = new CDbCriteria();
-		$criteria->select = array('nome');
+		//$criteria->select = array('nome');
 		$criteria->order = 'nome';
 		$criteria->limit = 20;
 		
