@@ -40,7 +40,7 @@ class ProjetoController extends Controller
 					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'jsonFinanceiro', 'chartRows'),
 					'expression'=> function(){
 						//Se for admin já retorna permissão de acesso
-						if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.financeiro') >= 1)
+						if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1)
 							return true;
 						
 						return false;
@@ -55,19 +55,19 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('deleteFile'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 100));
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 100);
 					},
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('updateFile', 'createFile'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 2));
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 2);
 					},
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('docs'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.documentos' >= 1));
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 1);
 					},
 			),
 			/**
@@ -79,7 +79,7 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('atividades', 'tabAtividades'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.atividades' >= 1));
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.atividades') >= 1);
 					},
 			),
 
@@ -89,9 +89,9 @@ class ProjetoController extends Controller
 			*==============================
 			**/
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('info', 'view'),
+					'actions'=>array('info', 'view', 'index'),
 					'expression'=> function(){
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 1));
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 1);
 					},
 			
 			
@@ -102,7 +102,7 @@ class ProjetoController extends Controller
 				'expression'=> function(){
 						
 							//Se for admin já retorna permissão de acesso
-							if(Sipesq::isAdmin() || Sipesq::getPermition('projetos.informacoes' >= 2))
+							if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 2)
 								return true;
 			
 							//verifica se o usuario é um dos coordenadores

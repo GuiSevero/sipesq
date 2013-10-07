@@ -65,7 +65,7 @@ class Sipesq
 		foreach($user->grupos as $grupo){
 			$perm_grupo = json_decode($grupo->permissao);
 			
-			foreach($routes as $r){
+			foreach($routes as $r){				
 				if(property_exists($perm_grupo, $r))
 					$perm_grupo = $perm_grupo->$r;
 				else 

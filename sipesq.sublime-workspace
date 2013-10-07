@@ -135,30 +135,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "protected/controllers/ProjetoController.php",
-			"settings":
-			{
-				"buffer_size": 31528,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/Users/Guilherme/Desktop/SIPESQ/template.json",
-			"settings":
-			{
-				"buffer_size": 517,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "protected/controllers/ProjetoDespesaController.php",
-			"settings":
-			{
-				"buffer_size": 14316,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -208,6 +184,9 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Guilherme/Desktop/SIPESQ/template.json",
+		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoController.php",
+		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoDespesaController.php",
 		"/C/Apache/apache/www/sipesq/protected/models/Grupo.php",
 		"/C/Apache/apache/www/sipesq/protected/models/Projeto.php",
 		"/C/Apache/apache/www/sipesq/js/tiny_mce/tiny_mce_popup.js",
@@ -332,10 +311,7 @@
 		"/C/Apache/apache/www/yii/framework/zii/widgets/CMenu.php",
 		"/C/Apache/apache/www/seminario/index.html",
 		"/C/Users/Guilherme/Desktop/teste.html",
-		"/C/Users/Guilherme/Desktop/.htaccess",
-		"/C/Users/Guilherme/Desktop/Publicacao.php",
-		"/C/Users/Guilherme/Desktop/pub.html",
-		"/C/Apache/apache/www/seguranca/ebcdic.html"
+		"/C/Users/Guilherme/Desktop/.htaccess"
 	],
 	"find":
 	{
@@ -461,90 +437,8 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "protected/controllers/ProjetoController.php",
-					"settings":
-					{
-						"buffer_size": 31528,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1121,
-								1121
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 177.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/Guilherme/Desktop/SIPESQ/template.json",
-					"settings":
-					{
-						"buffer_size": 517,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								298,
-								301
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 45.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "protected/controllers/ProjetoDespesaController.php",
-					"settings":
-					{
-						"buffer_size": 14316,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								395,
-								395
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
