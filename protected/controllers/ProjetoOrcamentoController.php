@@ -83,6 +83,34 @@ class ProjetoOrcamentoController extends Controller
 							return false;				
 				},
 			),
+
+			/**
+			*==================
+			* PERMISSOES DE GRUPO
+			*==================
+			*/
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('create'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 1);					
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('update'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 2);					
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('delete'),				
+				'expression'=>function(){												
+					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 100);					
+				}
+			),
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),

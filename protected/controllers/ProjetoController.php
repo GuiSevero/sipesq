@@ -127,7 +127,7 @@ class ProjetoController extends Controller
 				'actions'=>array('permissoes', 'deletePermissao', 'gerencial'),
 				'expression'=> function(){
 							//Se for admin já retorna permissão de acesso
-							if(Sipesq::isAdmin() ||Sipesq::getPermition('projetos.gerencial') >= 100) return true;
+							if(Sipesq::isAdmin() ||Sipesq::getPermition('projeto.gerencial') >= 100) return true;
 							return false;
 				},
 			
@@ -138,7 +138,7 @@ class ProjetoController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin', 'delete'),
 				'expression'=> function(){
-						return Sipesq::isAdmin() || (Sipesq::getPermition('projetos.deletar') >= 100);			
+						return Sipesq::isAdmin() || (Sipesq::getPermition('projeto.deletar') >= 100);			
 				},
 			
 			),

@@ -27,35 +27,12 @@ class ProjetoDespesaController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
-			
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('create','add', 'json', 'update', 'admin', 'delete', 'downloadFile', 'index','view', 'viewAjax', 'formAdicional', 'infoRubrica', 'geraXml'),
-				//'users'=>array('*'),
-				'expression'=>function(){
-						
-								return Sipesq::isSupport();
-								
-								if(isset($_GET['id'])){
-									$id = $_GET['id'];
-									
-								}else{
-									return Sipesq::isSupport();
-								}
-								
-								$verba = ProjetoVerba::model()->with('projeto')->findByPk($id);
-								
-								if($verba->projeto != null)
-									return $verba->projeto->isSupport();
-			
-								return false;
-							}
-			),
+		return array(			
 			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('json', 'downloadFile', 'index','view', 'viewAjax', 'geraXml'),				
 				'expression'=>function(){												
-					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1);					
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 1);					
 				}
 			),
 			
@@ -63,7 +40,7 @@ class ProjetoDespesaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('create','add', 'update','formAdicional', 'infoRubrica'),				
 				'expression'=>function(){												
-					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 2);
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 2);
 				}
 			),
 

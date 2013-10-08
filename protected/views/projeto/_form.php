@@ -179,7 +179,7 @@ Yii::app()->clientScript->registerScript('text-areas',"
 			<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de uma pessoa.</div><br>
 		</div>
 	</div>
-	
+	<?php if(Sipesq::getPermition('projeto.financeiro') >= 2) :?>
 	<div class="input view well" id="orcamento" data-count="<?php echo count($model->orcamentos); ?>">
 		<h3>Orçamento</h3>
 		<?php echo CHtml::dropDownList('Rubrica', null, CHtml::listData(Rubrica::model()->findAll(array('order'=>'nome')), 'cod_rubrica', 'nome'), array('class'=>'input-xxlarge', 'id'=>'list-rubricas'));?>
@@ -194,7 +194,9 @@ Yii::app()->clientScript->registerScript('text-areas',"
 				<tr>
 					<th>Rubrica</th>
 					<th>Valor Orçamentado (R$)</th>
+					<?php if(Sipesq::getPermition('projeto.financeiro') >= 100) :?>
 					<th></th>
+					<?php endif; ?>
 				</tr>
 			</thead>
 			<tbody id="table-orcamento">
@@ -202,13 +204,21 @@ Yii::app()->clientScript->registerScript('text-areas',"
 				<tr class="item-<?php echo $orc->cod_rubrica?>">
 					<td><?php echo $orc->rubrica->nome ?></td>
 					<td><?php echo number_format($orc->valor, 2, ',','.') ?></td>
+					<?php if(Sipesq::getPermition('projeto.financeiro') >= 100) :?>
 					<td><i class="icon icon-trash tip" data-remove-target=".item-<?php echo $orc->cod_rubrica?>" title="Remover"></i></td>
+					<?php endif; ?>
 				</tr>
 			<?php endforeach;?>
 			</tbody>
 		</table>
-		
+
+	
+		<?php foreach($model->orcamentos as $i=>$orc):?>
+			<?php echo CHtml::hiddenField('Orcamento[' .$i .'][valor]', $orc->valor, array('class'=>'item-' .$orc->cod_rubrica))?>
+			<?php echo CHtml::hiddenField('Orcamento[' .$i .'][cod_rubrica]', $orc->cod_rubrica, array('class'=>'item-' .$orc->cod_rubrica))?>
+		<?php endforeach;?>
 	</div>
+<?php endif; ?>
 	
 	<div class="input view well well-small">
 		<h4><b>Descrição</b></h4>
@@ -216,36 +226,6 @@ Yii::app()->clientScript->registerScript('text-areas',"
 		<?php echo $form->error($model,'descricao'); ?>
 	</div>
 	
-	<?php 
-		$model->verba_custeio = 0; $model->verba_capital = 0; $model->verba_bolsa = 0;
-	/*
-	<div class="input">
-		<?php echo $form->labelEx($model,'verba_custeio'); ?>
-		<?php echo $form->textField($model,'verba_custeio', array('class'=>'money')); ?>
-		<?php echo $form->error($model,'verba_custeio'); ?>
-	</div>
-
-	<div class="input">
-		<?php echo $form->labelEx($model,'verba_capital'); ?>
-		<?php echo $form->textField($model,'verba_capital', array('class'=>'money')); ?>
-		<?php echo $form->error($model,'verba_capital'); ?>
-	</div>
-
-	<div class="input">
-		<?php echo $form->labelEx($model,'verba_bolsa'); ?>
-		<?php echo $form->textField($model,'verba_bolsa', array('class'=>'money')); ?>
-		<?php echo $form->error($model,'verba_bolsa'); ?>
-	</div>
-	*
-	*
-	*
-	*
-	*/?>
-	
-	<?php foreach($model->orcamentos as $i=>$orc):?>
-		<?php echo CHtml::hiddenField('Orcamento[' .$i .'][valor]', $orc->valor, array('class'=>'item-' .$orc->cod_rubrica))?>
-		<?php echo CHtml::hiddenField('Orcamento[' .$i .'][cod_rubrica]', $orc->cod_rubrica, array('class'=>'item-' .$orc->cod_rubrica))?>
-	<?php endforeach;?>
 	<div class="input buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar', array('class'=>'btn btn-small btn-primary')); ?>
 	</div>

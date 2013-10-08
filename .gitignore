@@ -229,3 +229,4 @@ jScroolPane/
 themes/
 *.tar
 .*
+.sublime-workspace

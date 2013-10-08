@@ -67,6 +67,33 @@ class PatrimonioController extends Controller
 							
 					}
 			),
+
+			/**
+			*==============
+			*Permissoes de GRUPO
+			*==============
+			*/
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('view'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 1);					
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('update', 'create'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 2);					
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index', 'delete','admin'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 100);					
+				}
+			),
 			
 			array('deny',  // deny all users
 				'users'=>array('*'),

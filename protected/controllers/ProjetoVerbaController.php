@@ -25,24 +25,24 @@ class ProjetoVerbaController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('setup', 'update', 'create', 'delete', 'view', 'viewAjax', 'createDesembolso', 'updateDesembolso', 'deleteDesembolso'),
-				'expression'=>function(){
-			
-					return Sipesq::isSupport();
-					
-					if(isset($_GET['id'])){
-						$id = $_GET['id'];
-					}else{
-						return Sipesq::isSupport();
-					}
-					
-					$verba = ProjetoVerba::model()->with('projeto')->findByPk($id);
-					
-					if($verba->projeto != null)
-						return $verba->projeto->isSupport();
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('viewAjax', 'view'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 1);					
+				}
+			),
 
-					return false;
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('update', 'create', 'createDesembolso', 'updateDesembolso'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('projeto.financeiro') >= 2);					
+				}
+			),
+			
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('delete', 'deleteDesembolso'),				
+				'expression'=>function(){												
+					return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 100);					
 				}
 			),
 			
