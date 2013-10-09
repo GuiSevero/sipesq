@@ -8,6 +8,7 @@ class RubricaController extends Controller
 	 */
 	public $layout='//layouts/column_new';
 
+
 	/**
 	 * @return array action filters
 	 */

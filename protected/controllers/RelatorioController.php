@@ -25,12 +25,13 @@ class RelatorioController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('atividade','projeto','index','pessoas'),
-				'expression'=>function(){
-					return Sipesq::isSupport();
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('atividade','projeto','index','pessoas'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('gerencial.relatorios') >= 100);
 				}
 			),
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),

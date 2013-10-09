@@ -72,7 +72,7 @@ return array(
 				'projeto/despesas/<id:\d+>'=>'projetoDespesa/view',
 				'projeto/despesas/<action:\w+>/<id:\d+>'=>'projetoDespesa/<action>',
 				'projeto/despesas/<action:\w+>'=>'projetoDespesa/<action>',
-		
+						
 				'projeto/receitas/<id:\d+>'=>'projetoVerba/view',
 				'projeto/receitas/<action:\w+>/<id:\d+>'=>'projetoVerba/<action>',
 				'projeto/receitas/<action:\w+>'=>'projetoVerba/<action>',

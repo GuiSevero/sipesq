@@ -409,7 +409,7 @@ public function actionRelatorio($id)
 	public function actionIndex($situacao=0)
 	{	$criteria = new CDbCriteria();
 	
-		//Se o usuário não for admin ou do suporte só mostra os seus próprios projetos
+		/*/Se o usuário não for admin ou do suporte só mostra os seus próprios projetos
 		if(Pessoa::getAccessLevel(Yii::app()->user->getId()) < Sipesq::SUPPORT_PERMITION){
 			$criteria->with = array('pessoas_atuantes');
 			$criteria->together = true;
@@ -419,7 +419,7 @@ public function actionRelatorio($id)
 				 OR t.cod_grad = :cod_pessoa
 				 OR t.cod_professor = :cod_pessoa', 'AND');
 			$criteria->params = array('cod_pessoa'=>Yii::app()->user->getId());
-		}	
+		}	*/
 		
 		$criteria->compare('situacao', $situacao);
 		
