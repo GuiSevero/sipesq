@@ -140,51 +140,21 @@
 	"buffers":
 	[
 		{
-			"file": "protected/controllers/ProjetoController.php",
+			"contents": "",
+			"file": "/C/DEV/GitHub/RecQuest/recquest.sublime-project",
+			"file_size": -1,
+			"file_write_time": -1,
 			"settings":
 			{
-				"buffer_size": 31528,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "\nDORNELLES PCS E SERV EL \nRUA CANCIO GOMES, 201\nFLORESTA - PORTO ALEGRE - RS\n(51) 32226941\n(51) 32226739",
-			"settings":
-			{
-				"buffer_size": 104,
+				"buffer_size": 0,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "\"{\"atividade\":{\"informacoes\":\"1\",\"deletar\":\"0\"},\"pessoa\":{\"informacoes\":\"100\",\"informacoes_avancadas\":\"0\",\"atividades\":\"1\",\"financeiro\":\"0\",\"deletar\":\"0\"},\"projeto\":{\"informacoes\":\"1\",\"atividades\":\"1\",\"financeiro\":\"0\",\"documentos\":\"1\",\"gerencial\":\"0\",\"deletar\":\"0\"},\"acervo\":{\"links\":\"0\",\"subscriptions\":\"0\",\"contatos\":\"100\"},\"gerencial\":{\"rubricas\":\"0\",\"categoria_atividade\":\"0\",\"permissoes\":\"0\",\"relatorios\":\"0\"}}\"",
-			"settings":
-			{
-				"buffer_size": 416,
-				"line_ending": "Windows",
-				"name": "\"{\"atividade\":{\"informacoes\":\"1\",\"deletar\":\"0\"},\"p"
-			}
-		},
-		{
-			"file": "protected/controllers/ProjetoOrcamentoController.php",
-			"settings":
-			{
-				"buffer_size": 6604,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "protected/controllers/PatrimonioController.php",
-			"settings":
-			{
-				"buffer_size": 6250,
-				"line_ending": "Unix"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 81.0,
+		"height": 392.0,
 		"selected_items":
 		[
 			[
@@ -234,6 +204,8 @@
 	"file_history":
 	[
 		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoOrcamentoController.php",
+		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoController.php",
+		"/C/Apache/apache/www/sipesq/protected/controllers/PatrimonioController.php",
 		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoVerbaController.php",
 		"/C/Apache/apache/www/sipesq/protected/models/ProjetoVerba.php",
 		"/C/Apache/apache/www/sipesq/protected/models/ProjetoReceita.php",
@@ -249,7 +221,6 @@
 		"/C/Apache/apache/www/sipesq/protected/views/projeto/_view_documentos.php",
 		"/C/Apache/apache/www/sipesq/protected/views/projeto/view.php",
 		"/C/Users/Guilherme/Desktop/SIPESQ/template.json",
-		"/C/Apache/apache/www/sipesq/protected/controllers/ProjetoController.php",
 		"/C/Apache/apache/www/sipesq/protected/models/Grupo.php",
 		"/C/Apache/apache/www/sipesq/js/tiny_mce/tiny_mce_popup.js",
 		"/C/Apache/apache/www/sipesq/sipesq.sublime-project",
@@ -359,8 +330,7 @@
 		"/C/Apache/apache/www/cegov2/protected/models/LoginForm.php",
 		"/C/Apache/apache/www/save/css/main.css",
 		"/C/Apache/apache/www/cegov2/css/custom-theme/jquery-ui-1.8.21.custom.css",
-		"/C/Users/Guilherme/Desktop/application.log.2",
-		"/C/Apache/apache/www/cegov2/jScrollPane/jquery.jscrollpane.css"
+		"/C/Users/Guilherme/Desktop/application.log.2"
 	],
 	"find":
 	{
@@ -507,41 +477,15 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "protected/controllers/ProjetoController.php",
+					"file": "/C/DEV/GitHub/RecQuest/recquest.sublime-project",
 					"settings":
 					{
-						"buffer_size": 31528,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4478,
-								4478
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1800.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"settings":
-					{
-						"buffer_size": 104,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
@@ -554,91 +498,11 @@
 						],
 						"settings":
 						{
-							"auto_name": "",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"settings":
-					{
-						"buffer_size": 416,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								156,
-								163
-							]
-						],
-						"settings":
-						{
-							"auto_name": "\"{\"atividade\":{\"informacoes\":\"1\",\"deletar\":\"0\"},\"p",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "protected/controllers/ProjetoOrcamentoController.php",
-					"settings":
-					{
-						"buffer_size": 6604,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1065.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "protected/controllers/PatrimonioController.php",
-					"settings":
-					{
-						"buffer_size": 6250,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2637,
-								2637
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 513.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -768,11 +632,15 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"/C/Apache/apache/www/sipesq/sipesq.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"show_minimap": true,
 	"show_open_files": false,

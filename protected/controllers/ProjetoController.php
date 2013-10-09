@@ -65,7 +65,7 @@ class ProjetoController extends Controller
 					},
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('docs'),
+					'actions'=>array('docs', 'downloadFile'),
 					'expression'=> function(){
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 1);
 					},
@@ -1118,6 +1118,20 @@ public function actionRelatorio($id)
 				,	'activeTab'=>'tab-gerencial'
 			
 		));
+		
+	}
+
+	/**
+	 * 
+	 * @param string $file
+	 */
+	public function actionDownloadFile($file){
+		
+		$this->layout = false;
+		$url = Yii::app()->baseUrl ."/protected/data/projetos/";
+		$content = file_get_contents(Yii::getPathOfAlias('application.data.projetos') .DIRECTORY_SEPARATOR .$file);
+		$filename = $filename = substr($file, stripos($file, '_') + 1);
+		Yii::app()->request->sendFile($filename, $content);
 		
 	}
 	

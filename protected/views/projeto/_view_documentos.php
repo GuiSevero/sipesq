@@ -15,7 +15,10 @@
 		<td><?php echo CHtml::encode($doc->nome); ?></td>
 		<td><?php echo CHtml::encode(date("d/m/Y", strtotime($doc->data_inclusao))); ?></td>
 		<td>
-			<?php echo CHtml::link("<i title='Baixar Arquivo' class='icon icon-cloud-download tip'></i>", $doc->href, array('target'=>'_blank'))?>					
+			<?php echo CHtml::link("<i title='Baixar Arquivo' class='icon icon-cloud-download tip'></i>"
+				, array('/projeto/downloadFile', 'file'=>$doc->filename)
+				, array('target'=>'_blank'))
+			?>					
 		</td>
 		<?php if($permition > 1): ?>
 		<td>
