@@ -5,6 +5,17 @@
 ?>
 
 <div class="form">
+<?php
+Yii::app()->clientScript->registerScript('multiple-select',"
+
+	$(\"select[multiple]\").bind(\"mousedown\", function(e) {
+    	$(this).data(\"remove\", !$(e.target).is(\":selected\"));
+    	$(this).data(\"selected\", $(this).find(\":selected\"));
+ 	 }).bind(\"mouseup\", function(e){
+    	$(this).data(\"selected\").attr(\"selected\", \"selected\");
+    	e.target.selected = $(this).data(\"remove\");
+  		});
+"); ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'grupo-form',

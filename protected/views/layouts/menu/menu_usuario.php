@@ -42,9 +42,9 @@
                   <li><a href="<?php echo $this->createUrl('/site/logout')?>"><i class="icon icon-ban-circle"></i> Sair</a></li>
                 </ul>
               </li>
-              
+
             </ul>
-            <?php if(Sipesq::isSupport()) $this->renderPartial('/layouts/menu/_menu_suporte');?>
+            <?php $this->renderPartial('/layouts/menu/_menu_suporte');?>
             <?php $this->renderPartial("/layouts/menu/_search_form")?>
             <?php if(count($this->menu) > 0) $this->renderPartial('/layouts/menu/_menu_acoes');?>
           </div><!--/.nav-collapse -->

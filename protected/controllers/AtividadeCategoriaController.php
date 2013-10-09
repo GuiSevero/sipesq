@@ -41,6 +41,27 @@ class AtividadeCategoriaController extends Controller
 						return false;
 				}
 			),
+
+			/**
+			*==============
+			* GRUPOS
+			*==============
+			*/
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('create','update','createfather','listchildren','GetDescription','admin','delete'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('gerencial.categoria_atividade') >= 2);
+				}
+			),
+
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('admin','delete'),				
+				'expression'=>function(){												
+					return (Sipesq::isSupport() || Sipesq::getPermition('gerencial.categoria_atividade') >= 100);
+				}
+			),
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
