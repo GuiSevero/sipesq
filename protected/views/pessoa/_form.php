@@ -114,13 +114,13 @@ Yii::app()->clientScript->registerScript('cep',"
 	<div class="span6">
 	
 	<div class="input">
-			<?php echo $form->labelEx($model,'data_nascimento'); ?>
+			<?php echo $form->labelEx($model,'data_nascimento'); ?>			
 			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	    			'name'=>'Pessoa[data_nascimento]',
-					'value'=>isset($model->data_nascimento) ? date("Y-m-d",strtotime($model->data_nascimento)) : date("Y-m-d", strtotime("1980-01-01")),
+					'value'=>isset($model->data_nascimento) ? Sipesq::date($model->data_nascimento) : date("d/m/Y", strtotime("1980-01-01")),
 					'language'=>'pt-BR',
 				    // additional javascript options for the date picker plugin
-	    			'options'=>array('showAnim'=>'drop','dateFormat'=>'yy-mm-dd'),
+	    			'options'=>array('showAnim'=>'drop','dateFormat'=>'dd/mm/yy'),
 				    'htmlOptions'=>array('style'=>'height:15px;'),));
 			?>
 			<?php echo $form->error($model,'data_nascimento'); ?>

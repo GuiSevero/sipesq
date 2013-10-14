@@ -104,11 +104,13 @@ class PessoaController extends Controller
 	public function actionCreate()
 	{
 		$model=new Pessoa;
-		$model->data_nascimento = date("d/m/Y");
+		
 		$model->password = '';			
 		if(isset($_POST['Pessoa']))
 		{
+
 			$model->attributes=$_POST['Pessoa'];
+			$model->data_nascimento = Sipesq::dateRfc($model->data_nascimento);
 			
 			//Criptografa a senha
 			if($model->validate())
