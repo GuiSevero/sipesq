@@ -47,14 +47,22 @@ class AtividadeController extends Controller
 				'actions'=>array( 'create','tokenPessoa', 'calendar','loadColumn'),
 				'users'=>array('@'),
 			),
+			
+			 
+			/**
+			*=======================
+			* GRUPOS
+			*=======================
+			*/
+
 			array('allow',  // Qualquer pessoa que seja do Suporte, Responsavel, Participante ou que tenha algum passo da atividade
 				'actions'=>array('json', 'view', 'tokenPessoa','createPasso','loadPassos','loadKanbanItem'),
 				'expression'=>function($user, $rule){
 					//Se é alguém do suporte pode editar a atividade
-					if( Sipesq::isSupport($user->getId()) ) return true;
+					if( Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividade.informacoes') >= 1) return true;
 					
-					if(isset($_POST['id'])) 
-						$id = $_POST['id'];
+					if(isset($_GET['id'])) 
+						$id = $_GET['id'];
 					else return false; 
 			
 					$model = Atividade::model()->findByPk($id);
@@ -66,15 +74,15 @@ class AtividadeController extends Controller
 					
 				}
 			),
-			
+
 			array('allow',  // Qualquer pessoa que seja do Suporte, Responsavel, Participante ou que tenha algum passo da atividade
 					'actions'=>array('updatePasso', 'deletePasso', 'passoConcluido'),
 					'expression'=>function($user, $rule){
 						//Se é alguém do suporte pode editar a atividade
-						if( Sipesq::isSupport($user->getId()) ) return true;
+						if( Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividade.informacoes') >= 2) return true;
 							
-						if(isset($_POST['id']))
-							$id = $_POST['id'];
+						if(isset($_GET['id']))
+							$id = $_GET['id'];
 						else return false;
 							
 						$model = AtividadePasso::model()->findByPk($id);
@@ -88,32 +96,34 @@ class AtividadeController extends Controller
 							
 					}
 			),
-
-			array('allow', // Suporte ou Responsavel
-			'actions'=>array('update', 'delete','atvToday', 'atvDone', 'atvTodo', 'atvProgress','saveActivity', 'setDone'),
-			'expression'=>function($user, $rule){
-					//Se é alguém do suporte pode editar a atividade
-					if( Sipesq::isSupport($user->getId()) ) return true;
 					
-					if(isset($_POST['id'])) 
-						$id = $_POST['id'];
+			array('allow', // Suporte ou admin
+				'actions'=>array('update', 'delete','atvToday', 'atvDone', 'atvTodo', 'atvProgress','saveActivity', 'setDone'),
+				'expression'=>function($user, $rule){
+					if ( Sipesq::isSupport() || Sipesq::getPermition('atividades.informacoes') >= 100) return true;
+
+					if(isset($_GET['id'])) 
+						$id = $_GET['id'];
 					else return false; 
 			
 					$model = Atividade::model()->findByPk($id);
-					if($model == null) return false;
+					if ($model == null) return false;
 					
 					//Verifica se é responsável
 					return $model->isResponsible($user->getId());
-					
+
+					return false;
 				}
-		 	),
-		 	
+			),
+
 			array('allow', // Suporte ou admin
 				'actions'=>array('admin','index'),
 				'expression'=>function($user, $rule){
-					return Sipesq::isSupport($user->getId());
+					return (Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividades.informacoes') >= 100);
 				}
 			),
+
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -135,10 +145,13 @@ class AtividadeController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($projeto=null)
 	{
 		$model=new Atividade;
-		
+		$model->cod_pessoa = Yii::app()->user->getId();
+
+		if($projeto != null ) $model->projetos = $projeto;
+
 		// Uncomment the following line if AJAX validation is needed
 		 //$this->performAjaxValidation($model);
 
@@ -149,7 +162,7 @@ class AtividadeController extends Controller
 			//Valida projetos
 			if(isset($_POST['Atividade']['projetos']))
 				$model->projetos = $_POST['Atividade']['projetos'];
-			
+
 			//Valida pessoas
 			if(isset($_POST['Atividade']['pessoas']))
 				$model->pessoas = $_POST['Atividade']['pessoas'];
@@ -218,6 +231,7 @@ class AtividadeController extends Controller
 			//Salva a data de realização caso tenha ficado pronta
 			if($model->status == 2){
 				$model->data_realizacao = date('Y-m-d');
+				$model->estagio = true;
 			}
 			$model->data_edicao = date('Y-m-d');
 			
@@ -720,9 +734,11 @@ class AtividadeController extends Controller
 			$to = $_POST["to"]; 
 		}
 		
+		$atividades = array();
+		$projetos = array();
 		$atividades = Calendar::atividades($from, $to);
 		$projetos = Calendar::projetos($from, $to);
-		
+
 		$calendarData = array(
 				 'success'=>1
 				, 'result'=> array_merge($atividades, $projetos)

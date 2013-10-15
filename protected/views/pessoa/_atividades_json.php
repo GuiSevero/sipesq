@@ -19,11 +19,13 @@
 			,	array('id'=>'atv-categoria','data-target'=>'categoria', 'class'=>'input-xxlarge', 'prompt'=>'Selecione a Categoria')
 		)
 	?>
+	<br>
+	<?php echo CHtml::link('Adicionar Atividade', array('/atividade/create'), array('class'=>'btn btn-primary')); ?>
 	</div>	
 	<div class="span4">
 		<label>Status</label>
 		<?php //echo CHtml::checkBox('finalizado',true, array('id'=>"atv-finalizado", 'data-target'=>'finalizado'))?>
-		<?php echo CHtml::dropDownList('status', null, array('0'=>"A Fazer",'1'=>"Em Andamento", '2'=>"Finalizada"), array('id'=>"atv-status", 'data-target'=>'status', 'prompt'=>'Selecione um status'))?>
+		<?php echo CHtml::dropDownList('status', null, array('0'=>"A Fazer",'2'=>"Finalizada"), array('id'=>"atv-status", 'data-target'=>'status', 'prompt'=>'Selecione um status'))?>
 		
 		<label>Respoonsável / Participante</label>
 		<?php echo CHtml::dropDownList('responsavel', null, array('0'=>"Participante",'1'=>"Responsável"), array('id'=>"atv-responsavel", 'data-target'=>'responsavel'))?>

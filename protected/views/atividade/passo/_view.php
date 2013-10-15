@@ -1,11 +1,14 @@
 <?php /* @var $model AtividadePasso */ ?>
 <div id="passo-<?php echo $model->cod_passo?>" style="margin-bottom: 5px;">
-	<div class="passo <?php echo $model->finalizado ? "verde" : "amarelo"?>" style="padding: 5px;">
+	<div class="passo" style="padding: 5px;">
 		<i class="icon icon-check" title="Atividade Finalizada" rel="tooltip"></i> 
-		<?php echo CHtml::checkBox('',$model->finalizado ,array('id'=>$model->cod_passo, 'class'=>'ok-button'))?><br/>
+		<?php echo CHtml::checkBox('',$model->finalizado ,array('id'=>$model->cod_passo, 'class'=>'ok-button'))?>
+		<br/>
 		
-		<i class="icon icon-info-sign" title="Descrição" rel="tooltip"></i>
-		<?php echo CHtml::encode($model->descricao); ?>
+		<i class="icon icon-info-sign" title="Descrição" rel="tooltip"></i>		
+		<span class="label <?php echo $model->finalizado ? 'label-success' : 'label-info'?>">
+			<?php echo CHtml::encode($model->descricao); ?>
+		</span>
 		<br />
 		
 		<i class="icon icon-user" title="Responsável" rel="tooltip"></i>

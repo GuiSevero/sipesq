@@ -152,76 +152,19 @@ class Atividade extends CActiveRecord
 	}
 
 	private function calculaStatus(){
-		//TODO SIPESQ - Atividades - Fazer ordem por status
-		// 1) Atrasada, 2) Andamento, 3) finalizada
-		switch ($this->status) {
-			case 0:
-				$this->class="amarelo";
-				$this->label="label-warning";
-				$this->statusName ="A Fazer";
-				$this->icon = "icon-time";
-				$this->jIcon = "ui-icon ui-icon-clock";
-				
-				break;
 
-			case 1:
-				$this->class = 'vermelho';
-				$this->label="label-important";
-				$this->statusName = 'Atividade em Andamento';
-				$this->icon = "icon-tasks";
-				$this->jIcon = "ui-icon ui-icon-flag";
-				
-			break;
-
-			case 2:
-				$this->class = 'verde';
-				$this->label="label-success";
-				$this->statusName = 'Atividade Finalizada';
-				$this->icon = "icon-ok";
-				$this->jIcon = "ui-icon ui-icon-check";
-				
-			break;
-			default:
-				break;
-		}
-		
-		//Mais importante para calculo do status!
-			if((strtotime(date("Y-m-d")) < strtotime($this->data_fim)) && ($this->status != 2)){
-				$this->class = 'amarelo';
-				$this->label = "label-warning";
-				$this->statusName = 'Atividade em Andamento';
-			}else{
-				$this->class = 'vermelho';
-				$this->label = "label-important";
-				$this->statusName = 'Atividade Atrasada';
-			}
-			
-			if($this->status == 2){
-				$this->label = "label-success";
-				$this->class = 'verde';
-			}
-			
-	}
-	/*
-	private function calculaStatus(){
-		//TODO SIPESQ - Atividades - Fazer ordem por status
-		// 1) Atrasada, 2) Andamento, 3) finalizada
 		if($this->estagio){
-			$this->class = 'verde';
-			$this->status = 'Atividade Finalizada';
-			return false;
-		}
-		
-		if((strtotime(date("Y-m-d")) < strtotime($this->data_fim)) && !$this->estagio){
-			$this->class = 'amarelo';
-			$this->status = 'Atividade em Andamento';
+			$this->label="label-success";
+			$this->statusName = 'Atividade Finalizada';
+			$this->icon = "icon-ok";
+			$this->jIcon = "ui-icon ui-icon-check";
 		}else{
-			$this->class = 'vermelho';
-			$this->status = 'Atividade Atrasada';
-		}
-		
+			$this->label="label-info";
+			$this->statusName ="A Fazer";
+			$this->icon = "icon-time";
+			$this->jIcon = "ui-icon ui-icon-clock";
+		}		
 	}
-	*/
 	
 	/**
 	 * 
@@ -330,11 +273,18 @@ class Atividade extends CActiveRecord
 	}
 	
 	/**
-	 * Verifica se o usuario eh responsavel por esta atividade
+	 * Verifica se o usuario eh responsavel por esta atividade 
+	 * ou se eh coordenador de algum projeto desta atividade
 	 * @param integer $id - Identificador do usuario
 	 */
 	public function isResponsible($id){
-		return ($this->cod_pessoa == $id);
+
+		if ($this->cod_pessoa == $id) return true;		
+
+		foreach($this->projetos as $projeto){
+			if ($projeto->isSupport($id)) return true;
+		}
+		return false;
 	}
 	
 	/**

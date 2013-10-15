@@ -33,7 +33,7 @@ class Calendar
 		$where = " ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end)) ";
 		
 		//Se não for do suporte mostra só as atividades dele
-		if(!Sipesq::isSupport()){
+		if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1){
 			$where .= " AND cod_pessoa = :id ";
 			$params['id'] = Yii::app()->user->getId();
 		}
@@ -64,9 +64,9 @@ class Calendar
 	
 	public static function projetos($from, $to){
 		
-		//Verifica se nao é admin, se não for carrega só os projetos do usuario logado
-		if(!Sipesq::isSupport()) return projetosPessoa($from, $to);
-		
+		//Verifica se tem permissoes para projetos
+		if(Sipesq::getPermition('projeto.informacoes') < 1)	 return array();
+
 		$params = array();
 		
 		if($from == null|| $to == null){

@@ -198,7 +198,7 @@ var socket = io && io.connect(server);
 	</div>
 
 	<div class="input">
-		<?php echo $form->labelEx($model,'cod_pessoa');?>
+		<?php echo $form->labelEx($model,'cod_pessoa');?>		
 		<?php  echo $form->dropDownList($model,'cod_pessoa', CHtml::listData(Pessoa::model()->findAll(array('order'=>'equipe_atual DESC, nome')), 'cod_pessoa', 'nome', 'equipe'), array('class'=>'input-xxlarge')); ?>
 		<?php echo $form->error($model,'cod_pessoa'); ?>
 	</div>

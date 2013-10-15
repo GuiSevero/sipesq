@@ -29,8 +29,12 @@ class PessoaController extends Controller
 	{
 		return array(
 
-			array('allow','actions'=>array('create', 'view'), 'expression'=>function(){
+			array('allow','actions'=>array('create', 'view'), 'expression'=>function($user, $rules){
 				if (Sipesq::getPermition('pessoa.informacoes') >= 1) return true;
+
+				if(isset($_GET['id']) && $_GET['id'] == $user->getId()) return true;
+
+				return false;
 			
 			}),	
 			

@@ -39,7 +39,7 @@ $this->menu=array(
 );
 ?>
 
-<?php //Yii::app()->clientScript->registerLinkTag('stylesheet/less', null,Yii::app()->request->baseUrl .'/css/kanban.less');?>
+<?php Yii::app()->clientScript->registerLinkTag('stylesheet/less', null,Yii::app()->request->baseUrl .'/css/kanban.less');?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl .'/css/kanban.min.css');?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl .'/css/jqueryui/jquery-ui.css');?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl .'/js/jqueryui.js');?>
@@ -54,7 +54,7 @@ $this->menu=array(
 	<?php echo CHtml::dropDownList('dropDownProjeto',$projeto,CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array('prompt'=>"Selecione um Projeto",'onchange'=>'filtraAtividade();' ,'class'=>"input-xxlarge"));?><br>
 	<br>
 </div>
-	<div class="span8">
+	<div class="span12">
 		<b>Pessoa</b><br>
 		<?php echo CHtml::dropDownList('dropDownPessoa',$pessoa,CHtml::listData(Pessoa::model()->findAll(array('order'=>'nome')), 'cod_pessoa', 'nome'), array('prompt'=>"Selecione uma Pessoa",'onchange'=>'filtraAtividade();' ,'class'=>"input-xxlarge"));?><br>
 		<b>Categoria</b><br>
@@ -62,19 +62,8 @@ $this->menu=array(
 		<?php //echo CHtml::button('Filtrar',array('onclick'=>'filtraAtividade()')); ?> 
 		<?php echo CHtml::submitButton('Limpar', array('submit'=>$this->createUrl('index'), 'class'=>'btn btn-small ')); ?>
 	</div>
-		<div class="span4">	
-		<?php
-			$this->beginWidget('zii.widgets.CPortlet', array(
-				'title'=>'Menu',
-			));
-			$this->widget('zii.widgets.CMenu', array(
-				'items'=>$this->menu,
-				'htmlOptions'=>array('class'=>'operations'),
-			));
-			$this->endWidget();
-		?>
-		</div>
 </div>
+
 
 <div class="row-fluid">
 	<div class="span12">
@@ -105,6 +94,7 @@ $this->menu=array(
 		</div>
 		
 	</div>
+
 
 <script>	
 

@@ -1,3 +1,6 @@
+<?php
+Yii::app()->clientScript->registerScriptFile("https://www.google.com/jsapi");
+?>
 <script>
 function filtraAtividade (){
     	var url = '?';
@@ -101,54 +104,62 @@ $this->menu=array(
 
 <h1>Relatório de Atividades</h1>
 
-<div class="row">
-<label><b>Ínicio</b></label>
-		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-    			'name'=>'inicio',
-				'value'=>isset($inicio) ? $inicio : null,
-				'language'=>'pt-BR',
-			    // additional javascript options for the date picker plugin
-    			'options'=>array('showAnim'=>'drop',),
-			    'htmlOptions'=>array('style'=>'height:15px;'),));
-		?>
- -
-		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-    			'name'=>'termino',
-				'value'=>isset($termino) ? $termino : null,
-				'language'=>'pt-BR',
-			    // additional javascript options for the date picker plugin
-    			'options'=>array('showAnim'=>'drop',),
-			    'htmlOptions'=>array('style'=>'height:15px;'),));
-		?>
-<label><b>Término</b></label>
+<div class="row-fluid">
+    <div class="span12">
+    <div class="input">
+    <label><b>Ínicio</b></label>
+    		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+        			'name'=>'inicio',
+    				'value'=>isset($inicio) ? $inicio : null,
+    				'language'=>'pt-BR',
+    			    // additional javascript options for the date picker plugin
+        			'options'=>array('showAnim'=>'drop',),
+    			    'htmlOptions'=>array('style'=>'height:15px;'),));
+    		?>
+     -
+    		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+        			'name'=>'termino',
+    				'value'=>isset($termino) ? $termino : null,
+    				'language'=>'pt-BR',
+    			    // additional javascript options for the date picker plugin
+        			'options'=>array('showAnim'=>'drop',),
+    			    'htmlOptions'=>array('style'=>'height:15px;'),));
+    		?>
+    <label><b>Término</b></label>
+    </div>
+    <br>
+    <div class="input">
+    <?php echo CHtml::dropDownList('dropDownCategoria',$categoria, CHtml::listData(AtividadeCategoria::model()->findAll(array('order'=>'nome', 'condition'=>'cod_categoria_pai = cod_categoria')), 'cod_categoria', 'nome'), array('prompt'=>'Escolha uma Categoria',)); ?>
+    </div>
+    <br>
+
+    <div class="input">
+    <?php echo CHtml::dropDownList('dropDownProjeto',$projeto,CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array('prompt'=>"Escolha um Projeto",));?>
+    </div>
+
+    <div class="input">
+    <?php echo CHtml::checkBox('checkBoxFinalizado',$finalizado);?><b> Mostrar Somente Atividades Finalizadas</b>
+    </div>
+    <br>
+    		
+    <?php echo CHtml::submitButton('Limpar', array('id'=>'btnLimpar', 'submit'=>'atividade'));?>
+    <?php echo CHtml::submitButton('Enviar', array('id'=>'btnEnviar', 'onclick'=>'filtraAtividade();'));?>
+    </div>
 </div>
+
 <br>
-<div class="row">
-<?php echo CHtml::dropDownList('dropDownCategoria',$categoria, CHtml::listData(AtividadeCategoria::model()->findAll(array('order'=>'nome', 'condition'=>'cod_categoria_pai = cod_categoria')), 'cod_categoria', 'nome'), array('prompt'=>'Escolha uma Categoria',)); ?>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="view" id="chart_atividades"></div>
+
+        <?php $this->widget('zii.widgets.CListView', array(
+        	'dataProvider'=>$dataProvider,
+        	'itemView'=>'_atividade',
+        	'sortableAttributes'=>array(
+             'data_inicio', 'data_fim', 'estagio',),
+        )); ?>
+    </div>
 </div>
-<br>
-
-<div class="row">
-<?php echo CHtml::dropDownList('dropDownProjeto',$projeto,CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array('prompt'=>"Escolha um Projeto",));?>
-</div>
-
-<div class="row">
-<?php echo CHtml::checkBox('checkBoxFinalizado',$finalizado);?><b> Mostrar Somente Atividades Finalizadas</b>
-</div>
-<br>
-		
-<?php echo CHtml::submitButton('Limpar', array('id'=>'btnLimpar', 'submit'=>'atividade'));?>
-<?php echo CHtml::submitButton('Enviar', array('id'=>'btnEnviar', 'onclick'=>'filtraAtividade();'));?>
-
-<br>
-<div class="view" id="chart_atividades"></div>
-
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_atividade',
-	'sortableAttributes'=>array(
-     'data_inicio', 'data_fim', 'estagio',),
-)); ?>
-
 
 

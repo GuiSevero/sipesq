@@ -175,6 +175,14 @@ $this->menu=array(
 
 <div class="view <?php echo $model->class;?>">
 <h4 align="center"><b><?php echo $model->nome_atividade; ?></b></h4>
+
+<div class="row-fluid">
+<div class="span4">
+
+	<b><?php echo CHtml::encode($model->getAttributeLabel('status')); ?>:</b>
+	<span class="label <?php echo $model->label?>"><?php echo CHtml::encode($model->statusName); ?></span>
+	<br />
+
 	<b>Categoria:</b>
 	<?php if(is_object($model->categoria)):?>
 	<?php if($model->categoria->categoriaPai->cod_categoria != $model->categoria->cod_categoria ):?>
@@ -204,19 +212,14 @@ $this->menu=array(
 	<b><?php echo CHtml::encode($model->getAttributeLabel('data_edicao')); ?>:</b>
 	<?php echo CHtml::encode(Sipesq::date($model->data_edicao)); ?>
 	<br />
-
-	
-	
-	<b><?php echo CHtml::encode($model->getAttributeLabel('status')); ?>:</b>
-	<?php echo CHtml::encode($model->statusName); ?>
-	<br />
-
 </div>
-	
-<div class="info">
+<div class="span8">	
 	<?php echo $model->descricao; ?>
 </div>
+</div>
+</div>
 
+	
 <div class="view" id="passos-holder">
 	<h4>Passos</h4>
 	<?php foreach($model->passos as $p):?>
@@ -225,58 +228,61 @@ $this->menu=array(
 	<br>
 </div>
 
-<div class="view form">
-<h2>Adicionar Passo</h2>
-<?php $passo = new AtividadePasso();?>
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'passo-form',
-	'enableAjaxValidation'=>true,
-	'errorMessageCssClass'=>'alert alert-danger',
-	'enableClientValidation'=>true,
-)); ?>
+<?php $userId = Yii::app()->user->getId(); ?>
+<?php if($model->isResponsible($userId) || $model->isParticipating($userId) || $model->hasStep($userId) || Sipesq::getPermition('atividade.informacoes' >= 2)): ?>
+	<div class="view form">
+	<h2>Adicionar Passo</h2>
+	<?php $passo = new AtividadePasso();?>
+	<?php $form=$this->beginWidget('CActiveForm', array(
+		'id'=>'passo-form',
+		'enableAjaxValidation'=>true,
+		'errorMessageCssClass'=>'alert alert-danger',
+		'enableClientValidation'=>true,
+	)); ?>
 
-	<?php CHtml::$errorCss = 'control-group warning';?>
+		<?php CHtml::$errorCss = 'control-group warning';?>
 
-	<div class="alert alert-info">
-	  <button type="button" class="close" data-dismiss="alert">&times;</button>
-	  Campos com <strong>*</strong> são obrigatórios.
-	</div>
-	
-	<?php
-		 $header = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>";
-		 $footer = "</div>";
-		echo $form->errorSummary($passo, $header, $footer); 
-	?>
-	
-	<div class="input">
-		<?php echo $form->labelEx($passo,'descricao'); ?>
-		<?php echo $form->textField($passo,'descricao', array('class'=>'input-xxlarge', 'placeholder'=>"Descrição")); ?>
-		<?php echo $form->error($passo,'descricao'); ?>
-	</div>
-	
-	<div class="input">
-		<?php echo $form->labelEx($passo,'data_prazo'); ?>
-		<?php echo CHtml::tag('input', array('name'=>'AtividadePasso[data_prazo]', 'type'=>'date', 'value'=> date('Y-m-d')))?>
-		<?php echo $form->error($passo,'data_prazo'); ?>
-	</div>
-	
-	<div class="input">
-		<?php echo $form->labelEx($passo,'cod_pessoa'); ?>
-		<?php $listDataPessoas = CHtml::listData(Pessoa::model()->with('categoria')->findAll(array('order'=>'equipe_atual DESC, t.nome')), 'cod_pessoa', 'nome', 'categoria.nome');?>
-		<?php  //echo $form->dropDownList($passo,'cod_pessoa', $listDataPessoas, array('prompt'=>"Selecione uma Pessoa")); ?>
-		<?php echo $form->textField($passo, 'cod_pessoa')?>
-		<?php echo $form->error($passo,'cod_pessoa'); ?>
-	</div>
-	
+		<div class="alert alert-info">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  Campos com <strong>*</strong> são obrigatórios.
+		</div>
 		
-	
+		<?php
+			 $header = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>";
+			 $footer = "</div>";
+			echo $form->errorSummary($passo, $header, $footer); 
+		?>
+		
+		<div class="input">
+			<?php echo $form->labelEx($passo,'descricao'); ?>
+			<?php echo $form->textField($passo,'descricao', array('class'=>'input-xxlarge', 'placeholder'=>"Descrição")); ?>
+			<?php echo $form->error($passo,'descricao'); ?>
+		</div>
+		
+		<div class="input">
+			<?php echo $form->labelEx($passo,'data_prazo'); ?>
+			<?php echo CHtml::tag('input', array('name'=>'AtividadePasso[data_prazo]', 'type'=>'date', 'value'=> date('Y-m-d')))?>
+			<?php echo $form->error($passo,'data_prazo'); ?>
+		</div>
+		
+		<div class="input">
+			<?php echo $form->labelEx($passo,'cod_pessoa'); ?>
+			<?php $listDataPessoas = CHtml::listData(Pessoa::model()->with('categoria')->findAll(array('order'=>'equipe_atual DESC, t.nome')), 'cod_pessoa', 'nome', 'categoria.nome');?>
+			<?php  //echo $form->dropDownList($passo,'cod_pessoa', $listDataPessoas, array('prompt'=>"Selecione uma Pessoa")); ?>
+			<?php echo $form->textField($passo, 'cod_pessoa')?>
+			<?php echo $form->error($passo,'cod_pessoa'); ?>
+		</div>
+		
+			
+		
 
-	<div class="input buttons">
-        <?php echo CHtml::link('Adicionar',null, array("id"=>'addPasso', 'class'=>'btn btn-small btn-small'))?>
-	</div>
+		<div class="input buttons">
+	        <?php echo CHtml::link('Adicionar',null, array("id"=>'addPasso', 'class'=>'btn btn-small btn-small'))?>
+		</div>
 
-<?php $this->endWidget(); ?>    
-</div>    
+	<?php $this->endWidget(); ?>    
+	</div>    
+<?php endif; ?>	
     
 <div class="view">
 	<label><b>Participantes</b></label><br>
@@ -292,13 +298,6 @@ $this->menu=array(
 		<?php echo CHtml::encode($projeto->nome); ?>
 		<br />
 		<br />
-	<?php endforeach;?>
-</div>
-
-<div class="view">
-	<label><b>Bolsas</b></label><br>
-	<?php foreach($model->bolsas as $bolsa):?>
-		<?php echo CHtml::encode($bolsa->categoria .' (' .$bolsa->pessoa->nome .')'); ?>		
 	<?php endforeach;?>
 </div>
 
