@@ -29,12 +29,14 @@ class ContatoController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','index','view', 'search'),
-				'users'=>array('@'),
+				'actions'=>array('create','update','index','view', 'search', 'admin','delete'),
+				'expression'=>function($user, $rules){
+					return (Sipesq::isSupport() || Sipesq::getPermition('acervo.contatos') >= 100);
+				},
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions'=>array('index','view', 'search'),
+				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

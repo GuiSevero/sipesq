@@ -29,19 +29,17 @@ class LivroController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','create','update','all','view','search','emprestimo','devolucao','historico','emprestimos'),
+				'actions'=>array('index','all','view','search','emprestimos','devolucao'),
 				'users'=>array('@'),
 			),
-			
+
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','create','update','emprestimos','devolucao','historico','emprestimos' ),
 				'expression'=>function(){
-					if(Sipesq::isAdmin())
-						return true;
-					else
-						return false;
+					return (Sipesq::isSupport() ||  Sipesq::getPermition('acervo.livros') >= 100);
 				}
 			),
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),

@@ -31,9 +31,9 @@
 	<br />
 	
 	<?php if($data->estaEmprestado()):?>
-		<?php echo CHtml::submitButton('Devolver', array('submit'=>array('devolucao','id'=>$data->cod_livro),'confirm'=>'Deseja devolver este livro?')); ?>
+		<?php echo CHtml::submitButton('Devolver', array('submit'=>array('devolucao','id'=>$data->cod_livro),'confirm'=>'Deseja devolver este livro?', 'class'=>'btn btn-small btn-primary')); ?>
 	<?php else:?>
-		<?php echo CHtml::submitButton('Emprestar', array('submit'=>array('emprestimo','id'=>$data->cod_livro))); ?>
+		<?php echo CHtml::submitButton('Emprestar', array('submit'=>array('emprestimo','id'=>$data->cod_livro), 'class'=>'btn btn-small')); ?>
 <?php endif;?>
 	
 </div>

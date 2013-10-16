@@ -9,7 +9,9 @@ class PermissaoAcervoForm extends CFormModel
 {
 	public  $contatos
 		,	$subscriptions
-		,	$links;
+		,	$links
+		,	$livros;
+
 
 	/**
 	 * Declares the validation rules.
@@ -17,8 +19,8 @@ class PermissaoAcervoForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('links, subscriptions, contatos', 'required'),
-			array('links, subscriptions, contatos', 'numerical', 'integerOnly'=>true),
+			array('links, subscriptions, contatos, livors', 'required'),
+			array('links, subscriptions, contatos, livors', 'numerical', 'integerOnly'=>true),
 		);
 	}
 

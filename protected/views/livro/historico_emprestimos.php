@@ -29,17 +29,17 @@ $this->menu=array(
 	<?php if(count($historico_emprestimos) > 0):?>
 		<br><br>
 		<h4 align="center"><b>Histórico de Empréstimos</b></h4>
-		<table id="tbl_livros">
+		<table class="table table-hover table-striped">
 		<tr><th>Nome</th><th>Livro</th><th>Retirada</th><th>Devolução</th></tr>
 		<?php foreach($historico_emprestimos as $emprestimo):?>
-			<tr class="livro <?php if($emprestimo->data_devolucao == null) echo "livro-emprestado";?>">
+			<tr>
 			<td><?php echo $emprestimo->pessoa->nome?></td>
 			<td><?php echo $emprestimo->livro->titulo;?></td>
-			<td><?php echo date("Y-m-d \a\s H:m",strtotime($emprestimo->data_retirada) )?></td>
+			<td><?php echo date("d/m/Y (H:m)",strtotime($emprestimo->data_retirada) )?></td>
 			<?php if($emprestimo->data_devolucao != null):?>
-			<td><?php echo date("Y-m-d",strtotime($emprestimo->data_devolucao) )?></td>
+			<td><?php echo Sipesq::date($emprestimo->data_devolucao)?></td>
 			<?php else:?>
-			<td><?php echo CHtml::submitButton('Devolver', array('submit'=>array('devolucao','id'=>$emprestimo->cod_livro,'returnUrl'=>array($this->route)) ,'confirm'=>'Deseja devolver este livro?')); ?></td>
+			<td><?php echo CHtml::submitButton('Devolver', array('submit'=>array('devolucao','id'=>$emprestimo->cod_livro ,'returnUrl'=>array($this->route)), 'class'=>"btn btn-primary btn-small",'confirm'=>'Deseja devolver este livro?')); ?></td>
 			<?php endif;?>
 			
 			</tr> 

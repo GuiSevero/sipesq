@@ -28,8 +28,7 @@
 	</div>
 
 	<div class="input">
-		<?php echo $form->labelEx($model,'website'); ?>
-		<?php echo $form->textField($model,'website'); ?>
+		<?php echo $form->labelEx($model,'website'); ?>		
 		<input type="url" name="Contato[website]" id="Contato_website" value="<?php echo CHtml::encode($model->website);?> " placeholder="Utilize http://"/>
 		<?php echo $form->error($model,'website'); ?>
 	</div>
