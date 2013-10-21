@@ -23,14 +23,6 @@ class PermissaoProjeto extends CActiveRecord
 	public $nivel;
 	
 	
-	public 		$docs=self::READ_PERMITION
-			,	$atividades=self::READ_PERMITION
-			,	$financeiro=self::READ_PERMITION
-			,	$gerencial=self::DENIED_PERMITION
-			,	$info=self::READ_PERMITION
-			,	$rubricas=array();
-	
-	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return PermissaoProjeto the static model class
@@ -151,5 +143,11 @@ class PermissaoProjeto extends CActiveRecord
 			 if($perm != null)
 					 	$this->addError($attribute, 'Esta pessoa já tem permissões neste projeto.');
 		
+	}
+
+	public static function load($data){
+		$perm = new PermissaoProjeto();
+		foreach($data as $key=>$val) $perm->$key = $val;
+		return $perm;
 	}
 }

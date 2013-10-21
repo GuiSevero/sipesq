@@ -567,10 +567,15 @@ public function actionRelatorio($id)
 		
 		$model = new PermissaoProjeto();
 		$model->cod_projeto = $id;
+		$model->permissao = new PermissaoProjetoForm();
 		
 		if(isset($_POST['PermissaoProjeto']))
 		{
 			$model->attributes=$_POST['PermissaoProjeto'];
+
+			if(isset($_POST['PermissaoProjetoForm']))
+				$model->permissao = json_encode($_POST['PermissaoProjetoForm']);
+
 			if($model->save())
 				$this->redirect(array('permissoes', 'id'=>$id));
 		}
@@ -585,6 +590,9 @@ public function actionRelatorio($id)
 			}
 			
 			$data = PermissaoProjeto::model()->findAll(array('condition'=>"cod_projeto = " .$id));
+			$perm_model = new PermissaoProjetoForm();
+			$perm_model->load($model->permissao);
+			$model->permissao = $perm_model;
 			$this->render('_form_permissao', array('data'=>$data, 'projeto'=>$projeto, 'model'=>$model));	
 		
 	}
