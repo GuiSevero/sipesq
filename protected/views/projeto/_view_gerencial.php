@@ -46,8 +46,9 @@ $t = json_encode(array(
 
 	</table>
 	
-	<h4>Outras permissões</h4>
-	<?php echo CHtml::link("Adicionar", array('projeto/permissoes', 'id'=>$model->cod_projeto), array('class'=>'btn btn-primary btn-small')); ?>
+	<h4>Permissões Individuais</h4>
+	<div class="well">
+	<?php echo CHtml::link("Adicionar Permissão", array('projeto/permissoes', 'id'=>$model->cod_projeto), array('class'=>'btn btn-primary btn-small')); ?>
 
 	<dl class="dl-horizontal">
 		<?php $defaultPermitions = Grupo::defaultPermitions();
@@ -55,14 +56,14 @@ $t = json_encode(array(
 		?>
 		<?php foreach ($permissoes as $p):?>
 
-		<dt><?php echo CHtml::link($p->pessoa->nome, array('projeto/updatepermissao', 'pessoa'=>$p->cod_pessoa, 'projeto'=>$p->cod_projeto)); ?></dt>
+		<dt><b><?php echo $p->pessoa->nome?></b></dt>
 			<?php $perm = json_decode($p->permissao)?>			
 			<dd> <b>Informações:</b> <?php echo $defaultPermitions[$perm->informacoes]; ?> </dd>
 			<dd> <b>Atividades:</b> <?php echo $defaultPermitions[$perm->atividades]; ?> </dd>
 			<dd> <b>Financeiro:</b> <?php echo $defaultPermitions[$perm->financeiro]; ?> </dd>
 			<dd> <b>Documentos:</b> <?php echo $defaultPermitions[$perm->documentos]; ?> </dd>
 			<dd> <b>Gerencial:</b> <?php echo $binaryPermitions[$perm->gerencial]; ?> </dd>
-			<dd> <b>Deleção:</b> <?php echo $binaryPermitions[$perm->gerencial]; ?> </dd>
+			<dd> <b>Deleção:</b> <?php echo $binaryPermitions[$perm->deletar]; ?> </dd>
 			<dd> 
 				<?php echo CHtml::link("Editar", array('projeto/updatepermissao', 'pessoa'=>$p->cod_pessoa, 'projeto'=>$p->cod_projeto), array('class'=>'btn btn-primary btn-small')); ?>
 				<?php echo CHtml::submitButton("Remover", array('submit'=>array('deletePermissao','id'=>$p->cod_projeto, 'cod_pessoa'=>$p->cod_pessoa,'returnUrl'=>array($this->route, 'id'=>$p->cod_projeto)) ,'confirm'=>'Deseja remover esta permissão?', 'class'=>'btn btn-small btn-danger')); ?>
@@ -71,4 +72,5 @@ $t = json_encode(array(
 
 		<?php endforeach;?>
 	</dl>
+</div>
 </div><!-- /tab -->

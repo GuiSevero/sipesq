@@ -124,7 +124,7 @@ class ProjetoController extends Controller
 			**/
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('permissoes', 'deletePermissao', 'gerencial'),
+				'actions'=>array('permissoes', 'deletePermissao', 'gerencial', 'updatePermissao'),
 				'expression'=> function(){
 							//Se for admin já retorna permissão de acesso
 							if(Sipesq::isAdmin() ||Sipesq::getPermition('projeto.gerencial') >= 100) return true;
@@ -568,6 +568,7 @@ public function actionRelatorio($id)
 		$model = new PermissaoProjeto();
 		$model->cod_projeto = $id;
 		$model->permissao = new PermissaoProjetoForm();
+		$perm_model = new PermissaoProjetoForm();
 		
 		if(isset($_POST['PermissaoProjeto']))
 		{
@@ -577,23 +578,45 @@ public function actionRelatorio($id)
 				$model->permissao = json_encode($_POST['PermissaoProjetoForm']);
 
 			if($model->save())
-				$this->redirect(array('permissoes', 'id'=>$id));
+				$this->redirect(array('gerencial', 'id'=>$id));
+			else
+				$model->permissao = $perm_model->load(json_decode($model->permissao));
 		}
-		
 		
 			//Renderiza a página de permissões confome o projeto
 			$projeto = Projeto::model()->findByPk($id);
 	
-			if($projeto == null){
-				//Se não existe este projeto dispara erro			
-				throw new CHttpException(404,'Página não encontrada.');
-			}
+			if($projeto == null) throw new CHttpException(404,'Página não encontrada.');
 			
-			$data = PermissaoProjeto::model()->findAll(array('condition'=>"cod_projeto = " .$id));
-			$perm_model = new PermissaoProjetoForm();
-			$perm_model->load($model->permissao);
-			$model->permissao = $perm_model;
-			$this->render('_form_permissao', array('data'=>$data, 'projeto'=>$projeto, 'model'=>$model));	
+			$this->render('_form_permissao', array('projeto'=>$projeto, 'model'=>$model));	
+		
+	}
+
+	/**
+	 * Gerencia as permissões dos usuários nos projetos
+	 * @param integer $id - identificador do projeto
+	 */
+	public function actionUpdatePermissao($pessoa, $projeto){
+		
+		$model = PermissaoProjeto::model()->findByPk(array('cod_projeto'=>$projeto, 'cod_pessoa'=>$pessoa));		
+		$perm_projeto = new PermissaoProjetoForm();
+		$model->permissao = $perm_projeto->load(json_decode($model->permissao));
+		
+		if(isset($_POST['PermissaoProjeto']))
+		{
+			
+			$model->attributes=$_POST['PermissaoProjeto'];
+
+			if(isset($_POST['PermissaoProjetoForm']))
+				$model->permissao = json_encode($_POST['PermissaoProjetoForm']);
+
+			if($model->save())
+				$this->redirect(array('/projeto/gerencial', 'id'=>$projeto));
+			else
+				$model->permissao = $perm_projeto->load(json_decode($model->permissao));				
+		}
+								
+			$this->render('_form_permissao', array('projeto'=>$model->projeto, 'model'=>$model));	
 		
 	}
 	

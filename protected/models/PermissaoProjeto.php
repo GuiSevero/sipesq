@@ -140,7 +140,7 @@ class PermissaoProjeto extends CActiveRecord
 			 
 			$perm = $this->find('cod_pessoa = :cod_pessoa AND cod_projeto = :cod_projeto', array('cod_projeto'=>$this->cod_projeto, 'cod_pessoa'=>$this->cod_pessoa));
 			
-			 if($perm != null)
+			 if($perm != null && $this->isNewRecord)
 					 	$this->addError($attribute, 'Esta pessoa já tem permissões neste projeto.');
 		
 	}
