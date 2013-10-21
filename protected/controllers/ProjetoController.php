@@ -37,7 +37,7 @@ class ProjetoController extends Controller
 			**/
 		
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'jsonFinanceiro', 'chartRows'),
+					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro', 'chartRows'),
 					'expression'=> function(){
 						//Se for admin já retorna permissão de acesso
 						if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1)
@@ -1044,6 +1044,26 @@ public function actionRelatorio($id)
 				,	'activeTab'=>'tab-financeiro'
 		
 		));
+	}
+
+	/**
+	* Renderiza parcialmente as despesas de um projeto	
+	*/
+	public function actionAjaxDespesas($projeto, $rubrica){
+
+		$criteria = new CDbCriteria();		
+		$criteria->compare('cod_rubrica', $rubrica);
+		$criteria->compare('cod_projeto', $projeto);
+
+		$despesas = ProjetoDespesa::model()->findAll($criteria);
+
+		$proj = Projeto::model()->findByPk($projeto);
+
+		if ($proj == null || $rubrica == null) throw new ChttpException(404);
+
+		$this->layout = false;		
+		$this->render('/projeto/financeiro/_despesas', array('despesas'=>$despesas, 'projeto'=>$proj));
+
 	}
 	
 	

@@ -624,7 +624,7 @@ class Projeto extends CActiveRecord
 		  */
 		 public function getRubricasComReceita(){
 		
-		 	/**
+		 	/*
 						SELECT 
 			  rubrica.cod_rubrica, 
 			  rubrica.nome
@@ -678,7 +678,7 @@ class Projeto extends CActiveRecord
 		  */
 		 public function getRubricasComOrcamento(){
 		 
-		 	/**
+		 	/*
 		 	 SELECT
 		 	 rubrica.cod_rubrica,
 		 	 rubrica.nome
@@ -714,7 +714,7 @@ class Projeto extends CActiveRecord
 		 
 		 }
 		
-	/**
+	/*
 	 * Faz todo o cálculo do financeiro
 	 
 	private function calcFinanceiro(){

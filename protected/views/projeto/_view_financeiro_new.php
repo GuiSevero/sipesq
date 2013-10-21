@@ -1,7 +1,7 @@
 <?php 
 /* @var $this ProjetoController */
 /* @var $model Projeto */
-
+$url_despesas = $this->createUrl('/projeto/ajaxDespesas', array('projeto'=>$model->cod_projeto));
 Yii::app()->clientScript->registerScriptFile("https://www.google.com/jsapi", CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl ."/js/charts.js", CClientScript::POS_END);
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl .'/css/arvoredespesas.css');
@@ -34,6 +34,14 @@ $('.btnTabela').toggle(
 		}
 		
 );
+
+$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $('#tipodespesa').val());
+
+$('#tipodespesa').change(function(){
+	console.log($(this).val());
+	console.log('changed');
+	$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $(this).val());
+});
 
 ");
 
@@ -125,7 +133,14 @@ foreach($model->receitas as $rec){
 					</div>
 					
 					<div class="tab-pane active" id="info-despesas">
-						<?php $this->renderPartial('/projeto/financeiro/_despesas', array('despesas'=>$despesas, 'projeto'=>$model))?>
+						<?php 
+							$dataRubricas = array();
+							foreach($model->getRubricas() as $rubrica) $dataRubricas[$rubrica['cod_rubrica']] = $rubrica['nome'];
+						
+							echo CHtml::dropDownList('TipoDespesa', null, $dataRubricas, array('id'=>'tipodespesa', 'class'=>'input-xxlarge'));
+						?>
+						<div id="lista-despesas">							
+						</div>
 					</div>
 					
 					<div class="tab-pane" id="info-patrimonios">
