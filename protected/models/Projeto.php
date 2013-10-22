@@ -144,17 +144,13 @@ class Projeto extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
-			//'pessoaFinanceiros' => array(self::MANY_MANY, 'PessoaFinanceiro', 'projeto_pessoa_financeiro(cod_projeto, cod_financeiro)'),
+		return array(			
 			'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
 			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
 			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome'),
 			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.data_fim desc'),
-			//'patrimonio_termos' => array(self::HAS_MANY, 'PatrimonioTermo', 'cod_projeto'),
-			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),
-			//'pessoas_recebimento' => array(self::HAS_MANY, 'PessoaFinanceiro', 'projeto_vinculado'),
-			//'projeto_financeiro' => array(self::HAS_MANY, 'ProjetoFinanceiro', 'cod_projeto'),
+			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),			
 			'categoria' => array(self::BELONGS_TO, 'ProjetoCategoria', 'cod_categoria'),
 			'documentos' => array(self::HAS_MANY, 'ProjetoArquivo', 'cod_projeto'),
 			'despesas' => array(self::HAS_MANY, 'ProjetoDespesa', 'cod_projeto'),
@@ -162,6 +158,7 @@ class Projeto extends CActiveRecord
 			'orcamentos' => array(self::HAS_MANY, 'ProjetoOrcamento', 'cod_projeto'),
 			'verba_orcamentada'=>array(self::STAT, 'ProjetoOrcamento', 'cod_projeto', 'select' => 'SUM(valor)'),
 			'pessoas_permitidas' => array(self::MANY_MANY, 'Pessoa', 'permissao_projeto(cod_projeto, cod_pessoa)'),
+			'permissoes'=>array(self::HAS_MANY, 'PermissaoProjeto', 'cod_projeto')
 		);
 	}
 
@@ -737,5 +734,51 @@ class Projeto extends CActiveRecord
 	}
 	
 	*/
+
+	/**
+	*
+	*	Verifica as permissoes do cadastradas no projeto, 
+	*	permissoes atribuidas no projeto e permissoes globais do sipesq
+	*	
+	* @param $route - String - Rota da permissao
+	* @param $id <opcional> - identificador de um usuário, se nulo pega o usuário logado
+	*/
+	public function getPermition($route, $id=null){
+
+		if (Yii::app()->user->isGuest) return 0;
+
+		if ( $id == null ) $id = Yii::app()->user->getId();
+
+		if ($id == $this->cod_professor) return 100; //Professor Responsável
+		if ($id == $this->cod_grad) return 2; //Graduando Responsável
+		if ($id == $this->cod_pos_grad) return 2; //Pós-Graduando Responsável
+
+
+
+		$permissao_projeto = PermissaoProjeto::model()->findByPk(array('cod_pessoa'=>$id, 'cod_projeto'=>$this->cod_projeto));
+		$permissao_sipesq = Sipesq::getPermition('projeto.' .$route, $id);
+
+		//Não tem permissao neste projeto
+		if ($permissao_projeto == null) return $permissao_sipesq;
+
+		
+		$permissao = 0;
+		$routes = split('\.', $route);
+
+		$perm_pessoa = json_decode($permissao_projeto->permissao);
+		
+		foreach($routes as $r){				
+			if(property_exists($perm_pessoa, $r))
+				$perm_pessoa = $perm_pessoa->$r;
+			else 
+			 return -1; //Rota inexistente
+		}
+		if($perm_pessoa > $permissao) 
+			$permissao = $perm_pessoa;
+
+		
+
+		return ($permissao_sipesq > $permissao) ? $permissao_sipesq : $permissao;
+	}
 	
 }

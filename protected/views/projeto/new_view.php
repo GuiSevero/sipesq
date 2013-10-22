@@ -16,6 +16,7 @@ Yii::app()->clientScript->registerScript("activeTabs", "
 ?>
 
 <h2><?php echo $model->nome; ?></h2>
+<h1>Permissao: <?php echo $model->getPermition('documentos') ?></h1>
 
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs" id="myTab">
