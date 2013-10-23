@@ -37,11 +37,22 @@ class ProjetoController extends Controller
 			**/
 		
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro', 'chartRows'),
+					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro'),
 					'expression'=> function(){
+
 						//Se for admin já retorna permissão de acesso
 						if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1)
 							return true;
+
+						if(isset($_GET['id'])){
+							$model = $this->loadModel($_GET['id']);
+							return (Sipesq::isAdmin() || $model->getPermition('financeiro') >=1);
+						}
+
+						if(isset($_GET['projeto'])){
+							$model = $this->loadModel($_GET['projeto']);
+							return (Sipesq::isAdmin() || $model->getPermition('financeiro') >=1);
+						}
 						
 						return false;
 					},
@@ -55,18 +66,46 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('deleteFile'),
 					'expression'=> function(){
+
+						if(isset($_GET['id'])){
+							$model = ProjetoArquivo::model()->findByPk($_GET['id']);
+							if($model->projeto->getPermition('documentos') >= 100) return true;
+						}
+
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 100);
 					},
 			),
+
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('updateFile', 'createFile'),
+					'actions'=>array('updateFile'),
 					'expression'=> function(){
+						if(isset($_GET['id'])){
+							$model = ProjetoArquivo::model()->findByPk($_GET['id']);
+							if($model->projeto->getPermition('documentos') >= 2) return true;
+						}
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 2);
 					},
 			),
+
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+					'actions'=>array('createFile'),
+					'expression'=> function(){
+						if(isset($_GET['id'])){
+							$model = Projeto::model()->findByPk($_GET['id']);
+							if($model->getPermition('documentos') >= 2) return true;
+						}
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 2);
+					},
+			),
+
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('docs', 'downloadFile'),
 					'expression'=> function(){
+						
+						if(isset($_GET['id'])){
+							$model = Projeto::model()->findByPk($_GET['id']);
+							if($model->getPermition('documentos') >= 1) return true;
+						}
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 1);
 					},
 			),
@@ -91,6 +130,13 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('info', 'view', 'index'),
 					'expression'=> function(){
+
+						if(isset($_GET['id'])){
+							$model = $this->loadModel($_GET['id']);
+
+							return (Sipesq::isAdmin() || $model->getPermition('informacoes') >=1);
+						}
+
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 1);
 					},
 			
@@ -100,6 +146,13 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('update', 'create'),
 				'expression'=> function(){
+
+							//http://localhost/sipesq/index.php/projeto/updatepermissao?pessoa=119&projeto=28
+							if(isset($_GET['id'])){
+								$model = $this->loadModel($_GET['id']);
+								return (Sipesq::isAdmin() || $model->getPermition('informacoes') >=2);
+							}	
+
 						
 							//Se for admin já retorna permissão de acesso
 							if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 2)
@@ -884,47 +937,14 @@ public function actionRelatorio($id)
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/projeto/view', 'id'=>$projeto));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/projeto/docs', 'id'=>$projeto));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 		
 	}
 	
-	
-	/**
-	 * Json
-	 * @param integer  $id - rubrica
-	 */
-	public function actionChartRows($id){
 		
-		if(!isset($_GET['p'])){
-			throw new CHttpException('404', "Rubrica invalida");
-		}
-		
-		$p = $_GET['p'];
-
-		$this->layout=false;
-		header('Content-type: application/json');
-		
-		
-		$rubrica = new Rubrica();
-		$rubrica = Rubrica::model()->findByPk($id);
-		
-		
-		if($rubrica == null){
-			throw new CHttpException('404', "Rubrica inexistente");
-		}
-		
-		echo  '[';
-		echo "null," .$rubrica->calculaGastos($rubrica, $p) .",";
-		echo  $rubrica->calculaReceitas($rubrica, $p);
-		echo ']';
-		
-		Yii::app()->end();
-		
-	}
-	
 	/**
 	 * @param $id - projeto vinculado
 	 */

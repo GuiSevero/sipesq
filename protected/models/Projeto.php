@@ -766,13 +766,14 @@ class Projeto extends CActiveRecord
 		$routes = split('\.', $route);
 
 		$perm_pessoa = json_decode($permissao_projeto->permissao);
-		
-		foreach($routes as $r){				
+
+		foreach($routes as $r){							
 			if(property_exists($perm_pessoa, $r))
 				$perm_pessoa = $perm_pessoa->$r;
 			else 
 			 return -1; //Rota inexistente
 		}
+
 		if($perm_pessoa > $permissao) 
 			$permissao = $perm_pessoa;
 

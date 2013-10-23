@@ -1,4 +1,4 @@
-<?php $permition = Sipesq::getPermition('projeto.documentos'); ?>
+<?php $permition = $model->getPermition('documentos'); ?>
 <a id="documentos"></a>
 <div id="tabDocumentos">
 <h2>Documentos</h2>
@@ -20,12 +20,10 @@
 				, array('target'=>'_blank'))
 			?>					
 		</td>
-		<?php if($permition > 1): ?>
 		<td>
-			<?php echo CHtml::link("<i title='Editar' class='icon icon-edit tip'></i>", array('/projeto/updateFile', 'id'=>$doc->cod_arquivo))?>
-			<?php echo CHtml::link("<i title='Excluir' class='icon icon-trash tip'></i>",'',array('submit'=>array('deleteFile','id'=>$doc->cod_arquivo),'confirm'=>'Tem certeza que deseja excluir este arquivo?'))?>
+			<?php if($permition >= 2) echo CHtml::link("<i title='Editar' class='icon icon-edit tip'></i>", array('/projeto/updateFile', 'id'=>$doc->cod_arquivo))?>
+			<?php if($permition >= 100) echo CHtml::link("<i title='Excluir' class='icon icon-trash tip'></i>",'',array('submit'=>array('deleteFile','id'=>$doc->cod_arquivo),'confirm'=>'Tem certeza que deseja excluir este arquivo?'))?>
 		</td>
-		<?php endif;?>
 	</tr>
 
 <?php endforeach;?>
