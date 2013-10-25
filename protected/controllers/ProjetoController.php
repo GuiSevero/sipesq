@@ -40,14 +40,14 @@ class ProjetoController extends Controller
 					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro'),
 					'expression'=> function(){
 
-						//Se for admin já retorna permissão de acesso
-						if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1)
-							return true;
-
 						if(isset($_GET['id'])){
 							$model = $this->loadModel($_GET['id']);
 							return (Sipesq::isAdmin() || $model->getPermition('financeiro') >=1);
 						}
+
+						//Se for admin já retorna permissão de acesso
+						if(Sipesq::isAdmin() || Sipesq::getPermition('projeto.financeiro') >= 1)
+							return true;
 
 						if(isset($_GET['projeto'])){
 							$model = $this->loadModel($_GET['projeto']);
@@ -118,6 +118,12 @@ class ProjetoController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('atividades', 'tabAtividades'),
 					'expression'=> function(){
+						if(isset($_GET['id'])){
+
+							$model = $this->loadModel($_GET['id']);
+							return (Sipesq::isAdmin() || $model->getPermition('atividades') >= 1);
+						}
+
 						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.atividades') >= 1);
 					},
 			),
@@ -179,9 +185,17 @@ class ProjetoController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('permissoes', 'deletePermissao', 'gerencial', 'updatePermissao'),
 				'expression'=> function(){
+
+							if(isset($_GET['id'])){
+								$model = $this->loadModel($_GET['id']);
+								return (Sipesq::isAdmin() || $model->getPermition('informacoes') >=2);
+							}	
+
 							//Se for admin já retorna permissão de acesso
 							if(Sipesq::isAdmin() ||Sipesq::getPermition('projeto.gerencial') >= 100) return true;
+
 							return false;
+
 				},
 			
 			),
@@ -191,6 +205,11 @@ class ProjetoController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin', 'delete'),
 				'expression'=> function(){
+					
+						if(isset($_GET['id'])){
+								$model = $this->loadModel($_GET['id']);
+								return (Sipesq::isAdmin() || $model->getPermition('informacoes') >=2);
+						}	
 						return Sipesq::isAdmin() || (Sipesq::getPermition('projeto.deletar') >= 100);			
 				},
 			
@@ -649,9 +668,9 @@ public function actionRelatorio($id)
 	 * Gerencia as permissões dos usuários nos projetos
 	 * @param integer $id - identificador do projeto
 	 */
-	public function actionUpdatePermissao($pessoa, $projeto){
+	public function actionUpdatePermissao($id, $pessoa){
 		
-		$model = PermissaoProjeto::model()->findByPk(array('cod_projeto'=>$projeto, 'cod_pessoa'=>$pessoa));		
+		$model = PermissaoProjeto::model()->findByPk(array('cod_projeto'=>$id, 'cod_pessoa'=>$pessoa));		
 		$perm_projeto = new PermissaoProjetoForm();
 		$model->permissao = $perm_projeto->load(json_decode($model->permissao));
 		
@@ -667,9 +686,9 @@ public function actionRelatorio($id)
 				$this->redirect(array('/projeto/gerencial', 'id'=>$projeto));
 			else
 				$model->permissao = $perm_projeto->load(json_decode($model->permissao));				
-		}
-								
-			$this->render('_form_permissao', array('projeto'=>$model->projeto, 'model'=>$model));	
+		}								
+			
+		$this->render('_form_permissao', array('projeto'=>$model->projeto, 'model'=>$model));	
 		
 	}
 	
@@ -682,10 +701,12 @@ public function actionRelatorio($id)
 	 */
 	public function actionDeletePermissao($id, $cod_pessoa)
 	{
-			$model = PermissaoProjeto::model()->find('cod_pessoa = :cod_pessoa AND cod_projeto = :cod_projeto', array('cod_projeto'=>$id, 'cod_pessoa'=>$cod_pessoa));
-			$projeto = Projeto::model()->findByPk($id
-			);
+			if(!Yii::app()->request->isPostRequest) throw new CHttpException(403);
 			
+			$model = PermissaoProjeto::model()->findByPk(array('cod_pessoa'=>$cod_pessoa, 'cod_projeto'=>$id));
+
+			if($model ==null) throw new CHttpException('404');
+
 			 //	Deleta o projeto
 			 $model->delete();
 			$this->redirect(isset($_GET['returnUrl']) ? $_GET['returnUrl'] : array('index'));

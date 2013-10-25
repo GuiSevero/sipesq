@@ -65,7 +65,7 @@ $t = json_encode(array(
 			<dd> <b>Gerencial:</b> <?php echo $binaryPermitions[$perm->gerencial]; ?> </dd>
 			<dd> <b>Deleção:</b> <?php echo $binaryPermitions[$perm->deletar]; ?> </dd>
 			<dd> 
-				<?php echo CHtml::link("Editar", array('projeto/updatepermissao', 'pessoa'=>$p->cod_pessoa, 'projeto'=>$p->cod_projeto), array('class'=>'btn btn-primary btn-small')); ?>
+				<?php echo CHtml::link("Editar", array('projeto/updatepermissao', 'pessoa'=>$p->cod_pessoa, 'id'=>$p->cod_projeto), array('class'=>'btn btn-primary btn-small')); ?>
 				<?php echo CHtml::submitButton("Remover", array('submit'=>array('deletePermissao','id'=>$p->cod_projeto, 'cod_pessoa'=>$p->cod_pessoa,'returnUrl'=>array($this->route, 'id'=>$p->cod_projeto)) ,'confirm'=>'Deseja remover esta permissão?', 'class'=>'btn btn-small btn-danger')); ?>
 			</dd>
 			<hr>

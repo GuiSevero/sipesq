@@ -16,9 +16,6 @@ Yii::app()->clientScript->registerScript("activeTabs", "
 ?>
 
 <h2><?php echo $model->nome; ?></h2>
-<h1>Permissao Projeto: <?php echo $model->getPermition('informacoes') ?></h1>
-<h1>Permissao Sipesq: <?php echo Sipesq::getPermition('projeto.informacoes') ?></h1>
-
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs" id="myTab">
   <li id="tab-info"><?php echo CHtml::link("Informações", array('/projeto/info', 'id'=>$model->cod_projeto))?></li>
