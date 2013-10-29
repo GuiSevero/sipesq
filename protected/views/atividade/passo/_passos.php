@@ -51,7 +51,6 @@
 	$('.ok-button').click(okButtonListener);
 ");?>
 
-
 	<h4>Passos</h4>
 	<?php foreach($model->passos as $p):?>
 			<?php $this->renderPartial('/atividade/passo/_view', array('model'=>$p))?>

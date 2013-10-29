@@ -143,9 +143,14 @@ $this->menu=array(
 <?php $url = $this->createUrl('/atividade/passoConcluido')?>
 <?php Yii::app()->clientScript->registerScript('okPasso', "
 	function okButtonListener(){
+
+		var passo_id = '#passo-' + $(this).attr('id');
+		$(passo_id).hide('slow', function(){
+			$(passo_id).remove();
+		});		
+
 		if(this.checked){
 			
-			$(this).parent('div').hide('slow');
 			
 			$.post('{$url}' + '/' + $(this).attr('id') , 
 				{
@@ -153,21 +158,23 @@ $this->menu=array(
 				},
 		
    		function(data) {
-     		$('#passos-holder').append(data);
+     		$('#panel-passos-finalizados').append(data);
+     		$('.ok-button').unbind('click');
+			$('.ok-button').click(okButtonListener);
 	   	});
 		}else{
-			
-			$(this).parent('div').hide('slow');
-		
+
 			$.post('{$url}' + '/' + $(this).attr('id') ,
 				{finalizado: false},
 		
-   		function(data) {
-     		$('#passos-holder').append(data);
-	   	});
-	}
-		$('.ok-button').unbind('click');
-		$('.ok-button').click(okButtonListener);
+	   		function(data) {
+	     		$('#panel-passos-abertos').append(data);
+	     		$('.ok-button').unbind('click');
+				$('.ok-button').click(okButtonListener);
+		   	});
+		}
+
+		
 	}
 	
 	$('.ok-button').click(okButtonListener);
@@ -217,16 +224,29 @@ $this->menu=array(
 	<?php echo $model->descricao; ?>
 </div>
 </div>
+<hr>
+<div class="row-fluid">
+<div class="span6">
+	<label><b>Participantes</b></label>
+	<?php foreach($model->pessoas as $pessoa):?>
+		<?php echo CHtml::encode($pessoa->nome); ?>
+		<br />
+	<?php endforeach;?>
 </div>
 
-	
-<div class="view" id="passos-holder">
-	<h4>Passos</h4>
-	<?php foreach($model->passos as $p):?>
-		<?php $this->renderPartial('/atividade/passo/_view', array('model'=>$p))?>
+<div class="span6">
+	<label><b>Projetos</b></label>
+	<?php foreach($model->projetos as $projeto):?>
+		<?php echo CHtml::encode($projeto->nome); ?>
+		<br />
 	<?php endforeach;?>
-	<br>
 </div>
+</div>
+</div>
+
+
+
+
 
 <?php $userId = Yii::app()->user->getId(); ?>
 <?php if($model->isResponsible($userId) || $model->isParticipating($userId) || $model->hasStep($userId) || Sipesq::getPermition('atividade.informacoes' >= 2)): ?>
@@ -283,23 +303,32 @@ $this->menu=array(
 	<?php $this->endWidget(); ?>    
 	</div>    
 <?php endif; ?>	
-    
-<div class="view">
-	<label><b>Participantes</b></label><br>
-	<?php foreach($model->pessoas as $pessoa):?>
-		<?php echo CHtml::encode($pessoa->nome); ?>
-		<br />
-	<?php endforeach;?>
-</div>
 
-<div class="view">
-	<label><b>Projetos</b></label><br>
-	<?php foreach($model->projetos as $projeto):?>
-		<?php echo CHtml::encode($projeto->nome); ?>
-		<br />
-		<br />
-	<?php endforeach;?>
-</div>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl .'/css/panel.css');?>
+<?php Yii::app()->clientScript->registerCss("passos","
+	.panel-passos{
+		max-height: 600px;
+		overflow: auto;
+	}
+");?>
+<div class="row-fluid">
+	<div class="span6">
+		<h4>Passos em Aberto</h4>
+		<div class="panel-passos" id="panel-passos-abertos">
+			<?php foreach($model->passos_abertos as $p):?>
+				<?php $this->renderPartial('/atividade/passo/_view', array('model'=>$p))?>
+			<?php endforeach;?>
+		</div>
+	</div>
+	<div class="span6">
+		<h4>Passos Finalizados</h4>
+		<div class="panel-passos" id="panel-passos-finalizados">
+			<?php foreach($model->passos_finalizados as $p):?>
+				<?php $this->renderPartial('/atividade/passo/_view', array('model'=>$p))?>
+			<?php endforeach;?>
+		</div>
+	</div>
+</div>    
 
 <div class="modal hide" id="modalAtvEdit">
 	<div class="modal-header">

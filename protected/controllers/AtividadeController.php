@@ -46,6 +46,7 @@ class AtividadeController extends Controller
 			array('allow',  // Qualquer pessoa logada
 				'actions'=>array('create','tokenPessoa', 'calendar','loadColumn', 'index'),
 				'users'=>array('@'),
+				//'expression'=>function($user, $rule){}
 			),
 			
 			 
@@ -129,7 +130,7 @@ class AtividadeController extends Controller
 			),
 
 			array('allow', // Suporte ou admin
-				'actions'=>array('admin','index'),
+				'actions'=>array('admin'),
 				'expression'=>function($user, $rule){
 					return (Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividades.informacoes') >= 100);
 				}

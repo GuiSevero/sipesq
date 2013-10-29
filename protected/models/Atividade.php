@@ -93,10 +93,10 @@ class Atividade extends CActiveRecord
 			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'atividade_pessoa(cod_atividade, cod_pessoa)', 'select'=>'cod_pessoa, nome, nome_curto'),
 			'responsavel' => array(self::BELONGS_TO, 'Pessoa', 'cod_pessoa','select'=>'cod_pessoa, nome, nome_curto'),
 			'categoria' => array(self::BELONGS_TO, 'AtividadeCategoria', 'cod_categoria'),
-			'passos' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo'),
+			'passos' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo'),			
 			'meus_passos' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo', 'condition'=>'meus_passos.cod_pessoa = :cod_pessoa', 'params'=>array('cod_pessoa'=>isset($_POST['options']['pessoa']) ? $_POST['options']['pessoa'] : Yii::app()->user->getId())),
-			//'passos_finalizados' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo', 'condition'=>'finalizado = true'),
-			//'passos_abertos' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo', 'condition'=>'finalizado = false'),
+			'passos_finalizados' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo', 'condition'=>'finalizado = true'),
+			'passos_abertos' => array(self::HAS_MANY, 'AtividadePasso', 'cod_atividade', 'order'=>'data_prazo', 'condition'=>'finalizado = false'),
 		);
 	}
 
