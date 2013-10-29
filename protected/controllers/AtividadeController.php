@@ -44,7 +44,7 @@ class AtividadeController extends Controller
 		 */
 		return array(
 			array('allow',  // Qualquer pessoa logada
-				'actions'=>array( 'create','tokenPessoa', 'calendar','loadColumn'),
+				'actions'=>array('create','tokenPessoa', 'calendar','loadColumn', 'index'),
 				'users'=>array('@'),
 			),
 			
@@ -67,6 +67,10 @@ class AtividadeController extends Controller
 			
 					$model = Atividade::model()->findByPk($id);
 					if($model == null) return false;
+
+					foreach($model->projetos as $projetos){
+						if($model->getPermition('atividades') > 1) return true;
+					}
 					
 					//Verifica se é responsável
 					$userId = $user->getId();
@@ -87,6 +91,10 @@ class AtividadeController extends Controller
 							
 						$model = AtividadePasso::model()->findByPk($id);
 						if($model == null) return false;
+
+						foreach($model->projetos as $projetos){
+							if($model->getPermition('atividades') > 1) return true;
+						}
 							
 						return ( $model->isResponsible($user->getId()) 
 						    || $model->atividade->isResponsible($user->getId())
@@ -108,6 +116,10 @@ class AtividadeController extends Controller
 			
 					$model = Atividade::model()->findByPk($id);
 					if ($model == null) return false;
+
+					foreach ($model->projetos as $projeto) {
+						if($projeto->getPermition('atividades') >= 2) return true;
+					}
 					
 					//Verifica se é responsável
 					return $model->isResponsible($user->getId());
