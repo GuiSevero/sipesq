@@ -115,7 +115,7 @@ $this->menu=array(
 		$('#passo-form').serialize()
 		,
    		function(data) {
-     		$('#passos-holder').append(data + '<br>');
+     		$('#panel-passos-abertos').append(data);
      		$('.icon').tooltip();
      		
      		$('.btnDeleteCampo').unbind('click');
@@ -123,6 +123,9 @@ $this->menu=array(
 			
 			$('.btnEditAtv').unbind('click');
 			$('.btnEditAtv').click(Passo.editButton);
+
+			$('.ok-button').unbind('click');
+			$('.ok-button').click(okButtonListener);
 			
 		 	socket.emit('activityUpdated');
 	   	});
@@ -145,9 +148,7 @@ $this->menu=array(
 	function okButtonListener(){
 
 		var passo_id = '#passo-' + $(this).attr('id');
-		$(passo_id).hide('slow', function(){
-			$(passo_id).remove();
-		});		
+		$(passo_id).remove();		
 
 		if(this.checked){
 			
@@ -171,6 +172,7 @@ $this->menu=array(
 	     		$('#panel-passos-abertos').append(data);
 	     		$('.ok-button').unbind('click');
 				$('.ok-button').click(okButtonListener);
+
 		   	});
 		}
 
@@ -187,7 +189,7 @@ $this->menu=array(
 <div class="span4">
 
 	<b><?php echo CHtml::encode($model->getAttributeLabel('status')); ?>:</b>
-	<span class="label <?php echo $model->label?>"><?php echo CHtml::encode($model->statusName); ?></span>
+	<span class="label <?php echo $model->label ?>"><?php echo CHtml::encode($model->statusName); ?></span>
 	<br />
 
 	<b>Categoria:</b>
@@ -251,35 +253,27 @@ $this->menu=array(
 <?php $userId = Yii::app()->user->getId(); ?>
 <?php if($model->isResponsible($userId) || $model->isParticipating($userId) || $model->hasStep($userId) || Sipesq::getPermition('atividade.informacoes' >= 2)): ?>
 	<div class="view form">
-	<h2>Adicionar Passo</h2>
+	<h4>Adicionar Passo</h4>
 	<?php $passo = new AtividadePasso();?>
 	<?php $form=$this->beginWidget('CActiveForm', array(
 		'id'=>'passo-form',
 		'enableAjaxValidation'=>true,
 		'errorMessageCssClass'=>'alert alert-danger',
 		'enableClientValidation'=>true,
+		'htmlOptions'=>array('class'=>'form-inline'),
 	)); ?>
 
-		<?php CHtml::$errorCss = 'control-group warning';?>
+		<?php CHtml::$errorCss = 'control-group warning';?>	
 
-		<div class="alert alert-info">
-		  <button type="button" class="close" data-dismiss="alert">&times;</button>
-		  Campos com <strong>*</strong> são obrigatórios.
-		</div>
-		
 		<?php
 			 $header = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>";
 			 $footer = "</div>";
 			echo $form->errorSummary($passo, $header, $footer); 
 		?>
-		
-		<div class="input">
-			<?php echo $form->labelEx($passo,'descricao'); ?>
-			<?php echo $form->textField($passo,'descricao', array('class'=>'input-xxlarge', 'placeholder'=>"Descrição")); ?>
-			<?php echo $form->error($passo,'descricao'); ?>
-		</div>
-		
-		<div class="input">
+
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="input">
 			<?php echo $form->labelEx($passo,'data_prazo'); ?>
 			<?php echo CHtml::tag('input', array('name'=>'AtividadePasso[data_prazo]', 'type'=>'date', 'value'=> date('Y-m-d')))?>
 			<?php echo $form->error($passo,'data_prazo'); ?>
@@ -292,6 +286,19 @@ $this->menu=array(
 			<?php echo $form->textField($passo, 'cod_pessoa')?>
 			<?php echo $form->error($passo,'cod_pessoa'); ?>
 		</div>
+			</div>
+			<div class="span6">
+				<div class="input">
+					<?php echo $form->labelEx($passo,'descricao'); ?>
+					<?php echo $form->textArea($passo,'descricao', array('class'=>'input-xxlarge', 'placeholder'=>"Descrição")); ?>
+					<?php echo $form->error($passo,'descricao'); ?>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
 		
 			
 		

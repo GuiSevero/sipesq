@@ -391,7 +391,9 @@ class AtividadeController extends Controller
 	        $model->attributes=$_POST['AtividadePasso'];
 	        
 	        if($model->save()){
-	        	$this->renderPartial('/atividade/passo/_view', array('model'=>$model));
+	        	$model->atividade->estagio = false;
+	        	if($model->atividade->save())
+	        		$this->renderPartial('/atividade/passo/_view', array('model'=>$model));
 	        	Yii::app()->end();
 	        }else{
 	        	foreach($model->getErrors() as $err){
@@ -484,6 +486,13 @@ class AtividadeController extends Controller
 	        }
 	        
 	        if($model->save()){
+	        	if($model->count('finalizado = false and cod_atividade = '.$model->cod_atividade) == 0){
+	        		$model->atividade->estagio = true;
+	        		$model->atividade->save();
+				}else{
+					$model->atividade->estagio = false;
+	        		$model->atividade->save();
+				}
 	        	echo $this->renderPartial('/atividade/passo/_view', array('model'=>$model), true);
 	        	Yii::app()->end();
 	        }else{
