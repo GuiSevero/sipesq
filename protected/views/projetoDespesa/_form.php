@@ -179,7 +179,7 @@ Yii::app()->clientScript->registerScript('tokenInput', "
 		</div>
 		<div class="alert alert-info">
 	  		<button type="button" class="close" data-dismiss="alert">&times;</button>
-	 	 	<i>Saldo disponível: R$ <span id="saldo-disp"><?php echo number_format($model->verba->saldo_comprometido,2, ',','.' ) ?></span></i>
+	 	 	<i>Saldo disponível: R$ <span id="saldo-disp"><?php echo number_format($model->getSaldoRubrica(),2, ',','.' ) ?></span></i>
 		</div>
 		<?php echo $form->error($model,'valor'); ?>
 		<?php echo $form->error($model,'quantidade'); ?>

@@ -35,12 +35,13 @@ $('.btnTabela').toggle(
 		
 );
 
-$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $('#tipodespesa').val());
+//$('#lista-despesas').load('{$url_despesas}');
 
 $('#tipodespesa').change(function(){
-	console.log($(this).val());
-	console.log('changed');
-	$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $(this).val());
+	//$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $(this).val());
+	
+	$('.desp-detail').hide();
+	$('.desp-' + $(this).val()).show();
 });
 
 ");
@@ -137,10 +138,11 @@ foreach($model->receitas as $rec){
 							$dataRubricas = array();
 							foreach($model->getRubricas() as $rubrica) $dataRubricas[$rubrica['cod_rubrica']] = $rubrica['nome'];
 						
-							echo CHtml::dropDownList('TipoDespesa', null, $dataRubricas, array('id'=>'tipodespesa', 'class'=>'input-xxlarge'));
+							echo CHtml::dropDownList('TipoDespesa', null, $dataRubricas, array('id'=>'tipodespesa', 'class'=>'input-xxlarge', 'prompt'=>'Selecione uma Rubrica'));
 						?>
 						<div id="lista-despesas">							
 						</div>
+						<?php $this->renderPartial('/projeto/financeiro/_despesas', array('despesas'=>$despesas, 'projeto'=>$model)) ?>
 					</div>
 					
 					<div class="tab-pane" id="info-patrimonios">

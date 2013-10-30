@@ -203,9 +203,21 @@ class ProjetoDespesa extends CActiveRecord
 		$gasto_comprometido = $receita->getGastosComprometidos($rubrica->cod_rubrica);
 		$saldo = $recebido - $gasto_comprometido;
 		
-		if($this->valor * $this->quantidade - $this->valor_antigo > $saldo)
-			$this->addError($attribute, 'A rubrica ' .$rubrica->nome .' só dispoe de R$ ' .Yii::app()->format->number($saldo));
+		if($this->valor * $this->quantidade - $this->valor_antigo > $saldo){
+			$message = "Você tentou adicionar uma despesa de R$" .Yii::app()->format->number($this->valor * $this->quantidade) .".";
+			$message .= "<br> Saldo disponível: R$" .Yii::app()->format->number($saldo);
+			$message .= "<br> Rubrica: " .$rubrica->nome;
+			$this->addError($attribute, $message);
+		}
+			
 	}
-	
-	
+
+	public function getSaldoRubrica(){
+
+					$gasto_comprometido = $this->verba->getGastosComprometidos($this->cod_rubrica);
+					$recebido = $gasto_comprometido
+					+ min($this->verba->saldo_comprometido, ($this->projeto->getOrcamentado($this->cod_rubrica) - $gasto_comprometido));
+
+					return $recebido - $gasto_comprometido;
+	}	
 }

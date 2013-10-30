@@ -12,7 +12,7 @@
 </thead>
 <tbody>
 <?php foreach($despesas as $desp):?>
-		<tr>
+		<tr class="desp-detail desp-<?php echo $desp->cod_rubrica?>">
 		<td>
 		<?php echo CHtml::link($desp->nome,array('/projetoDespesa/viewAjax', 'id'=>$desp->cod_despesa), array('class'=>'link', 'data-toggle'=>'modal', 'data-target'=>'#modal-info'));?>
 		</td>

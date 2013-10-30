@@ -3,10 +3,17 @@
 <fieldset>
 	<div class="span8">
 		<label>Projeto</label>
-		<?php echo CHtml::dropDownList(
+		<?php 
+			$projetos = array();
+			if(Sipesq::getPermition('projeto.atividades') >= 1)
+				$projetos = Projeto::model()->findAll(array('order'=>'nome'));
+			else
+				$projetos = $data->projetos_atuante;
+
+		echo CHtml::dropDownList(
 					'projeto'
 				,	null
-				,	CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome', 'situacao_text')
+				,	CHtml::listData($projetos, 'cod_projeto', 'nome', 'situacao_text')
 				,	array('data-target'=>'pessoa', 'class'=>'input-xxlarge', 'id'=>'atv-projeto', 'prompt'=>'Selecione o Projeto')
 			)
 		?>
@@ -19,6 +26,16 @@
 			,	array('id'=>'atv-categoria','data-target'=>'categoria', 'class'=>'input-xxlarge', 'prompt'=>'Selecione a Categoria')
 		)
 	?>
+	<?php if(Sipesq::getPermition('projeto.atividades') >= 1): ?>
+		<label>Pessoa</label>
+		<?php echo CHtml::dropDownList(
+					'categoria'
+				,	Yii::app()->user->getId()
+				,	CHtml::listData(Pessoa::model()->findAll(array('order'=>'nome')), 'cod_pessoa', 'nome')
+				,	array('id'=>'atv-pessoa','data-target'=>'pessoa', 'class'=>'input-xxlarge', 'prompt'=>'Selecione uma Pessoa')
+			)
+		?>
+	<?php endif; ?>
 	<br>
 	<?php echo CHtml::link('Adicionar Atividade', array('/atividade/create'), array('class'=>'btn btn-primary')); ?>
 	</div>	
@@ -70,6 +87,14 @@
 	$('#atv-categoria').change(function(){
 		$('#atv-json').html('');
 		options.categoria = $(this).val();
+		options.count = 0;
+		atividade.load(options);
+		
+	});
+
+	$('#atv-pessoa').change(function(){
+		$('#atv-json').html('');
+		options.pessoa = $(this).val();
 		options.count = 0;
 		atividade.load(options);
 		
