@@ -122,7 +122,7 @@ class Pessoa extends CActiveRecord
 			'telefone' => 'Código de Área e Telefone',
 			'cpf' => 'CPF',
 			'rg' => 'RG',
-			'cartao_ufrgs' => 'Cartão da UFRGS',
+			'cartao_ufrgs' => 'Número de Matrícula',
 			'cod_projeto_atuante' => 'Projeto Atuante',
 			'email' => 'Email',
 			'cidade' => 'Cidade',

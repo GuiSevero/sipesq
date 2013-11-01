@@ -20,6 +20,7 @@
               <li class="<?php echo ($this->activeMenu=='Atividades') ? 'active' : ''?>">
               	<a href="<?php echo $this->createUrl('/atividade')?>">Atividades</a>
               </li>
+              
               <li class="dropdown <?php echo ($this->activeMenu=='Acervo') ? 'active' : ''?>" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Acervo <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -30,18 +31,7 @@
                   <li><a href="<?php echo $this->createUrl('/subscription')?>"><i class="icon icon-pencil"></i> Subscriptions</a></li>                  
                 </ul>
               </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon icon-user icon-white"></i> <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="nav-header"><?php echo Yii::app()->user->name?></li>
-                  <li><a href="<?php echo $this->createUrl('/pessoa/myself')?>"><i class="icon icon-user"></i> Perfil</a></li>
-                  <!-- <li class="nav-header"></li> -->
-                  <li><a href="<?php echo $this->createUrl('/projeto')?>"><i class="icon icon-briefcase"></i> Projetos</a></li>
-                  <li><a href="<?php echo $this->createUrl('/atividade')?>"><i class="icon icon-tasks"></i> Atividades</a></li>                   
-                  <li class="divider"></li>
-                  <li><a href="<?php echo $this->createUrl('/site/logout')?>"><i class="icon icon-ban-circle"></i> Sair</a></li>
-                </ul>
-              </li>
+              <?php $this->renderPartial('/layouts/menu/_notificacoes');?>
 
             </ul>
             <?php $this->renderPartial('/layouts/menu/_menu_suporte');?>
@@ -51,3 +41,6 @@
         </div><!-- /container -->
       </div>
 </div>
+
+
+
