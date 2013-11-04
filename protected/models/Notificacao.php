@@ -105,4 +105,44 @@ class Notificacao extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	/*
+	*@param $id - Identificador do usuario
+	*/
+	public static function getNotifications($id){
+
+		if (Yii::app()->user->getId() != $id) throw new CHttpException(403);
+
+		$result = array();
+
+		$command =  Yii::app()->db->createCommand();
+		$select = array(
+					'notf_id'
+				,	'message'
+				,	'read'
+				,	'url'
+				,	'time'				
+		);
+		$command->from('notificacao');
+		$command->params = array('receiver'=>$id);
+		$command->where = "receiver = :receiver";
+		$command->select = implode(', ', $select);
+		$command->order = 'time DESC';
+		$command->limit(10);
+		
+		$result['items'] =  array_map(function($item){
+			$item['notf_url'] = Yii::app()->createUrl('/notificacao/view',array('id'=>$item['notf_id']));
+			return $item;
+		}, $command->queryAll());
+
+		$command_count = Yii::app()->db->createCommand();
+		$command_count->from('notificacao');
+		$command_count->where = "receiver = :receiver AND read = false";
+		$command_count->params = array('receiver'=>$id);
+		$command_count->select = "count(notf_id)";
+		$result['count_new'] = $command_count->queryScalar();
+
+		return $result;
+
+	}
 }

@@ -1,95 +1,43 @@
-<?php Yii::app()->clientScript->registerCss('label',"
-        .notif-content{
-          padding: 2px;
-          font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
-          font-size: 11px;
-          line-height: 14px;
-          min-width: 250px;
-          white-space: pre-line;
+<?php 
 
-        }
-        .ntf{
-          border-bottom: solid 1px #CCC;
-        }
-        .notif-new{
-          background-color: #DDD;
+$baseurl = Yii::app()->request->baseUrl;
+$notfurl = $this->createUrl('/notificacao/render', array('id'=>Yii::app()->user->getId()));
+//$baseurl = $this->createUrl('/js/templates/_notificacoes.ejs');
+Yii::app()->clientScript->registerScript('notif',"
+        var template = '{$baseurl}';
+        var notf_html = new EJS({url: '{$baseurl}/js/templates/_notificacoes.ejs'});
+        
+        setInterval(function(){
 
-        }
+            $.get('{$notfurl}',{json: true} ,function(data){              
+              $('#notificacoes').html(notf_html.render(data));
+            }, 'json');
 
+        }, 15000);
 "); 
 
 
 if(!isset($notificacoes)){
-
-$params = array();
-		$command =  Yii::app()->db->createCommand();
-		$select = array(
-					'notf_id'
-				,	'message'
-				,	'read'
-				,	'url'
-				,	'time'				
-		);
-		$command->from('notificacao');
-		$command->params = array('receiver'=>Yii::app()->user->getId());
-		$command->where = "receiver = :receiver";
-		$command->select = implode(', ', $select);
-		$command->order = 'time DESC';
-		$command->limit(10);
-		$notificacoes = $command->queryAll();
-
+  $notificacoes = Notificacao::getNotifications(Yii::app()->user->getId());
 }
 
 ?>
 
-<li class="dropdown" >
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificações <span class="badge badge-warning">2</span> <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                <?php foreach($notificacoes as $ntf): ?>
-                	<li class="ntf <?php echo ($ntf['read'] == true) ? '' : 'notif-new'; ?>">
-                    <a href="<?php echo $this->createUrl('/notificacao/view', array('id'=>$ntf['notf_id'])); ?>">
-                    <div class="notif-content">
-                       <?php echo $ntf['message']; ?>
-                    </div>
-                    </a>
-                  </li>
-            	<?php endforeach; ?>
-            	<?php /*
-                  <li class="ntf notif-new">
-                    <a href="<?php echo $this->createUrl('/agenda')?>">
-                    <div class="notif-content">
-                       <b>Guilherme Severo</b> adicionou uma atividade para você.
-                    </div>
-                    </a>
-                  </li>
-                  <li class="ntf" >
-                    <a href="<?php echo $this->createUrl('/agenda')?>">
-                    <div class="notif-content">
-                       <b>Eduardo Bueno</b> adicionou você no projeto <b>Atlas de Segurança Internacional</b>. 
-                    </div>
-                    </a>
-                  </li>
-                  <li class="ntf">
-                    <a href="<?php echo $this->createUrl('/agenda')?>">
-                    <div class="notif-content">
-                       <b>Marco Cepik</b> adicionou um passo para você na atividade <b>Reunião com conselho científico do CEGOV</b>.
-                    </div>
-                    </a>
-                  </li>
-                  <li class="ntf notif-new">
-                    <a href="<?php echo $this->createUrl('/agenda')?>">
-                    <div class="notif-content">
-                       <b>Gustavo Moller </b> atualizou a atividade <b>Reunião com conselho científico do CEGOV</b> e também atualizou a atividade <b>Reunião com conselho científico da UFRGS</b>
-                    </div>
-                    </a>
-                  </li>
-                  <li class="ntf">
-                    <a href="<?php echo $this->createUrl('/agenda')?>">
-                        <div class="notif-content">
-                        <b>Guilherme Severo</b> atualizou o projeto <b>Atlas de Segurança Internacional</b>. 
-                       </div>
-                    </a>
-                  </li>
-                  */?>
-                </ul>
-              </li>
+<li class="dropdown" id="notificacoes">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notificações
+    <?php if($notificacoes['count_new'] > 0): ?>
+    <span class="badge badge-warning"><?php echo $notificacoes['count_new'] ?></span><b class="caret"></b>
+    <?php endif; ?>
+  </a>
+  <ul class="dropdown-menu">
+  <?php foreach($notificacoes['items'] as $ntf): ?>
+  	<li class="ntf <?php echo ($ntf['read'] == true) ? '' : 'notif-new'; ?>">
+      <a href="<?php echo $ntf['notf_url'] ?>">
+      <div class="notif-content">
+         <?php echo $ntf['message']; ?>
+      </div>
+      </a>
+    </li>
+  <?php endforeach; ?>
+  </ul>
+</li>

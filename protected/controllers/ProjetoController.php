@@ -1226,5 +1226,37 @@ public function actionRelatorio($id)
 		Yii::app()->request->sendFile($filename, $content);
 		
 	}
+
+	/*
+	* 
+	*/
+	private function broadCast($id, $msg){
+
+		$model = $this->loadModel($id);
+		
+		$sender_id = Yii::app()->user->getId();
+		$sender = Pessoa::model()->findByPk($sender_id)->nome;
+		
+		$message = "<b>{$sender}</b> {$msg} <b>{$model->nome_atividade}</b>";
+		$url = $this->createUrl('view', array('id'=>$model->cod_atividade));
+	
+		$ntf = new Notificacao();
+		$ntf->sender = $sender_id;
+		$ntf->message = $message;
+		$ntf->url = $url;
+		$ntf->receiver = $model->cod_pessoa;
+		$ntf->save(false);
+		
+		foreach($model->pessoas as $pessoa){
+			$ntf = new Notificacao();
+			$ntf->sender = $sender_id;
+			$ntf->message = $message;
+			$ntf->url = $url;
+			$ntf->receiver = $pessoa->cod_pessoa;
+			$ntf->save(false);
+		}
+		
+		
+	}
 	
 }

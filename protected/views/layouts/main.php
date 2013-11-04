@@ -11,6 +11,7 @@
 	
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/notification.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-responsive.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/kanban.min.css" />
 	<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/font-awesome/css/font-awesome.min.css">
@@ -20,6 +21,7 @@
    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/elements.less" rel="stylesheet/less">
    
    <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/ejs.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/less.js' ?>"></script>
    
 	<title><?php echo CHtml::encode("SIPESQ"); ?></title>
