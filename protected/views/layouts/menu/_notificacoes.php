@@ -2,7 +2,6 @@
 
 $baseurl = Yii::app()->request->baseUrl;
 $notfurl = $this->createUrl('/notificacao/render', array('id'=>Yii::app()->user->getId()));
-//$baseurl = $this->createUrl('/js/templates/_notificacoes.ejs');
 Yii::app()->clientScript->registerScript('notif',"
         var template = '{$baseurl}';
         var notf_html = new EJS({url: '{$baseurl}/js/templates/_notificacoes.ejs'});
@@ -31,6 +30,7 @@ if(!isset($notificacoes)){
   </a>
   <ul class="dropdown-menu">
   <?php foreach($notificacoes['items'] as $ntf): ?>
+
   	<li class="ntf <?php echo ($ntf['read'] == true) ? '' : 'notif-new'; ?>">
       <a href="<?php echo $ntf['notf_url'] ?>">
       <div class="notif-content">
@@ -39,5 +39,9 @@ if(!isset($notificacoes)){
       </a>
     </li>
   <?php endforeach; ?>
+    <li class="divider"></li>
+    <li>
+      <?php echo CHtml::link('<b>Mais notificações...</b>', array('/notificacao'), array('align'=>'center')); ?>
+    </li>
   </ul>
 </li>

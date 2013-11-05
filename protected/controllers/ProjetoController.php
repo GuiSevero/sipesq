@@ -100,13 +100,13 @@ class ProjetoController extends Controller
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('docs', 'downloadFile'),
-					'expression'=> function(){
+					'expression'=> function($user, $rules){
 						
 						if(isset($_GET['id'])){
 							$model = Projeto::model()->findByPk($_GET['id']);
 							if($model->getPermition('documentos') >= 1) return true;
 						}
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 1);
+						return (Sipesq::isAdmin() || $model->isMember($user->getId()) || Sipesq::getPermition('projeto.documentos') >= 1);
 					},
 			),
 			/**
@@ -117,14 +117,14 @@ class ProjetoController extends Controller
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('atividades', 'tabAtividades'),
-					'expression'=> function(){
+					'expression'=> function($user, $rules){
 						if(isset($_GET['id'])){
 
 							$model = $this->loadModel($_GET['id']);
-							return (Sipesq::isAdmin() || $model->getPermition('atividades') >= 1);
+							return (Sipesq::isAdmin() || $model->isMember($user->getId()) || $model->getPermition('atividades') >= 1);
 						}
 
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.atividades') >= 1);
+						return (Sipesq::isAdmin()|| $model->isMember($user->getId())|| Sipesq::getPermition('projeto.atividades') >= 1);
 					},
 			),
 
@@ -135,15 +135,15 @@ class ProjetoController extends Controller
 			**/
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 					'actions'=>array('info', 'view', 'index'),
-					'expression'=> function(){
+					'expression'=> function($user, $rules){
 
 						if(isset($_GET['id'])){
 							$model = $this->loadModel($_GET['id']);
 
-							return (Sipesq::isAdmin() || $model->getPermition('informacoes') >=1);
+							return (Sipesq::isAdmin() || $model->isMember($user->getId()) || $model->getPermition('informacoes') >=1);
 						}
 
-						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 1);
+						return (Sipesq::isAdmin() || $model->isMember($user->getId()) || Sipesq::getPermition('projeto.informacoes') >= 1);
 					},
 			
 			
@@ -392,10 +392,13 @@ public function actionRelatorio($id)
 				if(!$this->salvaOrcamento($model->cod_projeto, $model->orcamentos))
 					throw new CHttpException(500, "ERRO AO ADICIONAR ORCAMENTOS");
 				
-				$this->createDafaultPermissions($model);
+				//$this->createDafaultPermissions($model);
 				$this->salvaPessoas($model->cod_projeto, $model->pessoas_atuantes);
 				
-				
+				//Notifica usuarios
+				$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
+
+				//Redireciona
 				$this->redirect(array('view','id'=>$model->cod_projeto));
 				
 			}
@@ -439,8 +442,10 @@ public function actionRelatorio($id)
 					throw new CHttpException(500, "ERRO AO ADICIONAR ORCAMENTOS");
 				
 				//Atualiza permissão do coordenador
-				$this->createDafaultPermissions($model);
+				//$this->createDafaultPermissions($model);
 				$this->salvaPessoas($model->cod_projeto, $model->pessoas_atuantes);
+
+				$this->broadCast($model->cod_projeto, "atualizou o projeto");
 				$this->redirect(array('view','id'=>$model->cod_projeto));
 			}
 		}
@@ -1237,17 +1242,20 @@ public function actionRelatorio($id)
 		$sender_id = Yii::app()->user->getId();
 		$sender = Pessoa::model()->findByPk($sender_id)->nome;
 		
-		$message = "<b>{$sender}</b> {$msg} <b>{$model->nome_atividade}</b>";
-		$url = $this->createUrl('view', array('id'=>$model->cod_atividade));
-	
-		$ntf = new Notificacao();
-		$ntf->sender = $sender_id;
-		$ntf->message = $message;
-		$ntf->url = $url;
-		$ntf->receiver = $model->cod_pessoa;
-		$ntf->save(false);
-		
-		foreach($model->pessoas as $pessoa){
+		$message = "<b>{$sender}</b> {$msg} <b>{$model->nome}</b>";
+		$url = $this->createUrl('view', array('id'=>$model->cod_projeto));
+
+		$receivers = Array();
+
+		$receivers[$model->cod_professor] = $model->professor;
+		$receivers[$model->cod_pos_grad] = $model->pos_graduando;
+		$receivers[$model->cod_grad] = $model->graduando;
+
+		foreach ($model->pessoas_atuantes as $p) {
+			$receivers[$p->cod_pessoa] = $p;
+		}
+
+		foreach($receivers as $pessoa){
 			$ntf = new Notificacao();
 			$ntf->sender = $sender_id;
 			$ntf->message = $message;

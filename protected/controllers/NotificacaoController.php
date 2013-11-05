@@ -17,7 +17,7 @@ class NotificacaoController extends Controller
 	{
 		return array(
 			array('allow',  // Qualquer pessoa logada
-				'actions'=>array('view','render'),
+				'actions'=>array('view','render', 'index'),
 				'users'=>array('@'),
 			),
 
@@ -32,16 +32,16 @@ class NotificacaoController extends Controller
 	*
 	* @param $id - identificador do usuário
 	*/
-	public function actionRender($id, $json=false)
+	public function actionRender($id, $json=false, $limit=6, $offset=0)
 	{
 		if (Yii::app()->user->getId() != $id) throw new CHttpException(403);
-		$notificoes = Notificacao::getNotifications($id);
+		$notificoes = Notificacao::getNotifications($id, $limit, $offset);
 		if(!$json)
-			$this->renderPartial('/layouts/menu/_notificacoes', array('notificoes'=>$notificoes));
+			$this->renderPartial('/layouts/menu/_notificacoes', array('notificacoes'=>$notificoes));
 		else{
 			header('Content-type: application/json');
 			header('Content-Enconding: gzip');
-			echo gzcompress(json_encode($notificoes));
+			echo json_encode($notificoes);
 		}
 			
 
@@ -73,6 +73,17 @@ class NotificacaoController extends Controller
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	public function actionIndex(){
+
+		$user = Yii::app()->user->getId();
+		$model = Pessoa::model()->findByPk($user);
+		if ($model === null) throw new CHttpException(404);
+
+		$this->render('index', array('model'=>$model,'notificacoes'=>Notificacao::getNotifications($user,10)));
+
+
 	}
 
 

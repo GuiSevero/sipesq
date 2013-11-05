@@ -221,15 +221,16 @@ class AtividadeController extends Controller
 		
 		$message = "<b>{$sender}</b> {$msg} <b>{$model->nome_atividade}</b>";
 		$url = $this->createUrl('view', array('id'=>$model->cod_atividade));
+
+		$receivers = Array();
 	
-		$ntf = new Notificacao();
-		$ntf->sender = $sender_id;
-		$ntf->message = $message;
-		$ntf->url = $url;
-		$ntf->receiver = $model->cod_pessoa;
-		$ntf->save(false);
+		$receivers[$model->cod_pessoa] = $model->responsavel->nome;
+
+		foreach($model->pessoas as $p){
+			$receivers[$p->cod_pessoa] = $p;
+		}
 		
-		foreach($model->pessoas as $pessoa){
+		foreach($receivers as $pessoa){
 			$ntf = new Notificacao();
 			$ntf->sender = $sender_id;
 			$ntf->message = $message;
@@ -425,9 +426,21 @@ class AtividadeController extends Controller
 	        $model->attributes=$_POST['AtividadePasso'];
 	        
 	        if($model->save()){
+
 	        	$model->atividade->estagio = false;
-	        	if($model->atividade->save())
+
+	        	if($model->atividade->save()){
+
+	        		$passo = $model->descricao;
+	        		$passo_resp = $model->pessoa->nome;
+
+	        		//SE A PESSOA NAO PARTICIPA DA ATIVIDADE ADICIONA-LA NA ATIVIDADE
+
+	        		$this->broadCast($model->cod_atividade, "adicionou o passo <b>{$passo}</b> para {$passo_resp} na atividade");
+
 	        		$this->renderPartial('/atividade/passo/_view', array('model'=>$model));
+	        	}
+	        		
 	        	Yii::app()->end();
 	        }else{
 	        	foreach($model->getErrors() as $err){

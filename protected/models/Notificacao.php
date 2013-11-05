@@ -109,7 +109,7 @@ class Notificacao extends CActiveRecord
 	/*
 	*@param $id - Identificador do usuario
 	*/
-	public static function getNotifications($id){
+	public static function getNotifications($id, $limit=6, $offset=0){
 
 		if (Yii::app()->user->getId() != $id) throw new CHttpException(403);
 
@@ -128,7 +128,7 @@ class Notificacao extends CActiveRecord
 		$command->where = "receiver = :receiver";
 		$command->select = implode(', ', $select);
 		$command->order = 'time DESC';
-		$command->limit(10);
+		$command->limit($limit, $offset);
 		
 		$result['items'] =  array_map(function($item){
 			$item['notf_url'] = Yii::app()->createUrl('/notificacao/view',array('id'=>$item['notf_id']));
