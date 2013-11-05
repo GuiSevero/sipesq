@@ -224,7 +224,7 @@ class AtividadeController extends Controller
 
 		$receivers = Array();
 	
-		$receivers[$model->cod_pessoa] = $model->responsavel->nome;
+		$receivers[$model->cod_pessoa] = $model->responsavel;
 
 		foreach($model->pessoas as $p){
 			$receivers[$p->cod_pessoa] = $p;
@@ -433,8 +433,14 @@ class AtividadeController extends Controller
 
 	        		$passo = $model->descricao;
 	        		$passo_resp = $model->pessoa->nome;
+	        		$atv_pessoa = AtividadePessoa::model()->findByPk(array('cod_atividade'=>$model->cod_atividade, 'cod_pessoa'=>$model->cod_pessoa));
 
-	        		//SE A PESSOA NAO PARTICIPA DA ATIVIDADE ADICIONA-LA NA ATIVIDADE
+	        		if($atv_pessoa == null){
+	        			$atv_pessoa = new AtividadePessoa();
+	        			$atv_pessoa->cod_pessoa = $model->cod_pessoa;
+	        			$atv_pessoa->cod_atividade = $model->cod_atividade;
+	        			if(!$atv_pessoa->save()) throw new CHttpException(500);
+	        		}
 
 	        		$this->broadCast($model->cod_atividade, "adicionou o passo <b>{$passo}</b> para {$passo_resp} na atividade");
 

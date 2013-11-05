@@ -27,7 +27,7 @@
                   <li><a href="<?php echo $this->createUrl('/agenda')?>"><i class="icon icon-calendar"></i> Agenda</a></li>
                   <li><a href="<?php echo $this->createUrl('/livro')?>"><i class="icon icon-book"></i> Livros</a></li>
                   <li><a href="<?php echo $this->createUrl('/contato')?>"><i class="icon icon-envelope"></i> Contatos</a></li>
-                  <li><a href="<?php echo $this->createUrl('/site/mediawiki')?>"><i class="icon icon-file"></i> Media Wiki</a></li>
+                  <li><a href="http://143.54.129.45/mediawiki" target="_blank"><i class="icon icon-file"></i> Media Wiki</a></li>
                   <li><a href="<?php echo $this->createUrl('/subscription')?>"><i class="icon icon-pencil"></i> Subscriptions</a></li>                  
                 </ul>
               </li>

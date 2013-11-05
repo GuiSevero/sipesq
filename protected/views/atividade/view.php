@@ -115,6 +115,7 @@ $this->menu=array(
 		$('#passo-form').serialize()
 		,
    		function(data) {
+   			$('#AtividadePasso_descricao').val('');
      		$('#panel-passos-abertos').append(data);
      		$('.icon').tooltip();
      		
