@@ -1255,6 +1255,9 @@ public function actionRelatorio($id)
 			$receivers[$p->cod_pessoa] = $p;
 		}
 
+		//Não manda mensagem para o proprio criador da notificacao
+		if(isset($receivers[$sender_id])) unset($receivers[$sender_id]);
+		
 		foreach($receivers as $pessoa){
 			$ntf = new Notificacao();
 			$ntf->sender = $sender_id;

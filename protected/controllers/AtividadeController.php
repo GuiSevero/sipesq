@@ -93,12 +93,13 @@ class AtividadeController extends Controller
 						$model = AtividadePasso::model()->findByPk($id);
 						if($model == null) return false;
 
-						foreach($model->projetos as $projetos){
-							if($model->getPermition('atividades') > 1) return true;
+						foreach($model->atividade->projetos as $projeto){
+							if($projeto->getPermition('atividades') > 1) return true;
 						}
 							
 						return ( $model->isResponsible($user->getId()) 
-						    || $model->atividade->isResponsible($user->getId())
+						    || $model->atividade->isResponsible($user->getId()
+						    || $model->cod_pessoa == $user->getId())
 						  );
 						
 						
@@ -229,6 +230,9 @@ class AtividadeController extends Controller
 		foreach($model->pessoas as $p){
 			$receivers[$p->cod_pessoa] = $p;
 		}
+
+		//Não manda mensagem para o proprio criador da notificacao
+		if(isset($receivers[$sender_id])) unset($receivers[$sender_id]);
 		
 		foreach($receivers as $pessoa){
 			$ntf = new Notificacao();
@@ -241,6 +245,7 @@ class AtividadeController extends Controller
 		
 		
 	}
+
 
 	/**
 	 * Updates a particular model.
@@ -416,6 +421,7 @@ class AtividadeController extends Controller
 	
 	public function actionCreatePasso($id)
 	{
+
 	    $model = new AtividadePasso();
 	    $model->cod_atividade = $id;
 	    $model->data_criacao = date("d/m/Y");
@@ -430,19 +436,30 @@ class AtividadeController extends Controller
 	        	$model->atividade->estagio = false;
 
 	        	if($model->atividade->save()){
-
-	        		$passo = $model->descricao;
-	        		$passo_resp = $model->pessoa->nome;
+	        			        		
 	        		$atv_pessoa = AtividadePessoa::model()->findByPk(array('cod_atividade'=>$model->cod_atividade, 'cod_pessoa'=>$model->cod_pessoa));
 
 	        		if($atv_pessoa == null){
 	        			$atv_pessoa = new AtividadePessoa();
 	        			$atv_pessoa->cod_pessoa = $model->cod_pessoa;
 	        			$atv_pessoa->cod_atividade = $model->cod_atividade;
-	        			if(!$atv_pessoa->save()) throw new CHttpException(500);
+	        			if(!$atv_pessoa->save()) throw new CHttpException(404);
 	        		}
 
-	        		$this->broadCast($model->cod_atividade, "adicionou o passo <b>{$passo}</b> para {$passo_resp} na atividade");
+	        		$sender_id = Yii::app()->user->getId();
+					$sender = Yii::app()->user->getName();					
+
+	        		if($sender_id != $model->cod_pessoa){
+	        			$notify = new Notificacao();
+		        		$notify->sender = $sender_id;
+		        		$notify->receiver = $model->cod_pessoa;
+		        		$notify->message = "<b>{$sender}</b> adicionou o passo <b>{$model->descricao}</b> para você na atividade <b>{$model->atividade->nome_atividade}</b>";
+		        		$notify->url = $this->createUrl('view', array('id'=>$model->cod_atividade));
+		        		$notify->save(false);
+		        		unset($notify);
+	        		}
+	        		
+	        		
 
 	        		$this->renderPartial('/atividade/passo/_view', array('model'=>$model));
 	        	}
@@ -479,6 +496,19 @@ class AtividadeController extends Controller
 	        $model->attributes=$_POST['AtividadePasso'];
 	        if($model->save())
 	        {
+	        		$sender_id = Yii::app()->user->getId();
+					$sender = Yii::app()->user->getName();					
+
+	        		if($sender_id != $model->cod_pessoa){
+	        			$notify = new Notificacao();
+		        		$notify->sender = $sender_id;
+		        		$notify->receiver = $model->cod_pessoa;
+		        		$notify->message = "<b>{$sender}</b> atualizou o passo <b>{$model->descricao}</b>";
+		        		$notify->url = $this->createUrl('view', array('id'=>$model->cod_atividade));
+		        		$notify->save(false);
+		        		unset($notify);
+	        		}
+
 				$this->renderPartial('/atividade/passo/_view', array('model'=>$model));
 				Yii::app()->end();
 	        }

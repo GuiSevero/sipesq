@@ -11,6 +11,7 @@ class UserIdentity extends CUserIdentity
 	private $_isAdmin = false;
 	private $_id = null;
 	private $_name = null;
+	private $_fullname = null;
 	/**
 	 * Authenticates a user.
 	 * The example implementation makes sure if the username and password
@@ -124,8 +125,9 @@ public function autentica(){
 	   			$this->errorCode=self::ERROR_NONE;
 	   			   			
 	   			//Atribui os atributos
-	   			$this->_name = $pessoa->login;
+	   			$this->_name = $pessoa->nome;
 	   			$this->_id = $pessoa->cod_pessoa;
+	   			
 		}
 
 		return !$this->errorCode;
@@ -142,7 +144,6 @@ public function autentica(){
 	public function getName(){
 		return ($this->_name == null) ? $this->username : $this->_name;
 	}
-	
 	
 	/**
 	 * 

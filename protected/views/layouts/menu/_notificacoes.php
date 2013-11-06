@@ -4,15 +4,13 @@ $baseurl = Yii::app()->request->baseUrl;
 $notfurl = $this->createUrl('/notificacao/render', array('id'=>Yii::app()->user->getId()));
 Yii::app()->clientScript->registerScript('notif',"
         var template = '{$baseurl}';
-        var notf_html = new EJS({url: '{$baseurl}/js/templates/_notificacoes.ejs'});
+        var notf = new EJS({url: '{$baseurl}/js/templates/_notifi.ejs'});
         
         setInterval(function(){
-
-            $.get('{$notfurl}',{json: true} ,function(data){              
-              $('#notificacoes').html(notf_html.render(data));
+            $.get('{$notfurl}',{json: true} ,function(data){ 
+              $('#notificacoes').html(notf.render(data));
             }, 'json');
-
-        }, 15000);
+        }, 15000); 
 "); 
 
 
