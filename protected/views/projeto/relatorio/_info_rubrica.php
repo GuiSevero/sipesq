@@ -20,7 +20,7 @@
 	 		$gasto_comprometido = $receita->getGastosComprometidos($rub->cod_rubrica);
 	 		$gasto_corrente = $receita->getGastosCorrentes($rub->cod_rubrica);
 	 	?>
-	 	
+	 	<div class="page-break"></div>
 		<div class="bar_chart span-24" 
 		id="<?php echo $rub->cod_rubrica; ?>"
 		data-orcamentado="<?php echo $model->getOrcamentado($rub->cod_rubrica);?>"
@@ -41,7 +41,7 @@
 		
 		data-rubrica="<?php echo $rub->nome; ?>"
 		><?php echo $rub->nome;?></div>
-		<div class="char-table">
+		<div class="chart-table">
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>

@@ -20,9 +20,61 @@
    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/sipesq.less" rel="stylesheet/less">
    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/elements.less" rel="stylesheet/less">
    
-   <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+   
+   <?php //Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+   <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/jquery.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/ejs.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/less.js' ?>"></script>
+   <script type="text/javascript">
+
+(function() {
+	//var url = 'http://www.ufrgs.br/cegov/pessoa/json?callback=?';	
+
+/* Loading JSON objects using JSONP */
+    $.ajax({
+   		type: 'GET',
+	    url: 'http://www.ufrgs.br/cegov/pessoa/json',
+	    async: false,
+	    jsonpCallback: 'jsonCallback',
+	    contentType: "application/json",
+	    dataType: 'jsonp',
+	    success: function(json) {
+	       console.log(json.pessoas[1]);
+	       //jsonCallback();
+	    },
+	    error: function(e) {
+	       console.log(e.message);
+	    }
+	    //,jsonp: 'jsonp'
+	});
+/*
+jsonCallback(
+	{
+
+		"pessoas":
+        [
+            {
+                "nome": "JQUERY4U",
+                "email": "http://www.jquery4u.com",
+            },
+            {
+                "nome": "BLOGOOLA",
+                "email": "http://www.blogoola.com",
+            },
+            {
+                "nome": "PHPSCRIPTS4U",
+                "email": "http://www.phpscripts4u.com",
+            }
+        ]
+    }
+);
+*/
+
+})(); 
+/*
+
+*/
+</script>
    
 	<title><?php echo CHtml::encode("SIPESQ"); ?></title>
 	<style>

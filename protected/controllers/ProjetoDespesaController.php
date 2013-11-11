@@ -522,6 +522,9 @@ class ProjetoDespesaController extends Controller
 	 * @param ProjetoDespesa $model
 	 */
 	private function saveInfo($model){
+
+		$doc_dir = Yii::getPathOfAlias('application.data.despesas');
+		
 		//Salva todos os campos adicionais
 		if(isset($_POST['ProjetoDespesaInfo'])){
 			foreach($_POST['ProjetoDespesaInfo'] as $key=>$dps){

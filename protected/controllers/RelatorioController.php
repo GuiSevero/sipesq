@@ -124,6 +124,11 @@ class RelatorioController extends Controller
 		));
 		
 	}
+
+
+	public function actionProjetos(){
+		$this->render('relatorios');
+	}
 	
 	/**
 	 *

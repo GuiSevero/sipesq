@@ -149,7 +149,7 @@ class Projeto extends CActiveRecord
 			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
 			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome'),
-			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim desc'),
+			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim asc'),
 			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),			
 			'categoria' => array(self::BELONGS_TO, 'ProjetoCategoria', 'cod_categoria'),
 			'documentos' => array(self::HAS_MANY, 'ProjetoArquivo', 'cod_projeto'),

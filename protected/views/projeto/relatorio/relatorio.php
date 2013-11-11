@@ -13,7 +13,8 @@ $('.tbl-line-financeiro').hover(
 ")?>
 
 <!-- INFORMACOES GERAIS -->
-<div class="well well-small" id="descricao">
+<div id="descricao">
+
 <h1><?php echo $model->nome?></h1>
 <h4>Informações Gerais</h4>
 
@@ -53,44 +54,13 @@ $('.tbl-line-financeiro').hover(
 </div>
 <hr>
 
+<div class="row span12" id="atividades">
+	<?php $this->renderPartial('relatorio/_atividades', array('model'=>$model))?>	
+</div>
+
 <!--  FINANCEIRO -->
 <div id="financeiro" class="row span12" >
 	<h4>Financeiro</h4>
 	<?php $this->renderPartial('relatorio/_financeiro_relatorio', array('model'=>$model))?>	
 </div> <!-- Fim Financeiro -->
 
-<div class="row span12" id="atividades">
-	<h4>Atividades</h4>
-	<?php if(count($model->atividades) < 1):?>
-	<div class="view">Não há atividades cadastradas neste projeto</div>
-	<?php endif;?>
-		<?php foreach ($model->atividades as $atividade):?>
-		<dl class="atv-description">
-			<dt>
-			<b><?php echo CHtml::encode($atividade->nome_atividade); ?></b>
-			<span class="atv-date"><?php echo Sipesq::date($atividade->data_fim)?></span>
-			</dt>
-			<dd>
-			  <dl>
-			  	<dt>Prazo</dt>
-			  	<dd><?php echo Sipesq::date($atividade->data_inicio);?> a <?php echo Sipesq::date($atividade->data_fim);?></dd>
-			  	<dt>Responsável</dt>
-			  	<dd><?php echo CHtml::encode($atividade->responsavel->nome); ?></dd>
-			  	<dt>Categoria</dt>
-			  	<dd>
-			  		<?php if(is_object($atividade->categoria)):?>
-					<?php if($atividade->categoria->categoriaPai->cod_categoria != $atividade->categoria->cod_categoria ):?>
-						<?php echo CHtml::encode($atividade->categoria->categoriaPai->nome);?> <b>&gt;</b> 
-					<?php endif;?>
-					 	<?php echo CHtml::encode($atividade->categoria->nome);?>
-					<?php endif;?>
-			  	</dd>
-			  	<dt>Participantes</dt>
-					<?php foreach($atividade->pessoas as $pess) echo "<dd>" .trim($pess->nome) ."</dd>"; ?>
-			 	<dt>Projetos</dt>
-						<?php foreach($atividade->projetos as $proj) echo "<dd>" .trim($proj->nome) ."</dd>";?>
-			  </dl>
-			</dd>
-		</dl>
-		<?php endforeach;?>	
-	</div>

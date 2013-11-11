@@ -145,4 +145,16 @@ class Notificacao extends CActiveRecord
 		return $result;
 
 	}
+
+	public static function notify($receiver, $message, $url, $sender=null){
+		if ($sender == null) $sender = Yii::app()->user->getId();
+
+		$notif = new Notificacao();
+		$notif->sender = $sender;
+		$notif->receiver = $receiver;
+		$notif->message = $message;
+		$notif->url = $url;
+
+		return $notif->save();
+	}
 }

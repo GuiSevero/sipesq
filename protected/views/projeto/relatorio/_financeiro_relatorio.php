@@ -5,18 +5,6 @@
 Yii::app()->clientScript->registerScriptFile("https://www.google.com/jsapi", CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl ."/js/charts.js", CClientScript::POS_END);
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl .'/css/arvoredespesas.css');
-Yii::app()->clientScript->registerScript('bars',"
-
-$('.progress').hover(function(){
-	$(this).addClass('active');
-}, function(){
-	$(this).removeClass('active');
-});
-
-$('.tip').tooltip();
-		
-");
-
 
 $criteria = new CDbCriteria();
 $criteria->with = 'receitas';
@@ -36,7 +24,7 @@ foreach($model->receitas as $rec){
 }
 ?>
 
-<div class="row">
+<div class="row-fluid">
 
 <h2>Balanço Financeiro do Projeto</h2>
 <div class="bar_chart span12" 
@@ -105,3 +93,5 @@ foreach($model->receitas as $rec){
  <div id="charts" class="view">
  	<?php $this->renderPartial('/projeto/financeiro/_info_rubrica', array('model'=>$model))?>
  </div> <!-- /charts -->
+
+ <div id="teste"></div>
