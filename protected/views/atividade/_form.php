@@ -192,9 +192,10 @@ var socket = io && io.connect(server);
 	</div>
 
 	<div class="input">
-		<?php echo $form->labelEx($model,'status');?>
-		<?php  echo $form->dropDownList($model,'status', array('0'=>'A Fazer', '1'=>'Em andamento', '2'=>'Finalizada')); ?>
-		<?php echo $form->error($model,'status'); ?>
+		<?php echo $form->labelEx($model,'estagio');?>
+		<?php  //echo $form->dropDownList($model,'estagio', array('0'=>'A Fazer', '1'=>'Finalizada')); ?>
+		<?php  echo $form->checkBox($model,'estagio');?>
+		<?php echo $form->error($model,'estagio'); ?>
 	</div>
 
 	<div class="input">
@@ -206,7 +207,6 @@ var socket = io && io.connect(server);
 
 	<div class="input">
 		<?php echo $form->labelEx($model,'descricao'); ?>
-		<?php //$this->widget('application.extensions.tinymce.ETinyMce', array('htmlOptions'=>array('cols'=>60, 'rows'=>20, 'width'=>300),'name'=>'Atividade[descricao]','editorTemplate'=>'simple',  'value'=>$model->descricao)); ?>
 		<?php echo $form->textArea($model, 'descricao', array('rows'=>15))?>
 		<br><?php echo $form->error($model,'descricao'); ?>
 	</div>

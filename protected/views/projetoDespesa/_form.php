@@ -103,6 +103,27 @@ Yii::app()->clientScript->registerScript('tokenInput', "
 
 ");
 
+function recursiveDropDown($rubrica, $selected){
+	if($rubrica != null){
+
+		if(count($rubrica->filhas) < 1){
+			echo $rubrica->nome;
+			echo CHtml::tag('option'
+				, array('value'=>$rubrica->cod_rubrica, 'selected'=>($selected == $rubrica->cod_rubrica))
+				, $rubrica->numero .' ' .$rubrica->nome
+				, true);
+		}
+
+		
+
+		foreach ($rubrica->filhas as $filha){
+			recursiveDropDown($filha, $selected);
+		}
+
+		
+	}
+}
+
 ?>
 
 <div class="form">
@@ -124,8 +145,15 @@ Yii::app()->clientScript->registerScript('tokenInput', "
 		<div class="input">
 			<?php echo $form->labelEx($model,'cod_rubrica'); ?>
 			<?php //echo $form->dropDownList($model, 'cod_rubrica', CHtml::listData(Rubrica::model()->with('receitas')->findAll(array('condition'=>'receitas.cod_projeto = ' .$model->cod_projeto)), 'cod_rubrica', 'nome'), array('id'=>'drop-rubricas', 'prompt'=>"Selecione uma Rubrica"));?>
-			<?php echo $form->dropDownList($model, 'cod_rubrica', CHtml::listData($verba->rubricas, 'cod_rubrica', 'nome'), array('id'=>'drop-rubricas', 'prompt'=>"Selecione uma Rubrica", 'class'=>'input-xxlarge'));?>
+			<?php //echo $form->dropDownList($model, 'cod_rubrica', CHtml::listData($verba->rubricas, 'cod_rubrica', 'nome'), array('id'=>'drop-rubricas', 'prompt'=>"Selecione uma Rubrica", 'class'=>'input-xxlarge'));?>
+			<select class="input-xxlarge" prompt="Selecione uma Rubrica", 'id'=>'drop-rubricas'>	
+				<?php foreach ($verba->rubricas as $rubrica) {
+					recursiveDropDown($rubrica, $model->cod_rubrica);
+				} ?>
+			</select>
 			<?php echo $form->error($model,'cod_rubrica'); ?>
+
+			
 		</div>
 		
 		<div id="descricao-rubrica">

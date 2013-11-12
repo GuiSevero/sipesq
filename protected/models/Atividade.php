@@ -72,8 +72,9 @@ class Atividade extends CActiveRecord
 			array('cod_pessoa, nome_atividade, cod_categoria, descricao, data_inicio, data_fim, status', 'required'),
 			array('projetos', 'validaProjetos'),
 			array('pessoas', 'validaPessoas'),
+			array('estagio', 'boolean'),
 			array('cod_pessoa, cod_categoria, status', 'numerical', 'integerOnly'=>true),			
-			array('status, data_realizacao', 'safe'),
+			array('status, data_realizacao, estagio', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cod_atividade, cod_pessoa, tipo_vinculo, nome_atividade, descricao, data_inicio, data_fim, turnos_trabalho, estagio', 'safe', 'on'=>'search'),

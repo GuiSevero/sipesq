@@ -143,7 +143,7 @@ class ProjetoController extends Controller
 							return (Sipesq::isAdmin() || $model->isMember($user->getId()) || $model->getPermition('informacoes') >=1);
 						}
 
-						return (Sipesq::isAdmin() || $model->isMember($user->getId()) || Sipesq::getPermition('projeto.informacoes') >= 1);
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.informacoes') >= 1);
 					},
 			
 			

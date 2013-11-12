@@ -12,16 +12,20 @@ $this->menu=array(
 );
 
 function printChildren($father){
+
 	 		if($father != null){
-	 			
-	 			foreach ($father->filhas as $filha){	 				
+	 			echo '<li>';
+	 			echo CHtml::link($father->nome . ' - ' .$father->numero
+	 			, array('/rubrica/view', 'id'=>$father->cod_rubrica));
+	 			echo '</li>'; 
+	 			echo "<ul class=''>";
+	 			foreach ($father->filhas as $filha){
 	 				printChildren($filha);
 	 			}
-	 			
-	 			//echo '<br>';
+	 			echo "</ul>";
 	 		}
 	 		
-	 		echo $father->nome .',';
+	 		
 }
 
 Yii::app()->clientScript->registerScript('tips',"
@@ -32,20 +36,37 @@ Yii::app()->clientScript->registerScript('tips',"
 
 <h1>Rubricas</h1>
 
-<div class="view">
-<table class="table table-bordered table-striped table-hover">
 
-<thead>
-<tr>
-<th>Nome da Rubrica</th>
-<th>Número</th>
-<th>Menu</th>
-</tr>
-</thead>
-<?php
-$this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
-));  ?>
-</table>
+
+<div class="view">
+<?php 
+	$rubricas = Rubrica::model()->findAll(array('condition'=>'cod_rubrica_pai IS NULL'));
+	echo "<ul>";
+	foreach($rubricas as $r){
+		echo "<li>";
+		 printChildren($r);
+		 echo '</li>';
+	}
+	echo '</ul>';
+
+?>
+
+<?php /*
+	<table class="table table-bordered table-striped table-hover">
+
+	<thead>
+	<tr>
+	<th>Nome da Rubrica</th>
+	<th>Número</th>
+	<th>Menu</th>
+	</tr>
+	</thead>
+	<?php
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider,
+		'itemView'=>'_view',
+	));  ?>
+	</table>
 </div>
+
+*/ ?>

@@ -264,6 +264,9 @@ class AtividadeController extends Controller
 		if(isset($_POST['Atividade']))
 		{
 			$model->attributes=$_POST['Atividade'];
+
+			echo var_dump($_POST['Atividade']);
+			//Yii::app()->end();
 			
 			if(isset($_POST['Atividade']['projetos']))
 				$model->projetos = $_POST['Atividade']['projetos'];
@@ -278,12 +281,6 @@ class AtividadeController extends Controller
 				$model->cod_categoria = $_POST['Atividade']['cod_categoria'];
 				
 
-			
-			//Salva a data de realização caso tenha ficado pronta
-			if($model->status == 2){
-				$model->data_realizacao = date('Y-m-d');
-				$model->estagio = true;
-			}
 			$model->data_edicao = date('Y-m-d');
 			
 			if($model->save()){

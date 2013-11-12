@@ -26,8 +26,32 @@ Yii::app()->clientScript->registerScript("popover", "
   <strong>Cuidado!</strong> Valores com <strong style="color: red;">*</strong> podem sofrer redução por compartilharem receita com outras rubricas.
 </div>
 
+<?php
+function printChildren($rubrica, $receita){
+	 		if($rubrica != null){
+
+	 			if(count($rubrica->filhas) < 1){
+	 				echo '<li>';
+	 				echo CHtml::link($rubrica->numero .' ' .$rubrica->nome
+							, array('/projetoDespesa/add', 'id'=>$receita->cod_verba, 'ru'=>$rubrica->cod_rubrica)
+							, array('class'=>'pop-over'
+									, 'data-content'=>$rubrica->descricao
+									, 'data-title'=>$rubrica->nome //'Disponível: R$ '.Yii::app()->format->number($saldo)
+									, 'data-trigger'=>'hover'
+									, 'data-placement'=>'right')); 
+		 			echo '</li>'; 
+	 			}
+
+	 			foreach ($rubrica->filhas as $filha){
+	 				printChildren($filha, $receita);
+	 			}
+	 		}
+	 		
+	 		
+}
+?>
 <div class="view">
-	<ul style="list-style-type: none;">
+	<ul class="unstyled">
 	<?php foreach($model->receitas as $receita):?>
 			<?php foreach($receita->rubricas as $rubrica):?>
 				<?php 
@@ -41,13 +65,7 @@ Yii::app()->clientScript->registerScript("popover", "
 					$saldo = $recebido - $gasto_comprometido
 				?>
 				<li>
-					<b><?php echo CHtml::link($rubrica->nome
-							, array('/projetoDespesa/add', 'id'=>$receita->cod_verba, 'ru'=>$rubrica->cod_rubrica)
-							, array('class'=>'pop-over'
-									, 'data-content'=>$rubrica->descricao
-									, 'data-title'=>$rubrica->nome //'Disponível: R$ '.Yii::app()->format->number($saldo)
-									, 'data-trigger'=>'hover'
-									, 'data-placement'=>'right'))?></b>
+					<b><?php echo $rubrica->numero .' ' .$rubrica->nome?></b>
 					<i>
 					R$ <?php echo Yii::app()->format->number($saldo)?>
 					<?php if(count($receita->rubricas) > 1):?>
@@ -55,7 +73,9 @@ Yii::app()->clientScript->registerScript("popover", "
 					<?php endif;?>
 					disponíveis
 					</i>
+					<ul><?php echo printChildren($rubrica, $receita) ?></ul>
 				</li>
+				
 			<?php endforeach;?>
 	<?php endforeach;?>
 	</ul>

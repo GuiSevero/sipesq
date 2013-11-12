@@ -282,6 +282,11 @@ class RubricaController extends Controller
 		}		
 		
 	}
+
+	
+	public function actionToken($q){
+
+	}
 	
 	
 }

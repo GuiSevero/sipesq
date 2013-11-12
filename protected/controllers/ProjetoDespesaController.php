@@ -418,7 +418,7 @@ class ProjetoDespesaController extends Controller
 	public function actionJson()
 	{  
 		$this->layout=false;
-		//header('Content-type: application/json');
+		header('Content-type: application/json');
 
 		$criteria = new CDbCriteria();
 		//$criteria->select = array('nome');
@@ -433,14 +433,15 @@ class ProjetoDespesaController extends Controller
 		$pessoas = Pessoa::model()->findAll($criteria);
 		$tokens = PessoaToken::model()->findAll($criteria);
 		$contatos = Contato::model()->findAll($criteria);
+
+		$results = array();
+
 		
 		echo  '[';
 		
 			//Busca tokens em pessoas
 			$numP = count($pessoas);
 			foreach($pessoas as $key=>$p){
-				//echo CJSON::encode($pes);
-				//echo json_encode($pes);
 				$pes =  '{"name": "' .$p->nome .'", ';
 				$pes .= '"id": "' . $p->cod_pessoa .'"}';
 				echo $pes;
@@ -476,6 +477,7 @@ class ProjetoDespesaController extends Controller
 		
 		Yii::app()->end();
 	}
+
 
 	/**
 	 * Salva os tokens novos
