@@ -18,6 +18,7 @@
  * @property double $verba_custeio
  * @property double $verba_capital
  * @property double $verba_bolsa
+ * @property string $instrumento_juridico
  * 
  *
  * The followings are the available model relations:
@@ -130,7 +131,7 @@ class Projeto extends CActiveRecord
 			array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
 			array('cod_professor, cod_grad, cod_pos_grad,  cod_categoria', 'numerical', 'integerOnly'=>true),
 			array('verba_custeio, verba_capital, verba_bolsa', 'numerical'),
-			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas_atuantes, nome_curto', 'safe'),
+			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas_atuantes, nome_curto, instrumento_juridico, convenio', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cod_projeto, nome, codigo_projeto, data_inicio, data_fim, data_relatorio, descricao, verba_custeio, verba_capital, verba_bolsa', 'safe', 'on'=>'search'),
@@ -175,7 +176,7 @@ class Projeto extends CActiveRecord
 			'data_fim' =>'Término',
 			'data_relatorio'=> 'Data do Relatório',
 			'descricao' =>'Descricao',
-			'situacao'=>'Situação',
+			'situacao'=>'Situação',			
 			'situacao_text'=>'Situação',
 			'verba_custeio' =>'Verba Custeio',
 			'verba_capital' =>'Verba Capital',
@@ -186,7 +187,7 @@ class Projeto extends CActiveRecord
 			'gasto_capital'=>'Gasto Capital',
 			'gasto_bolsa'=>'Gasto Bolsa',
 			'finalizado'=>'Finalizado',
-			'cod_categoria'=>'Categoria',
+			'cod_categoria'=>'Tipo de Projeto',
 			'cod_professor'=>'Professor',
 			'cod_pos_grad'=>'Pós-Graduando',
 			'cod_grad'=>'Graduando',

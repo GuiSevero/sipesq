@@ -137,6 +137,8 @@ foreach($model->receitas as $rec){
 						<?php 
 							$dataRubricas = array();
 							foreach($model->getRubricas() as $rubrica) $dataRubricas[$rubrica['cod_rubrica']] = $rubrica['nome'];
+
+							$dataRubricas =  CHtml::listData(Rubrica::model()->findAll(), 'cod_rubrica', 'nome');
 						
 							echo CHtml::dropDownList('TipoDespesa', null, $dataRubricas, array('id'=>'tipodespesa', 'class'=>'input-xxlarge', 'prompt'=>'Selecione uma Rubrica'));
 						?>

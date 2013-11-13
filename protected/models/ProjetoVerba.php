@@ -211,11 +211,11 @@ class ProjetoVerba extends CActiveRecord
 			$this->addError($attribute, 'Você deve especificar pelo menos uma rubrica.');
 	}
 	
-	/**
+	/*
 	 * Calcula o quanto foi gasto com esta rubrica nesta verba
 	 * @param integer $cod_rubrica
 	 * @return real
-	 */
+	 
 	public function getGastosComprometidos($cod_rubrica){
 		
 		$gasto = 0;
@@ -229,11 +229,11 @@ class ProjetoVerba extends CActiveRecord
 	}
 	
 	
-	/**
+	/*
 	 * Calcula o quanto foi gasto com esta rubrica nesta verba
 	 * @param integer $cod_rubrica
 	 * @return real
-	 */
+	 
 	public function getGastosCorrentes($cod_rubrica){
 		$gasto = 0;
 		foreach($this->despesas as $desp){
@@ -241,6 +241,48 @@ class ProjetoVerba extends CActiveRecord
 				$gasto += $desp->valor_corrente;
 		}
 		return $gasto;
+	}
+	*/
+
+	/**
+	 * Calcula o quanto foi gasto com esta rubrica nesta verba
+	 * @param integer $cod_rubrica
+	 * @return real
+	 */
+	public function gastosCorrentes($rubrica){
+		$gasto = 0;
+
+		foreach($this->despesas as $desp){
+			if($desp->cod_rubrica == $rubrica->cod_rubrica)
+				$gasto += $desp->valor_corrente;
+		}
+
+		foreach ($rubrica->filhas as $filha) {
+			$gasto += $this->gastosCorrentes($filha);
+		}
+
+
+		return $gasto;
+	}
+
+	/**
+	 * Calcula o quanto foi gasto com esta rubrica nesta verba
+	 * @param integer $cod_rubrica
+	 * @return real
+	 */
+	public function gastosComprometidos($rubrica){
+		
+		$gasto = 0;
+		foreach($this->despesas as $desp){
+			if($desp->cod_rubrica == $rubrica->cod_rubrica)
+				$gasto += $desp->valor_comprometido;
+		}
+		foreach ($rubrica->filhas as $filha) {
+			$gasto += $this->gastosComprometidos($filha);
+		}
+		return $gasto;
+		
+		
 	}
 	
 	

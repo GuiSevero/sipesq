@@ -29,7 +29,7 @@ class RubricaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'jsonRubrica'),
+				'actions'=>array('index','view', 'jsonRubrica', 'help'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -283,7 +283,15 @@ class RubricaController extends Controller
 		
 	}
 
-	
+	public function actionHelp($id){
+		$model = $this->loadModel($id);
+		$this->layout = false;
+		echo '<h5>' .$model->numero .' ' .$model->nome .'</h5>';
+		echo '<p>' .$model->descricao .'</p>';
+		Yii::app()->end();
+	}
+
+
 	public function actionToken($q){
 
 	}

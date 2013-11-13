@@ -417,6 +417,10 @@ public function actionRelatorio($id)
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		$instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
+		$convenio = Convenio::load(json_decode($model->convenio));
+
+
 		
 		if(isset($_POST['Projeto']))
 		{
@@ -431,6 +435,15 @@ public function actionRelatorio($id)
 				$orcamentos = $_POST['Orcamento'];
 			
 			}
+
+			if(isset($_POST['InstrumentoJuridico'])){
+				$model->instrumento_juridico = json_encode($_POST['InstrumentoJuridico']);
+			}
+
+			if(isset($_POST['InstrumentoJuridico'])){
+				$model->convenio = json_encode($_POST['Convenio']);
+			}
+
 			
 			//Retira a permisssão do coordenador antigo
 			$this->deleteDafaultPermissions($model);
@@ -452,6 +465,8 @@ public function actionRelatorio($id)
 
 		$this->render('update',array(
 			'model'=>$model,
+			'instrumento_juridico'=>$instrumento_juridico,
+			'convenio'=>$convenio,
 		));
 	}
 

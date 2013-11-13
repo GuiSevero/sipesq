@@ -13,8 +13,16 @@ $this->menu=array(
 );
 
 Yii::app()->clientScript->registerScript("popover", "
-	$('.pop-over').popover();
 	$('.tip').css('cursor', 'pointer').tooltip();	
+
+	$('.help').click(function(e){
+		console.log('click');
+ 		$('#helpRubricaBody').load($(this).attr('href'));
+		$('#helpRubrica').modal({
+ 				remote: $(this).attr('href')
+ 			});
+ 	
+	});
 ");
 
 ?>
@@ -27,18 +35,16 @@ Yii::app()->clientScript->registerScript("popover", "
 </div>
 
 <?php
+
 function printChildren($rubrica, $receita){
 	 		if($rubrica != null){
 
 	 			if(count($rubrica->filhas) < 1){
 	 				echo '<li>';
+	 				echo CHtml::link('<i class="icon icon-question-sign"></i> ', array('/rubrica/help', 'id'=>$rubrica->cod_rubrica), array('data-toggle'=>'modal', 'data-target'=>'helpRubrica', 'class'=>'help'));
 	 				echo CHtml::link($rubrica->numero .' ' .$rubrica->nome
-							, array('/projetoDespesa/add', 'id'=>$receita->cod_verba, 'ru'=>$rubrica->cod_rubrica)
-							, array('class'=>'pop-over'
-									, 'data-content'=>$rubrica->descricao
-									, 'data-title'=>$rubrica->nome //'Disponível: R$ '.Yii::app()->format->number($saldo)
-									, 'data-trigger'=>'hover'
-									, 'data-placement'=>'right')); 
+							, array('/projetoDespesa/add', 'id'=>$receita->cod_verba, 'ru'=>$rubrica->cod_rubrica));
+					
 		 			echo '</li>'; 
 	 			}
 
@@ -55,16 +61,17 @@ function printChildren($rubrica, $receita){
 	<?php foreach($model->receitas as $receita):?>
 			<?php foreach($receita->rubricas as $rubrica):?>
 				<?php 
-					$gasto_rubrica = $receita->getGastosComprometidos($rubrica->cod_rubrica);
+					$gasto_rubrica = $receita->gastosComprometidos($rubrica);
 					$recebido = $gasto_rubrica
 					+ min($receita->saldo_comprometido,
 							($receita->projeto->getOrcamentado($rubrica->cod_rubrica) - $gasto_rubrica)
 								
 					);
-					$gasto_comprometido = $receita->getGastosComprometidos($rubrica->cod_rubrica);
+					$gasto_comprometido = $receita->gastosComprometidos($rubrica);
 					$saldo = $recebido - $gasto_comprometido
 				?>
 				<li>
+					<?php echo CHtml::link('<i class="icon icon-question-sign"></i> ', array('/rubrica/help', 'id'=>$rubrica->cod_rubrica), array('data-toggle'=>'modal', 'data-target'=>'helpRubrica', 'class'=>'help')); ?>
 					<b><?php echo $rubrica->numero .' ' .$rubrica->nome?></b>
 					<i>
 					R$ <?php echo Yii::app()->format->number($saldo)?>
@@ -79,4 +86,20 @@ function printChildren($rubrica, $receita){
 			<?php endforeach;?>
 	<?php endforeach;?>
 	</ul>
+</div>
+
+
+<!-- Button to trigger modal -->
+<!-- Modal -->
+<div id="helpRubrica" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="helpRubricaLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="helpRubricaLabel">Informações</h3>
+  </div>
+  <div class="modal-body" id="helpRubricaBody">
+    <p>...</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
 </div>

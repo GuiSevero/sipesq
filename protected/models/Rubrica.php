@@ -264,14 +264,14 @@ class Rubrica extends CActiveRecord
 	
 		$receita = ProjetoVerba::model()->findByPk($cod_verba);
 		
-		$gasto_rubrica = $receita->getGastosComprometidos($this->cod_rubrica);
+		$gasto_rubrica = $receita->gastosComprometidos($this);
 		
 		$recebido = $gasto_rubrica
 		+ min($receita->saldo_comprometido,
 				($receita->projeto->getOrcamentado($this->cod_rubrica) - $gasto_rubrica)
 		);
 		
-		$gasto_comprometido = $receita->getGastosComprometidos($this->cod_rubrica);
+		$gasto_comprometido = $receita->gastosComprometidos($this);
 	
 		$saldo = $recebido - $gasto_comprometido;
 	

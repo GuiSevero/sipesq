@@ -11,14 +11,14 @@
 	
 	 	<?php
 	 		//$recebido = $rub->calculaReceitas($rub, $model->cod_projeto);
-	 		$gasto_rubrica = $receita->getGastosComprometidos($rub->cod_rubrica);
+	 		$gasto_rubrica = $receita->gastosComprometidos($rub);
 	 		$recebido = $gasto_rubrica
 	 		+ min($receita->saldo_comprometido,
 	 			 ($receita->projeto->getOrcamentado($rub->cod_rubrica) - $gasto_rubrica)
 	 			  
 	 		);
-	 		$gasto_comprometido = $receita->getGastosComprometidos($rub->cod_rubrica);
-	 		$gasto_corrente = $receita->getGastosCorrentes($rub->cod_rubrica);
+	 		$gasto_comprometido = $receita->gastosComprometidos($rub);
+	 		$gasto_corrente = $receita->gastosCorrentes($rub);
 	 	?>
 	 	<div class="page-break"></div>
 		<div class="bar_chart span-24" 

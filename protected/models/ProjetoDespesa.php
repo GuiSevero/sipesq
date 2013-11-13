@@ -65,7 +65,7 @@ class ProjetoDespesa extends CActiveRecord
 			array('cod_rubrica, quantidade, nome, valor, comprador, data_compra, cod_projeto, data_inclusao, cod_criador, data_edicao', 'required'),
 			array('cod_rubrica, cod_projeto, cod_criador', 'numerical', 'integerOnly'=>true),
 			array('documento, descricao, valor', 'safe'),
-			array('valor', 'validaSaldoRub'),
+			//array('valor', 'validaSaldoRub'),
 			array('valor', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -190,21 +190,22 @@ class ProjetoDespesa extends CActiveRecord
 	}
 	
 	public function validaSaldoRub($attribute, $params){
+
 		
 		$receita = ProjetoVerba::model()->findByPk($this->cod_verba);
 		$rubrica = Rubrica::model()->findByPk($this->cod_rubrica);
-		$gasto_rubrica = $receita->getGastosComprometidos($rubrica->cod_rubrica);
+		$gasto_rubrica = $receita->gastosComprometidos($rubrica);
 		
 		$recebido = $gasto_rubrica
 		+ min($receita->saldo_comprometido,
 				($receita->projeto->getOrcamentado($rubrica->cod_rubrica) - $gasto_rubrica)
 		);
 		
-		$gasto_comprometido = $receita->getGastosComprometidos($rubrica->cod_rubrica);
+		$gasto_comprometido = $receita->gastosComprometidos($rubrica);
 		$saldo = $recebido - $gasto_comprometido;
 		
 		if($this->valor * $this->quantidade - $this->valor_antigo > $saldo){
-			$message = "Você tentou adicionar uma despesa de R$" .Yii::app()->format->number($this->valor * $this->quantidade) .".";
+			$message = "Você tentou adicionar uma despesa de R$" .Yii::app()->format->number($this->valor * $this->quantidade);
 			$message .= "<br> Saldo disponível: R$" .Yii::app()->format->number($saldo);
 			$message .= "<br> Rubrica: " .$rubrica->nome;
 			$this->addError($attribute, $message);
@@ -213,8 +214,8 @@ class ProjetoDespesa extends CActiveRecord
 	}
 
 	public function getSaldoRubrica(){
-
-					$gasto_comprometido = $this->verba->getGastosComprometidos($this->cod_rubrica);
+					$rubrica = Rubrica::model()->findByPk($this->cod_rubrica);
+					$gasto_comprometido = $this->verba->gastosComprometidos($rubrica);
 					$recebido = $gasto_comprometido
 					+ min($this->verba->saldo_comprometido, ($this->projeto->getOrcamentado($this->cod_rubrica) - $gasto_comprometido));
 
