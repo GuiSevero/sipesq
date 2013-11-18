@@ -15,4 +15,4 @@ $this->menu=array(
 
 <h3> <?php echo $model->nome; ?></h3>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'instrumento_juridico'=>$instrumento_juridico, 'convenio'=>$convenio)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

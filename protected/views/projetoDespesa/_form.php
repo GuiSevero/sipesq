@@ -56,6 +56,10 @@ Yii::app()->clientScript->registerScript('tokenInput', "
 	var url = \"/sipesq/index.php/projetoDespesa/json/\";
 	
 	var population = $('#pop-tokens').val().split(',');
+
+	if($('#pop-tokens').val() == '')
+		population = null;
+
 	var prePop = Array();
 	for( i in population){
 		var item = {};

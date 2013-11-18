@@ -417,16 +417,11 @@ public function actionRelatorio($id)
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
-		$convenio = Convenio::load(json_decode($model->convenio));
-
-
 		
 		if(isset($_POST['Projeto']))
 		{
-			
 			if(isset($_POST['Projeto']['pessoas_atuantes'])){
-				$model->pessoas_atuantes = $_POST['Projeto']['pessoas_atuantes'];
+				$model->pessoas_atuantes =  $_POST['Projeto']['pessoas_atuantes'];
 			}
 			
 			
@@ -440,7 +435,7 @@ public function actionRelatorio($id)
 				$model->instrumento_juridico = json_encode($_POST['InstrumentoJuridico']);
 			}
 
-			if(isset($_POST['InstrumentoJuridico'])){
+			if(isset($_POST['Convenio'])){
 				$model->convenio = json_encode($_POST['Convenio']);
 			}
 
@@ -456,7 +451,7 @@ public function actionRelatorio($id)
 				
 				//Atualiza permissão do coordenador
 				//$this->createDafaultPermissions($model);
-				$this->salvaPessoas($model->cod_projeto, $model->pessoas_atuantes);
+				$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes));
 
 				$this->broadCast($model->cod_projeto, "atualizou o projeto");
 				$this->redirect(array('view','id'=>$model->cod_projeto));
@@ -465,8 +460,6 @@ public function actionRelatorio($id)
 
 		$this->render('update',array(
 			'model'=>$model,
-			'instrumento_juridico'=>$instrumento_juridico,
-			'convenio'=>$convenio,
 		));
 	}
 

@@ -26,7 +26,7 @@ class RelatorioController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('atividade','projeto','index','pessoas'),				
+				'actions'=>array('atividade','projeto','index','pessoas', 'projetos'),				
 				'expression'=>function(){												
 					return (Sipesq::isSupport() || Sipesq::getPermition('gerencial.relatorios') >= 100);
 				}
@@ -127,7 +127,12 @@ class RelatorioController extends Controller
 
 
 	public function actionProjetos(){
-		$this->render('relatorios');
+		$this->layout = '//layouts/relatorio';
+
+		$criteria = new CDbCriteria();
+		$projetos = Projeto::model()->findAll($criteria);
+		//$this->render('projetos', array('projetos'=>$projetos));
+		$this->render('momentos', array('criteria'=>$criteria));
 	}
 	
 	/**

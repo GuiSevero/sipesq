@@ -4,6 +4,31 @@
 //Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl .'/js/kalendae/kalendae.css');
 //Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl .'/js/kalendae/kalendae.standalone.min.js');
 
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl .'/js/jquery.tokeninput.js');
+Yii::app()->clientScript->registerCSSFile(Yii::app()->request->baseUrl .'/css/token/token-input.css');
+Yii::app()->clientScript->registerCSSFile(Yii::app()->request->baseUrl .'/css/token/token-input-facebook.css');
+
+$url_tokens = Yii::app()->createUrl('/pessoa/json');
+Yii::app()->clientScript->registerScript('token_input_projeto',"
+	
+	var population = $('#Projeto_pessoas_atuantes').val().split(',');
+	if ($('#Projeto_pessoas_atuantes').val() == '') population = null;
+	var prePop = Array();
+	for ( i in population) prePop.push({id: null,name: population[i]});
+	prePop = JSON.parse($('#Projeto_pessoas_atuantes').val());
+
+	$('#Projeto_pessoas_atuantes').tokenInput('{$url_tokens}',{
+			searchingText: 'Buscando'
+		,	hintText: 'Digite um nome'
+		,	noResultsText: 'Resultado não encontrado'
+		//,	theme:'facebook'
+		,	preventDuplicates: true
+		,	prePopulate: (prePop.length > 0) ? prePop : null
+		,	tokenValue: 'id'
+		,	tokenDelimiter: ','
+
+	});
+");
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl .'/js/rubrica.orcamento.js', CClientScript::POS_END);
 
@@ -143,13 +168,13 @@ Yii::app()->clientScript->registerScript('text-areas',"
 		<div class="span6">
 			<fieldset>
 				<legend>Instrumento Jurídico</legend>
-				<?php $this->renderPartial('_form_inst_juridico', array('model'=>$instrumento_juridico, 'form'=>$form)); ?>
+				<?php $this->renderPartial('_form_inst_juridico', array('model'=>$model->instrumento_juridico, 'form'=>$form)); ?>
 			</fieldset>
 		</div>
 		<div class="span6">
 			<fieldset>
 				<legend>Convênio</legend>
-				<?php $this->renderPartial('_form_convenio', array('model'=>$convenio, 'form'=>$form)); ?>
+				<?php $this->renderPartial('_form_convenio', array('model'=>$model->convenio, 'form'=>$form)); ?>
 			</fieldset>
 		</div>
 
@@ -197,10 +222,17 @@ Yii::app()->clientScript->registerScript('text-areas',"
 				<?php  echo $form->dropDownList($model,'cod_grad', $listDataPessoas, array('prompt'=>"Selecione um Graduando", 'class'=>'input-xxlarge')); ?>
 				<?php echo $form->error($model,'cod_grad'); ?>
 			</div>
-
+			
 			<div class="input">
+				<?php 
+					$pessoas = Array(); 
+					foreach($model->pessoas_atuantes as $p) {
+						$pessoas[] = array('id'=>$p->cod_pessoa,'name'=>$p->nome); 
+					}
+				?>
 				<?php echo $form->labelEx($model,'pessoas_atuantes'); ?>
-				<?php echo $form->listBox($model,'pessoas_atuantes', $listDataEquipe, array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-xxlarge')  ); ?>
+				<?php //echo $form->listBox($model,'pessoas_atuantes', $listDataEquipe, array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-xxlarge')  ); ?>
+				<br><?php echo CHtml::textField('Projeto[pessoas_atuantes]', json_encode($pessoas), array('id'=>'Projeto_pessoas_atuantes')); ?>	
 				<?php echo $form->error($model,'pessoas_atuantes'); ?>
 				<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de uma pessoa.</div><br>
 			</div>
@@ -208,18 +240,15 @@ Yii::app()->clientScript->registerScript('text-areas',"
 	</div>
 	</div>
 	
-   
-   	
-
 	<?php if(Sipesq::getPermition('projeto.financeiro') >= 2) :?>
-	<div class="input view well" id="orcamento" data-count="<?php echo count($model->orcamentos); ?>">
-		<h3>Orçamento</h3>
+	<fieldset><legend>Orçamento</legend>
+	<div id="orcamento" data-count="<?php echo count($model->orcamentos); ?>">
 		<?php echo CHtml::dropDownList('Rubrica', null, CHtml::listData(Rubrica::model()->findAll(array('order'=>'nome')), 'cod_rubrica', 'nome'), array('class'=>'input-xxlarge', 'id'=>'list-rubricas'));?>
 		<div class="input-prepend input-append">
   			<span class="add-on">R$</span>
   			<?php echo CHtml::textField('Rubrica_valor', 0, array('class'=>'money input-small', 'id'=>'rubrica-valor'))?>
   			<span class="add-on"><?php echo CHtml::link('Adicionar','', array('id'=>'btnOrcamento'))?></span>
-		</div>
+		</div><hr>
 		
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
@@ -250,16 +279,19 @@ Yii::app()->clientScript->registerScript('text-areas',"
 			<?php echo CHtml::hiddenField('Orcamento[' .$i .'][cod_rubrica]', $orc->cod_rubrica, array('class'=>'item-' .$orc->cod_rubrica))?>
 		<?php endforeach;?>
 	</div>
+	</fieldset>
 <?php endif; ?>
 	
-	<div class="input view well well-small">
-		<h4><b>Descrição</b></h4>
+	<fieldset>
+		<legend><b>Descrição</b></legend>
 		<?php echo $form->textArea($model, 'descricao')?>
 		<?php echo $form->error($model,'descricao'); ?>
-	</div>
+	</fieldset>
+	
+	
 	
 	<div class="input buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar', array('class'=>'btn btn-small btn-primary')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar', array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

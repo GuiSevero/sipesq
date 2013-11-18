@@ -12,7 +12,8 @@ class InstrumentoJuridico extends CFormModel
 		,	$unidade_admin_responsavel
 		,	$gestao_repassadora
 		,	$gestao_recebedora
-		,	$data_assinatura;
+		,	$data_assinatura
+		,	$vigencia;
 
 
 	/**
@@ -39,6 +40,7 @@ class InstrumentoJuridico extends CFormModel
 			, 'gestao_recebedora'=>'U/G Gestão Recebedora'
 			, 'gestao_repassadora'=>'U/G Gestão Recepassadora'
 			, 'data_assinatura'=>'Data da Assinatura do Termo'
+			, 'vigencia'=>'Vigência'
 		);
 	}
 	

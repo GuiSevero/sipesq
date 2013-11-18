@@ -15,7 +15,8 @@ class Convenio extends CFormModel
 		,	$protocolo_financeiro
 		,	$nome_proplan
 		,	$portal_siconv
-		,	$cod_projeto_faufrgs;
+		,	$cod_projeto_faufrgs
+		,	$fundacao_apoio;
 
 
 	/**
@@ -37,6 +38,7 @@ class Convenio extends CFormModel
 	{
 		return array(
 			'nro_convenio'=>'Número do Convênio'
+			, 'fundacao_apoio'=>'Fundação de Apoio'
 			, 'titulo'=>'Título do Convênio'
 			, 'protocolo_convenio'=>'Protocolo do Convênio'
 			, 'data_assinatura'=>'Data da Assinatura do Convênio'
@@ -45,6 +47,7 @@ class Convenio extends CFormModel
 			, 'portal_siconv'=>'Portal SICONV'
 			, 'cod_projeto_faufrgs'=>'Código do Projeto na FAURGS'
 			, 'nome_proplan'=>'Nome na Proplan'
+			, 'vigencia'=>'Vigência'
 		);
 	}
 	

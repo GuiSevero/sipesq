@@ -46,16 +46,33 @@
 class Projeto extends CActiveRecord
 {
 	//NOVO FINANCEIRO
-	public $gasto_corrente = 0;
-	public $gasto_comprometido = 0;
-	public $saldo_corrente = 0;
-	public $saldo_disponivel = 0;
-	public $verba_recebida = 0;
+	public 
+		$gasto_corrente = 0
+	,	$gasto_comprometido = 0
+	,	$saldo_corrente = 0
+	,	$saldo_disponivel = 0
+	,	$verba_recebida = 0;
 	
 	//Fim novo financeiro.
+
+	public
+		$convenio = '{}'
+	,	$instrumento_juridico ='{}'
+	,	$situacao_text = ''
+	,	$class = "label-info"
+	,	$situacoes = array(
+		'Elaboração',
+		'Negociação',
+		'Tramitação',
+		'Em andamento: Início',
+		'Em andamento: Meio',
+		'Em andamento: Fim',
+		'Prestação de Contas',
+		'Encerrado',
+	);
 	
 	
-	//Gastos	
+	/*/Gastos	
 	public $gasto_bolsa;
 	public $gasto_custeio;
 	public $gasto_capital;
@@ -67,24 +84,10 @@ class Projeto extends CActiveRecord
 	public $recebido_custeio;
 	public $recebido_bolsa;
 	public $recebido_capital;
-	
-	
-	
+
 	//Verbas
 	public $verba_outros;
-		
-	public $class = "label-info";
-	
-	public $situacoes = array(
-		'Elaboração',
-		'Negociação',
-		'Tramitação',
-		'Em andamento: Início',
-		'Em andamento: Meio',
-		'Em andamento: Fim',
-		'Prestação de Contas',
-		'Encerrado',
-	);
+	*/
 	
 	public static $momentos = array(
 			'Elaboração',
@@ -96,9 +99,6 @@ class Projeto extends CActiveRecord
 			'Prestação de Contas',
 			'Encerrados',
 	);
-	
-	public $situacao_text;
-	
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -224,6 +224,9 @@ class Projeto extends CActiveRecord
 			
 		//$this->calculaGastosVerbas();
 		$this->defineClassFromStatus();
+
+		$this->instrumento_juridico = InstrumentoJuridico::load(json_decode($this->instrumento_juridico));
+		$this->convenio = Convenio::load(json_decode($this->convenio));
 		
 		 
 		//Coloca a situação do projeto
