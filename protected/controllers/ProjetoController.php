@@ -382,6 +382,15 @@ public function actionRelatorio($id)
 			if(isset($_POST['Projeto']['pessoas_atuantes'])){
 				$model->pessoas_atuantes = $_POST['Projeto']['pessoas_atuantes'];
 			}
+
+			
+			if(isset($_POST['InstrumentoJuridico'])){
+				$model->instrumento_juridico = json_encode($_POST['InstrumentoJuridico']);
+			}
+
+			if(isset($_POST['Convenio'])){
+				$model->convenio = json_encode($_POST['Convenio']);
+			}
 			
 			
 			if(isset($_POST['Orcamento'])){
@@ -396,7 +405,7 @@ public function actionRelatorio($id)
 					throw new CHttpException(500, "ERRO AO ADICIONAR ORCAMENTOS");
 				
 				//$this->createDafaultPermissions($model);
-				$this->salvaPessoas($model->cod_projeto, $model->pessoas_atuantes);
+				$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes));
 				
 				//Notifica usuarios
 				$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
