@@ -11,22 +11,15 @@ Yii::app()->clientScript->registerCSSFile(Yii::app()->request->baseUrl .'/css/to
 $url_tokens = Yii::app()->createUrl('/pessoa/json');
 Yii::app()->clientScript->registerScript('token_input_projeto',"
 	
-	var population = $('#Projeto_pessoas_atuantes').val().split(',');
-	if ($('#Projeto_pessoas_atuantes').val() == '') population = null;
-	var prePop = Array();
-	for ( i in population) prePop.push({id: null,name: population[i]});
 	prePop = JSON.parse($('#Projeto_pessoas_atuantes').val());
-
 	$('#Projeto_pessoas_atuantes').tokenInput('{$url_tokens}',{
 			searchingText: 'Buscando'
 		,	hintText: 'Digite um nome'
 		,	noResultsText: 'Resultado não encontrado'
-		//,	theme:'facebook'
 		,	preventDuplicates: true
 		,	prePopulate: (prePop.length > 0) ? prePop : null
 		,	tokenValue: 'id'
 		,	tokenDelimiter: ','
-
 	});
 ");
 
@@ -207,7 +200,7 @@ Yii::app()->clientScript->registerScript('text-areas',"
 	   	<fieldset><legend>Responsáveis e Participantes</legend>
 	   		<div class="input">
 				<?php echo $form->labelEx($model,'cod_professor');?>
-				<?php  echo $form->dropDownList($model,'cod_professor', $listDataPessoas, array('prompt'=>"Selecione um Professor", 'class'=>'input-xxlarge')); ?>
+				<?php echo $form->dropDownList($model,'cod_professor', $listDataPessoas, array('prompt'=>"Selecione um Professor", 'class'=>'input-xxlarge')); ?>
 				<?php echo $form->error($model,'cod_professor'); ?>
 			</div>
 			
@@ -224,15 +217,8 @@ Yii::app()->clientScript->registerScript('text-areas',"
 			</div>
 			
 			<div class="input">
-				<?php 
-					$pessoas = Array(); 
-					foreach($model->pessoas_atuantes as $p) {
-						$pessoas[] = array('id'=>$p->cod_pessoa,'name'=>$p->nome); 
-					}
-				?>
 				<?php echo $form->labelEx($model,'pessoas_atuantes'); ?>
-				<?php //echo $form->listBox($model,'pessoas_atuantes', $listDataEquipe, array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-xxlarge')  ); ?>
-				<br><?php echo CHtml::textField('Projeto[pessoas_atuantes]', json_encode($pessoas), array('id'=>'Projeto_pessoas_atuantes')); ?>	
+				<?php echo CHtml::textField('Projeto[pessoas_atuantes]', Sipesq::listDataToken($model->pessoas_atuantes, 'cod_pessoa', 'nome'), array('id'=>'Projeto_pessoas_atuantes')); ?>	
 				<?php echo $form->error($model,'pessoas_atuantes'); ?>
 				<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de uma pessoa.</div><br>
 			</div>

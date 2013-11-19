@@ -322,6 +322,27 @@ class Sipesq
 	
 		return $meses;
 	}
-	
-	
+
+	/*
+	*
+	*/
+	public static function listDataToken($arr=null, $valueField='id', $textField='name', $json=true){
+		if ($arr === null) return ($json) ? '[]' : array();
+
+		if (!is_array($arr)) {
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('cod_pessoa', explode(',',$arr));
+			$arr = Pessoa::model()->findAll($criteria);
+		}
+			
+		$result = Array(); 
+		foreach($arr as $item) {
+			$result[] = array('id'=>$item->$valueField,'name'=>$item->$textField); 
+		}
+
+		if($json)
+			return json_encode($result);
+		else return $result;
+	}
+
 }

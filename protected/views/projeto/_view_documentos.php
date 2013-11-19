@@ -16,7 +16,7 @@
 		<td><?php echo CHtml::encode(date("d/m/Y", strtotime($doc->data_inclusao))); ?></td>
 		<td>
 			<?php echo CHtml::link("<i title='Baixar Arquivo' class='icon icon-cloud-download tip'></i>"
-				, array('/projeto/downloadFile', 'file'=>$doc->filename)
+				, array('/projeto/downloadFile', 'id'=>$doc->cod_projeto ,'doc'=>$doc->cod_arquivo)//array('/projeto/downloadFile', 'file'=>$doc->filename)
 				, array('target'=>'_blank'))
 			?>					
 		</td>

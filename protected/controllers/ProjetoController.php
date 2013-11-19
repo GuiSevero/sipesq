@@ -102,11 +102,12 @@ class ProjetoController extends Controller
 					'actions'=>array('docs', 'downloadFile'),
 					'expression'=> function($user, $rules){
 						
-						if(isset($_GET['id'])){
+						if (isset($_GET['id'])){
 							$model = Projeto::model()->findByPk($_GET['id']);
-							if($model->getPermition('documentos') >= 1) return true;
+							if ($model->getPermition('documentos') >= 1) return true;							
+							if ($model->isMember($user->getId())) return true;
 						}
-						return (Sipesq::isAdmin() || $model->isMember($user->getId()) || Sipesq::getPermition('projeto.documentos') >= 1);
+						return (Sipesq::isAdmin() || Sipesq::getPermition('projeto.documentos') >= 1);
 					},
 			),
 			/**
@@ -363,6 +364,8 @@ public function actionRelatorio($id)
 	public function actionCreate()
 	{
 		$model=new Projeto;
+		$model->instrumento_juridico = new InstrumentoJuridico();
+		$model->convenio = new Convenio();
 		/*
 		$model->data_inicio = date("d/m/Y");
 		$model->data_fim = date("d/m/Y");
@@ -482,7 +485,7 @@ public function actionRelatorio($id)
 				
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(array('index'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
@@ -696,7 +699,7 @@ public function actionRelatorio($id)
 				$model->permissao = json_encode($_POST['PermissaoProjetoForm']);
 
 			if($model->save())
-				$this->redirect(array('/projeto/gerencial', 'id'=>$projeto));
+				$this->redirect(array('/projeto/gerencial', 'id'=>$id));
 			else
 				$model->permissao = $perm_projeto->load(json_decode($model->permissao));				
 		}								
@@ -1230,13 +1233,15 @@ public function actionRelatorio($id)
 	 * 
 	 * @param string $file
 	 */
-	public function actionDownloadFile($file){
+	public function actionDownloadFile($doc){
 		
 		$this->layout = false;
+		$model = ProjetoArquivo::model()->findByPk($doc);
+		if ($model == null) throw new CHttpException(404);
+		
 		$url = Yii::app()->baseUrl ."/protected/data/projetos/";
-		$content = file_get_contents(Yii::getPathOfAlias('application.data.projetos') .DIRECTORY_SEPARATOR .$file);
-		$filename = $filename = substr($file, stripos($file, '_') + 1);
-		Yii::app()->request->sendFile($filename, $content);
+		$content = file_get_contents(Yii::getPathOfAlias('application.data.projetos') .DIRECTORY_SEPARATOR .$model->filename);		
+		Yii::app()->request->sendFile($model->filename, $content);
 		
 	}
 
