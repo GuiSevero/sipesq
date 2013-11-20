@@ -329,31 +329,40 @@ public function actionFileBrowser()
 		$criteriaPessoas = new CDbCriteria();
 		$criteriaProjetos = new CDbCriteria();
 		$criteriaContatos = new CDbCriteria();
+
+		$pessoa = CHtml::encode($q);
 		
 		
 		//Pesquisa as pessoas
 		$criteriaPessoas->with = 'projetos';
 		$criteriaPessoas->together = true;
-		$criteriaPessoas->addCondition("t.nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaPessoas->addCondition("email ILIKE '%" .$q ."%'", 'OR');
-		$criteriaPessoas->addCondition("telefone ILIKE '%" .$q ."%'", 'OR');
-		$criteriaPessoas->addCondition("projetos.nome ILIKE '%" .$q ."%'", 'OR');
+		
+		$criteriaPessoas->addCondition("t.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaPessoas->addCondition("t.nome_curto ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaPessoas->addCondition("email ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaPessoas->addCondition("telefone ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaPessoas->addCondition("projetos.nome ILIKE '%{$pessoa}%'", 'OR');
+		
 		
 		//Pesquisa os contatos
-		$criteriaContatos->addCondition("nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaContatos->addCondition("email ILIKE '%" .$q ."%'", 'OR');
-		$criteriaContatos->addCondition("instituicao ILIKE '%" .$q ."%'", 'OR');
-		$criteriaContatos->addCondition("telefone ILIKE '%" .$q ."%'", 'OR');
-		$criteriaContatos->addCondition("descricao ILIKE '%" .$q ."%'", 'OR');
+		
+		$criteriaContatos->addCondition("nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaContatos->addCondition("email ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaContatos->addCondition("instituicao ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaContatos->addCondition("telefone ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaContatos->addCondition("descricao ILIKE '%{$pessoa}%'", 'OR');
+		
 		
 		//Pesquisa os projetos
 		$criteriaProjetos->with = array('pessoas_atuantes', 'pos_graduando', 'graduando', 'professor');
 		$criteriaProjetos->together=true;
-		$criteriaProjetos->addCondition("t.nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaProjetos->addCondition("pessoas_atuantes.nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaProjetos->addCondition("professor.nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaProjetos->addCondition("pos_graduando.nome ILIKE '%" .$q ."%'", 'OR');
-		$criteriaProjetos->addCondition("graduando.nome ILIKE '%" .$q ."%'", 'OR');
+		$criteriaProjetos->addCondition("t.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("t.nome_curto ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("pessoas_atuantes.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("professor.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("pos_graduando.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("graduando.nome ILIKE '%{$pessoa}%'", 'OR');
+		
 		
 		/*
 		 * 'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),

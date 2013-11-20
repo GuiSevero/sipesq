@@ -366,6 +366,13 @@ public function actionRelatorio($id)
 		$model=new Projeto;
 		$model->instrumento_juridico = new InstrumentoJuridico();
 		$model->convenio = new Convenio();
+		$user_id = Yii::app()->user->getId();
+		
+		//Define por padrão o usuario que esta criando o projeto
+		$model->cod_professor = $user_id;
+		$model->cod_grad = $user_id;
+		$model->cod_pos_grad = $user_id;
+
 		/*
 		$model->data_inicio = date("d/m/Y");
 		$model->data_fim = date("d/m/Y");

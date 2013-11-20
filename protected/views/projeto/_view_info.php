@@ -1,5 +1,11 @@
 <h4>Informações Gerais</h4>
 <div class="view">
+<div class="row-fluid">
+<div class="span6">
+	<b><?php echo CHtml::encode($model->getAttributeLabel('nome_curto')); ?>:</b>
+	<?php echo CHtml::encode($model->nome_curto); ?>
+	<br />
+
 	<b><?php echo CHtml::encode("Situação do Projeto"); ?>:</b>
 	<?php echo CHtml::encode($model->situacao_text); ?>
 	<br />
@@ -23,15 +29,27 @@
 	<b><?php echo CHtml::encode($model->getAttributeLabel('data_relatorio')); ?>:</b>
 	<?php echo CHtml::encode(Sipesq::date($model->data_relatorio)); ?>
 	<br />
+	<?php if($model->skydrive): ?>
+	<b><?php echo CHtml::encode($model->getAttributeLabel('skydrive')); ?>:</b>
+	<?php echo CHtml::link('<i class="icon icon-cloud" style="color: #094AB2;"></i>'
+					, $model->skydrive
+					, array('target'=>'_blank', 'title'=>'Skydrive')); ?> <br />
+	<?php endif; ?>
+</div>
+<div class="span6">
 	
-	<b>Verba Orçamentada:</b>
-	R$ <?php echo CHtml::encode(Yii::app()->format->number($model->verba_orcamentada)); ?>
-	<br />
-	
-	<b>Verba Recebida</b>
-	R$ <?php echo CHtml::encode(Yii::app()->format->number($model->verba_recebida)); ?>
-	<br />
-
+  	
+	<b>Orçamentado:</b> R$ <?php echo number_format($model->verba_orcamentada, 2, ',','.')?><br>
+	<b>Recebido:</b> R$ <?php echo number_format($model->verba_recebida, 2, ',','.')?><br>
+	<b>Gastos Comprometidos:</b> R$ <?php echo number_format($model->gasto_comprometido, 2, ',','.')?><br>
+	<b>Saldo Disponível:</b> R$ <?php echo number_format($model->saldo_disponivel, 2, ',','.')?><br>
+	<div class="progress">
+		<?php if ($model->verba_recebida == 0)  $model->verba_recebida = -1; ?>
+		<div class="bar bar-danger" style="width: <?php echo ($model->gasto_comprometido / $model->verba_recebida)*100?>%;"></div>
+		<div class="bar" style="width: <?php echo ($model->saldo_disponivel / $model->verba_recebida)*100?>%;"></div>
+	</div>
+ </div>
+</div> <!--/row-->
 	<div class="row-fluid">
 		<div class="span6">
 			<h4>Convênio</h4>

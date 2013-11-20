@@ -125,13 +125,13 @@ class Projeto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nome, nome_curto, cod_categoria', 'required'),
-			array('cod_professor', 'validaResponsavel', 'cod_pos_grad', 'cod_grad'),
-			array('cod_grad', 'validaResponsavel', 'cod_pos_grad', 'cod_professor'),
-			array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
+			array('nome, nome_curto, cod_categoria, cod_grad, cod_pos_grad, cod_professor', 'required'),
+			//array('cod_professor', 'validaResponsavel', 'cod_pos_grad', 'cod_grad'),
+			//array('cod_grad', 'validaResponsavel', 'cod_pos_grad', 'cod_professor'),
+			//array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
 			array('cod_professor, cod_grad, cod_pos_grad,  cod_categoria', 'numerical', 'integerOnly'=>true),
 			array('verba_custeio, verba_capital, verba_bolsa', 'numerical'),
-			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas_atuantes, nome_curto, instrumento_juridico, convenio', 'safe'),
+			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas_atuantes, nome_curto, instrumento_juridico, convenio, skydrive', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cod_projeto, nome, codigo_projeto, data_inicio, data_fim, data_relatorio, descricao, verba_custeio, verba_capital, verba_bolsa', 'safe', 'on'=>'search'),
@@ -171,6 +171,7 @@ class Projeto extends CActiveRecord
 		return array(
 			'cod_projeto' => 'ID',
 			'nome' => 'Nome',
+			'nome_curto'=>'Abreviatura',
 			'codigo_projeto'=>'Código do Projeto',
 			'data_inicio'=>'Início',
 			'data_fim' =>'Término',
@@ -191,6 +192,7 @@ class Projeto extends CActiveRecord
 			'cod_professor'=>'Professor',
 			'cod_pos_grad'=>'Pós-Graduando',
 			'cod_grad'=>'Graduando',
+			'skydrive'=>'Pasta no Skydrive',
 		);
 	}
 
@@ -219,6 +221,16 @@ class Projeto extends CActiveRecord
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	protected function afterValidate(){
+
+		if ($this->hasErrors()){
+			$this->instrumento_juridico = InstrumentoJuridico::load(json_decode($this->instrumento_juridico));
+			$this->convenio = Convenio::load(json_decode($this->convenio));	
+		}
+		
+		parent::afterValidate();
 	}
 	protected function afterFind(){
 			

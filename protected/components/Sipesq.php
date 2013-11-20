@@ -327,7 +327,7 @@ class Sipesq
 	*
 	*/
 	public static function listDataToken($arr=null, $valueField='id', $textField='name', $json=true){
-		if ($arr === null) return ($json) ? '[]' : array();
+		if ($arr == null || $arr == '') return ($json) ? '[]' : array();
 
 		if (!is_array($arr)) {
 			$criteria = new CDbCriteria();
