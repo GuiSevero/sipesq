@@ -15,31 +15,12 @@ $('.progress').hover(function(){
 
 $('.tip').tooltip();
 		
-//$('.tabela_detalhes').hide();
 
 $('#modal-info').on('hide', function(){
 	$('.modal-body').html('<i class=\"icon icon-refresh\"></i> Carregando...');
 });
 		
-$('.btnTabela').toggle(
-		
-		function(){
-			$(this).parent().find('.tabela_detalhes').show('fast');
-			$('.tbl-icon').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-		},
-		
-		function(){
-			$(this).parent().find('.tabela_detalhes').hide('fast');
-			$('.tbl-icon').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-		}
-		
-);
-
-//$('#lista-despesas').load('{$url_despesas}');
-
 $('#tipodespesa').change(function(){
-	//$('#lista-despesas').load('{$url_despesas}' + '&rubrica=' + $(this).val());
-	
 	$('.desp-detail').hide();
 	$('.desp-' + $(this).val()).show();
 });
@@ -88,11 +69,9 @@ $criteria = new CDbCriteria();
 $criteria->with = 'receitas';
 $criteria->compare('receitas.cod_projeto', $model->cod_projeto);
 $criteria->together = true;
-//$criteria->addCondition('cod_rubrica_pai is NULL');
 
 $rubricas = Rubrica::model()->findAll($criteria);
-
-$receitas = $model->receitas;//ProjetoVerba::model()->with('rubrica')->findAll(array('condition'=>'cod_projeto = :projeto', 'order'=>'t.cod_verba', 'params'=>array('projeto'=>$model->cod_projeto)));
+$receitas = $model->receitas;
 
 $despesas = array();
 foreach($model->receitas as $rec){
@@ -106,15 +85,18 @@ foreach($model->receitas as $rec){
 <div class="tsabbable tabs-sleft">
 
 <ul class="nav nav-tabs">
-      <li class="active"><a href="#view-table" data-toggle="tab">Tabela</a></li>
+	  <li class="active"><a href="#view-resumo" data-toggle="tab">Resumo</a></li>
+      <li><a href="#view-table" data-toggle="tab">Tabela</a></li>
       <li><a href="#view-charts" data-toggle="tab">Gráficos</a></li>
 </ul>
 
 
 <div class="tab-content">
-	<div class="tab-pane active" id="view-table">
+	<div class="tab-pane active" id="view-resumo">
+		<?php $this->renderPartial('_view_financeiro_resumo', array('model'=>$model)); ?>
+	</div>
+	<div class="tab-pane" id="view-table">
 		<div id="tabela-financeiro">
-			<?php //echo CHtml::link("Tabela Detalhada <i class='icon-chevron-down tbl-icon'></i> ",'', array('class'=>'btnTabela btn input-block-level'))?> 	
 			<div  class="tabela_detalhes " >
 			
 				<ul class="nav nav-pills">

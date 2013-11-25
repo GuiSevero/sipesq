@@ -436,44 +436,25 @@ class ProjetoDespesaController extends Controller
 
 		$results = array();
 
+		foreach ($pessoas as $p) {
+			$results[$p->nome] = array('name'=>$p->nome, 'id'=>$p->cod_pessoa);
+		}
 		
-		echo  '[';
-		
-			//Busca tokens em pessoas
-			$numP = count($pessoas);
-			foreach($pessoas as $key=>$p){
-				$pes =  '{"name": "' .$p->nome .'", ';
-				$pes .= '"id": "' . $p->cod_pessoa .'"}';
-				echo $pes;
-				 if($key < $numP -1){
-				 	echo ',';
-				 }
-			}
-			
-			//Busca tokens nos novos tokens cadastrados
-			$numP = count($tokens);
-			foreach($tokens as $i=>$t){
-				$pes =  '{"name": "' .$t->nome .'", ';
-				$pes .= '"id": "' . $t->cod_token .'"}';
-				echo $pes;
-				 if($i < $numP -1){
-				 	echo ',';
-				 }
-			}
-			
-			
-			//Busca tokens em contatos
-			$numP = count($contatos);
-			foreach($contatos as $i=>$c){
-				$pes =  '{"name": "' .$c->nome .'", ';
-				$pes .= '"id": "' . $c->cod_contato .'"}';
-				echo $pes;
-				 if($i < $numP -1){
-				 	echo ',';
-				 }
-			}
-			
-		echo ']';
+		foreach ($tokens as $p) {
+			$results[$p->nome] = array('name'=>$p->nome, 'id'=>$p->cod_token);
+		}
+
+		foreach ($contatos as $p) {
+			$results[$p->nome] = array('name'=>$p->nome, 'id'=>$p->cod_contato);
+		}
+
+		//echo json_encode($results);
+		$arr = array();
+		foreach ($results as $r) {
+			$arr[] = $r;
+		}
+
+		echo json_encode($arr);
 		
 		Yii::app()->end();
 	}

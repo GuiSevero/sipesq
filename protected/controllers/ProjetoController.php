@@ -37,7 +37,7 @@ class ProjetoController extends Controller
 			**/
 		
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro'),
+					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro', 'morrisData'),
 					'expression'=> function(){
 
 						if(isset($_GET['id'])){
@@ -1297,6 +1297,54 @@ public function actionRelatorio($id)
 		}
 		
 		
+	}
+
+	public function actionMorrisData($id){
+
+		$cmdDesp =  Yii::app()->db->createCommand();
+		$cmdRec =  Yii::app()->db->createCommand();
+
+		//Receitas
+		$cmdDesp->from('projeto_despesa');
+		$cmdDesp->where = 'cod_projeto = :projeto AND data_compra <= :sup';
+		$cmdDesp->select = 'sum(valor * quantidade)';
+
+		//Despesas
+		$cmdRec->from('projeto_verba, projeto_desembolso');
+		$cmdRec->where = implode(' ',array(
+		'projeto_verba.cod_verba = projeto_desembolso.cod_verba AND',
+		'projeto_verba.cod_projeto = :projeto AND',
+		'projeto_desembolso.data <= :sup'
+		));
+		$cmdRec->select = 'sum(projeto_desembolso.valor)';
+				
+		$model = $this->loadModel($id);
+		$inf = date('Y', strtotime($model->data_inicio));
+		$sup = date('Y',  strtotime($model->data_fim));
+
+		$result = array();
+
+		for($year = $inf; $year <= $sup; $year++){
+				
+			$y1 = implode('-', array($year, 12, 31)); 
+
+			$cmdDesp->params = array('projeto'=>$id, 'sup'=>$y1);
+			$cmdRec->params = array('projeto'=>$id, 'sup'=>$y1);
+
+			$desp = $cmdDesp->queryScalar();
+			$rec = $cmdRec->queryScalar();
+
+			$result[] = array('y'=>"{$year}"
+				, 'receitas'=>($rec != null) ? $rec : 0
+				, 'despesas'=>($desp != null) ? $desp: 0
+			);
+		}
+
+		$this->layout=false;
+		header('Content-type: application/json');
+		echo json_encode($result);
+		Yii::app()->end();
+
 	}
 	
 }

@@ -164,10 +164,16 @@ class ProjetoDespesa extends CActiveRecord
 		
 		if($meses_correntes > 0){
 			//Ainda está ativo
-			if($this->meses != 0) //evita que não calcule quanto está no mês atual
+			if($this->meses > 0) //evita que não calcule quanto está no mês atual
 				$this->valor_corrente = $this->valor * $this->meses + $this->gasto_patrimonios;
-			else 
-				$this->valor_corrente = $this->valor + $this->gasto_patrimonios;
+			else {
+
+				if ($this->meses >= 0)
+					$this->valor_corrente = $this->valor + $this->gasto_patrimonios;
+				else
+					$this->valor_corrente = 0; //despesa está no futuro. Nao calcula ainda.
+			}
+				
 			
 		}else{
 			//Já expirou 
