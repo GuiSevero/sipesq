@@ -26,7 +26,7 @@ class RelatorioController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('atividade','projeto','index','pessoas', 'projetos'),				
+				'actions'=>array('atividade','projeto','index','pessoas', 'projetos', 'sipesq', 'morrisFinanceiro', 'morrisSipesq', 'morrisAtividades'),				
 				'expression'=>function(){												
 					return (Sipesq::isSupport() || Sipesq::getPermition('gerencial.relatorios') >= 100);
 				}
@@ -93,7 +93,7 @@ class RelatorioController extends Controller
 	 * @param integer $projeto
 	 */
 	
-	public function actionProjeto($inicio=null, $termino=null,  $projeto=null, $relatorio=false){
+	public function actionProjeto($stat=0, $relatorio=false){
 		
 		$criteria =new CDbCriteria;
 		
@@ -101,38 +101,23 @@ class RelatorioController extends Controller
 			$this->layout = '//layouts/relatorio';
 		}
 		
-		if($inicio != null){
-			$criteria->addCondition("t.data_inicio >= '$inicio'", 'AND');
-		}
-		
-		if($termino != null){
-			$criteria->addCondition("t.data_fim <= '$termino'", 'AND');
-		}
-		
-		
-		if($projeto != null){
-			$criteria->addCondition("t.cod_projeto = '$projeto'", 'AND');
+		if($stat != null){
+			$criteria->compare("t.situacao",$stat);
 		}
 		
 		 
 		$dataProvider=new CActiveDataProvider('Projeto', array('criteria'=>$criteria,'pagination'=>array('pageSize'=>999,),))	;
 		$this->render('projeto',array(
 			'dataProvider'=>$dataProvider,
-			'projeto'=>$projeto,
-			'inicio'=>$inicio,
-			'termino'=>$termino,
+			'stat'=>$stat,
 		));
 		
 	}
 
 
-	public function actionProjetos(){
-		$this->layout = '//layouts/relatorio';
-
-		$criteria = new CDbCriteria();
-		$projetos = Projeto::model()->findAll($criteria);
-		//$this->render('projetos', array('projetos'=>$projetos));
-		$this->render('momentos', array('criteria'=>$criteria));
+	public function actionSipesq(){
+		//$this->layout = '//layouts/relatorio';
+		$this->render('sipesq');
 	}
 	
 	/**
@@ -167,4 +152,157 @@ class RelatorioController extends Controller
 		));
 	
 	}
+	public function actionMorrisSipesq(){
+
+		$limits = Yii::app()->db->createCommand()->select('min(data_inicio), max(data_fim)')->from('projeto')->queryRow();
+		$inf = date('Y', strtotime($limits['min']));
+		$sup = date('Y', strtotime($limits['max']));
+
+		//Projetos
+		$projetos = array(
+			'elaboracao'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 0'),
+				
+			'negociacao'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 1'),
+
+			'tramitacao'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 2'),
+
+			'andamento'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 3 OR situacao = 4 OR situacao = 5'),
+
+			'prestacao'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 6'),
+
+			'encerrado'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 7'),
+				
+		);
+
+		$result = array();
+		
+
+		$result[] = array('sipesq'=>"SIPESQ"
+			, 'p_elaboracao'=>$projetos['elaboracao']->queryScalar()
+			, 'p_negociacao'=>$projetos['negociacao']->queryScalar()
+			, 'p_tramitacao'=>$projetos['tramitacao']->queryScalar()
+			, 'p_andamento'=>$projetos['andamento']->queryScalar()
+			, 'p_prestacao'=>$projetos['prestacao']->queryScalar()
+			, 'p_encerrado'=>$projetos['encerrado']->queryScalar()
+		);
+		
+
+
+		$this->layout=false;
+		header('Content-type: application/json');
+		echo json_encode($result);
+		Yii::app()->end();
+	}
+
+	public function actionMorrisFinanceiro(){
+
+		$cmdDesp =  Yii::app()->db->createCommand();
+		$cmdRec =  Yii::app()->db->createCommand();
+
+		$limits = Yii::app()->db->createCommand()
+					->select('min(data_inicio), max(data_fim)')
+					->from('projeto')
+					->queryRow();
+
+
+
+		//Receitas
+		$cmdDesp->from('projeto_despesa');
+		$cmdDesp->where = implode(' ', array(			
+			'data_compra < :sup AND',
+			'data_compra >= :inf',
+		));		
+
+		$cmdDesp->select = 'sum(valor * quantidade)';
+
+		//Despesas
+		$cmdRec->from('projeto_verba, projeto_desembolso');
+		$cmdRec->where = implode(' ',array(
+			'projeto_verba.cod_verba = projeto_desembolso.cod_verba AND',			
+			'projeto_desembolso.data < :sup AND',
+			'projeto_desembolso.data >= :inf'
+		));
+
+		
+		$cmdRec->select = 'sum(projeto_desembolso.valor)';
+				
+		$inf = date('Y', strtotime($limits['min']));
+		$sup = date('Y', strtotime($limits['max']));
+
+		$result = array();
+
+		for($year = $inf; $year <= $sup; $year++){
+				
+			$y0 = implode('-', array($year,01,01));
+			$y1 = implode('-', array($year, 12, 31)); 
+
+			$cmdDesp->params = array('inf'=>$y0, 'sup'=>$y1);
+			$cmdRec->params = array('inf'=>$y0, 'sup'=>$y1);
+
+			$desp = $cmdDesp->queryScalar();
+			$rec = $cmdRec->queryScalar();
+
+			$result[] = array('y'=>"{$year}"
+				, 'receitas'=>($rec != null) ? $rec : 0
+				, 'despesas'=>($desp != null) ? $desp: 0				
+			);
+		}
+		
+
+		$this->layout=false;
+		header('Content-type: application/json');
+		echo json_encode($result);
+		Yii::app()->end();
+		
+	}
+
+	public function actionMorrisAtividades(){
+
+		$atividades =  Yii::app()->db->createCommand()
+			->select('count(*)')
+			->from('atividade')
+			->where('data_criacao >= :inf AND data_criacao < :sup');
+
+		$ativ_finalizadas =  Yii::app()->db->createCommand()
+			->select('count(*)')
+			->from('atividade')
+			->where('data_realizacao >= :inf AND data_realizacao < :sup');
+
+		$limits = Yii::app()->db->createCommand()
+					->select('min(data_criacao), max(data_criacao)')
+					->from('atividade')
+					->queryRow();
+				
+		$inf = date('Y', strtotime($limits['min']));
+		$sup = date('Y', strtotime($limits['max']));
+
+		$result = array();
+		for($year = $inf; $year <= $sup; $year++){
+				
+			$y0 = implode('-', array($year,01,01));
+			$y1 = implode('-', array($year, 12, 31)); 
+
+			$atividades->params = array('inf'=>$y0, 'sup'=>$y1);
+			$ativ_finalizadas->params = array('inf'=>$y0, 'sup'=>$y1);
+
+			$result[] = array('year'=>"{$year}"
+				, 'criadas'=>$atividades->queryScalar()
+				, 'finalizadas'=>$ativ_finalizadas->queryScalar()
+			);
+		}
+
+		$this->layout=false;
+		header('Content-type: application/json');
+		echo json_encode($result);
+		Yii::app()->end();
+		
+	}
+
+	
 }

@@ -10,7 +10,7 @@ $this->menu=array(
 ?>
 <h1>Selecione um relatório.</h1>
 <div class="view">
-	<b><?php echo CHtml::link(CHtml::encode('Relatório de Atividades', array('relatorio/atividade'))); ?></b><br>
-	<b><?php echo CHtml::link(CHtml::encode('Relatório dos Projetos', array('relatorio/projeto'))); ?></b>
+	<b><?php echo CHtml::link(CHtml::encode('Relatório de Atividades'), array('/relatorio/atividade')); ?></b><br>
+	<b><?php echo CHtml::link(CHtml::encode('Relatório dos Projetos'), array('/relatorio/projeto')); ?></b>
 </div>
 

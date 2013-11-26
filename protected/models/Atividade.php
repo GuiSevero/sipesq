@@ -152,6 +152,15 @@ class Atividade extends CActiveRecord
 		parent::afterFind();
 	}
 
+	protected function beforeSave(){
+		if($this->estagio && $this->data_realizacao == null)
+			$this->data_realizacao = date('Y-m-d');
+		
+		if(!$this->estagio)
+			$this->data_realizacao = null;
+		return true;
+	}
+
 	private function calculaStatus(){
 
 		if($this->estagio){

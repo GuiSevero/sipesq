@@ -330,10 +330,9 @@ class AtividadeController extends Controller
 	 */
 	public function actionIndex($pessoa=null, $projeto=null, $categoria=null, $coordenador=null)
 	{
-		
+
 		//define o layout
 		$this->layout = '//layouts/column_atv';
-		
 		
 		$this->render('index',array(		
 			'projeto'=>$projeto,
