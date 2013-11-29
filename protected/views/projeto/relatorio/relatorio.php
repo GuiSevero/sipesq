@@ -1,66 +1,90 @@
-<?php Yii::app()->clientScript->registerScript('table_financeiro',"
+<?php 
 
-$('.tbl-line-financeiro').hover(
- function(){
- $(this).addClass('table-line-over');
- }, 
- 
- function(){
- 	$(this).removeClass('table-line-over');
- }
-);
+Yii::app()->clientScript->registerScriptFile("https://www.google.com/jsapi", CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl ."/js/charts.js", CClientScript::POS_END);
+
+Yii::app()->clientScript->registerScript('table_financeiro',"
+
+$('.atv-desc').each(function(){
+
+	$(this).html($(this).text());
+
+});
 
 ")?>
 
 <!-- INFORMACOES GERAIS -->
-<div id="descricao">
-
-<h1><?php echo $model->nome?></h1>
-<h4>Informações Gerais</h4>
-
-	<b><?php echo CHtml::encode("Cordenador"); ?>:</b>
-	<?php echo CHtml::encode($model->professor->nome); ?>
+<div id="relatorio-header">
+	<?php //echo CHtml::image('/sipesq/images/logo_ufrgs.png', 'Logo UFRGS', array('class'=>'logo', 'width'=>'150')); ?>
+	<?php //echo CHtml::image('/sipesq/images/logo_cegov.png', 'Logo CEGOV', array('class'=>'logo','width'=>'140')); ?>
+	<?php echo CHtml::encode($model->nome, array('id'=>'title')); ?>	
 	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('codigo_projeto')); ?>:</b>
-	<?php echo CHtml::encode($model->codigo_projeto); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('data_inicio')); ?>:</b>
-	<?php echo CHtml::encode(Sipesq::date($model->data_inicio)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('data_fim')); ?>:</b>
-	<?php echo CHtml::encode(Sipesq::date($model->data_fim)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('data_relatorio')); ?>:</b>
-	<?php echo CHtml::encode(Sipesq::date($model->data_relatorio)); ?>
-	<br />
-	
-	<div id="equipe">
-	<dl>
-	<dt>Equipe</dt>
-	<?php foreach($model->pessoas_atuantes as $pessoa) echo "<dd>" .$pessoa->nome ."</dd>"?>
-	</dl>
-	
 </div>
-</div>
-	
-<hr>
-<div class="row span12">
-	<h4>Descrição</h4>
-	<p><?php echo $model->descricao; ?></p>
-</div>
-<hr>
 
-<div class="row span12" id="atividades">
+<div class="relatorio-section">
+	<span class="relatorio-number">1</span>Informações Gerais
+</div>
+
+<br />
+
+<div class="relatorio-text">	
+		<b><?php echo CHtml::encode("Coordenador"); ?>:</b>
+		<?php echo CHtml::encode($model->professor->nome); ?>
+		<br />
+		<b><?php echo CHtml::encode($model->getAttributeLabel('codigo_projeto')); ?>:</b>
+		<?php echo CHtml::encode($model->codigo_projeto); ?>
+		<br />
+		<b><?php echo CHtml::encode($model->getAttributeLabel('data_inicio')); ?>:</b>
+		<?php echo CHtml::encode(Sipesq::date($model->data_inicio)); ?>
+		<br />
+		<b><?php echo CHtml::encode($model->getAttributeLabel('data_fim')); ?>:</b>
+		<?php echo CHtml::encode(Sipesq::date($model->data_fim)); ?>
+		<br />
+		<b><?php echo CHtml::encode($model->getAttributeLabel('data_relatorio')); ?>:</b>
+		<?php echo CHtml::encode(Sipesq::date($model->data_relatorio)); ?>
+</div>
+
+<br />
+<br />
+
+<div class="relatorio-section">
+	<span class="relatorio-number">2</span>Equipe
+</div>
+<br />
+<div class="relatorio-text">
+	<?php foreach($model->pessoas_atuantes as $pessoa) echo  $pessoa->nome. "<br />" ?>
+</div>
+
+<br />
+<br />
+
+<div class="relatorio-section">
+	<span class="relatorio-number">3</span>Descrição
+</div>
+<br />
+<div class="relatorio-text">
+	<?php echo $model->descricao; ?>
+</div>
+
+<br />
+<br />
+
+<div class="relatorio-section" id="section4">
+	<span class="relatorio-number">4</span>Atividades
+</div>
+<br />
+<div class="relatorio-text">
 	<?php $this->renderPartial('relatorio/_atividades', array('model'=>$model))?>	
 </div>
 
-<!--  FINANCEIRO -->
-<div id="financeiro" class="row span12" >
-	<h4>Financeiro</h4>
+<br />
+<br />
+
+<div class="relatorio-section">
+	<span class="relatorio-number">5</span>Financeiro
+</div>
+
+<div class="relatorio-text" >
 	<?php $this->renderPartial('relatorio/_financeiro_relatorio', array('model'=>$model))?>	
-</div> <!-- Fim Financeiro -->
+</div>
 

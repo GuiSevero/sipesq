@@ -26,7 +26,7 @@ foreach($model->receitas as $rec){
 
 <div class="row-fluid">
 
-<h2>Balanço Financeiro do Projeto</h2>
+<h5>Balanço financeiro do projeto</h5>
 <div class="bar_chart span12" 
 	id="projeto-<?php echo $model->cod_projeto; ?>"
 	data-orcamentado="<?php echo $model->verba_orcamentada;?>"
@@ -44,7 +44,7 @@ foreach($model->receitas as $rec){
 	
 
 	<div class="chart-table">
-		<table class="table table-bordered table-striped table-hover">
+		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
 					<th>Orçamentado</th>
@@ -72,7 +72,9 @@ foreach($model->receitas as $rec){
 <div id="tabela-financeiro">
 
 	<div  class="tabela_detalhes" >
+		<br />
 		<h4>Orçamentos</h4>
+		<br />
 		<?php $this->renderPartial('/projeto/relatorio/_orcamento', array('projeto'=>$model))?>
 		<h4>Receitas</h4>
 		<?php $this->renderPartial('/projeto/relatorio/_recebimentos', array('projeto'=>$model))?>
