@@ -36,19 +36,6 @@
 					, array('target'=>'_blank', 'title'=>'Skydrive')); ?> <br />
 	<?php endif; ?>
 </div>
-<div class="span6">
-	
-  	
-	<b>Orçamentado:</b> R$ <?php echo number_format($model->verba_orcamentada, 2, ',','.')?><br>
-	<b>Recebido:</b> R$ <?php echo number_format($model->verba_recebida, 2, ',','.')?><br>
-	<b>Gastos Comprometidos:</b> R$ <?php echo number_format($model->gasto_comprometido, 2, ',','.')?><br>
-	<b>Saldo Disponível:</b> R$ <?php echo number_format($model->saldo_disponivel, 2, ',','.')?><br>
-	<div class="progress">
-		<?php if ($model->verba_recebida == 0)  $model->verba_recebida = -1; ?>
-		<div class="bar bar-danger" style="width: <?php echo ($model->gasto_comprometido / $model->verba_recebida)*100?>%;"></div>
-		<div class="bar" style="width: <?php echo ($model->saldo_disponivel / $model->verba_recebida)*100?>%;"></div>
-	</div>
- </div>
 </div> <!--/row-->
 	<div class="row-fluid">
 		<div class="span6">
