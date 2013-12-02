@@ -130,24 +130,14 @@ $('.set-status').click(function(){
 	var container = this;
 
 	$.post('{$url_set}', {membro: data}, function(response){
-		var new_obj = $(container).parent().clone(true);
+		var new_obj = $(container).parent().clone();
 		$(container).parent().remove();
 
-		if(data.ativo == '1'){
-
-			var button = $(new_obj).children('.set-status');
-			$(button).attr('data-status', 0);
-			$(button).text('Desativar Membro');
-
+		if(data.ativo == '1')
 			$('#membros-ativos').append(new_obj);
-
-		}else{
-			
-			var button = $(new_obj).children('.set-status');		
-			$(button).attr('data-status', 1);
-			$(button).text('Ativar Membro');
+		else
 			$('#membros-inativos').append(new_obj);
-		}
+		
 
 		$('.set-status').hide();
 	})

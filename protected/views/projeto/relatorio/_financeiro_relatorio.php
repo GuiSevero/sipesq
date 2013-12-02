@@ -91,9 +91,9 @@ foreach($model->receitas as $rec){
 
 </div> <!-- /view -->
 <br><hr>
-<h2>Balanço Financeiro do Projeto por Rubrica</h2>
- <div id="charts" class="view">
- 	<?php $this->renderPartial('/projeto/financeiro/_info_rubrica', array('model'=>$model))?>
- </div> <!-- /charts -->
-
- <div id="teste"></div>
+<div class="row-fluid">
+	<div class="span12">
+		<h2>Balanço Financeiro do Projeto por Rubrica</h2>
+	 	<div id="charts"><?php $this->renderPartial('/projeto/financeiro/_info_rubrica', array('model'=>$model))?></div>
+	</div>
+</div>

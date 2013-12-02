@@ -264,18 +264,12 @@ class AtividadeController extends Controller
 		if(isset($_POST['Atividade']))
 		{
 			$model->attributes=$_POST['Atividade'];
-
-			echo var_dump($_POST['Atividade']);
-			//Yii::app()->end();
 			
 			if(isset($_POST['Atividade']['projetos']))
 				$model->projetos = $_POST['Atividade']['projetos'];
 				
 			if(isset($_POST['Atividade']['pessoas']))	
 			 $model->pessoas = $_POST['Atividade']['pessoas'];
-			 
-			if(isset($_POST['Atividade']['bolsas'])) 
-				$model->bolsas = $_POST['Atividade']['bolsas'];
 
 			if(isset($_POST['Atividade']['cod_categoria']))				
 				$model->cod_categoria = $_POST['Atividade']['cod_categoria'];
@@ -284,9 +278,6 @@ class AtividadeController extends Controller
 			$model->data_edicao = date('Y-m-d');
 			
 			if($model->save()){
-				
-				if(count($model->bolsas) > 0)
-					$this->salvaBolsas($model->cod_atividade, $model->bolsas);
 				
 				if(count($model->pessoas) > 0)
 					$this->salvaPessoas($model->cod_atividade, $model->pessoas);

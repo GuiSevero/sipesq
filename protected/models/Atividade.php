@@ -89,7 +89,6 @@ class Atividade extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'bolsas' => array(self::MANY_MANY, 'PessoaFinanceiro', 'atividade_financeiro(cod_atividade, cod_financeiro)'),
 			'projetos' => array(self::MANY_MANY, 'Projeto', 'atividade_projeto(cod_atividade, cod_projeto)', 'select'=>'cod_projeto, nome'),
 			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'atividade_pessoa(cod_atividade, cod_pessoa)', 'select'=>'cod_pessoa, nome, nome_curto'),
 			'responsavel' => array(self::BELONGS_TO, 'Pessoa', 'cod_pessoa','select'=>'cod_pessoa, nome, nome_curto'),

@@ -50,15 +50,20 @@
 			page-break-inside: avoid;
 		}
 
-		#atv-section {
+		.atv-section {
 			display: inline;
 			font-size: 11pt;
 			font-weight: 700;
 		}
 
-		#atv-text {
+		.atv-text {
 			display: inline;
 			font-size: 11pt;
+			text-align: justify;
+		}
+
+		.atv-desc{
+			text-align: justify;
 		}
 
 		.atv-nome {
@@ -148,13 +153,17 @@
 	
 
 	@media screen {
-		#atv-section{
+		.atv-section{
 	 		font-weight: 100;
 	 		text-align: right;
 		}
-
-		#atv-text {
+		.atv-desc{
+			text-align: justify;
+		}
+		
+		.atv-text {
 			font-weight: 100;
+			text-align: justify;
 		}
 
 		.print {
