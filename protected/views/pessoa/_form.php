@@ -158,17 +158,15 @@ Yii::app()->clientScript->registerScript('cep',"
 	
 	</div>
 	
-	<?php if(Sipesq::isSupport()):?>
 	<div class="span11">	
 		<div class="input">
 		<?php echo $form->labelEx($model,'projetos_atuante'); ?>
 			<div class="checkboxlist">
-			<?php echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-block-level',)  ); ?>
+			<?php //echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-block-level',)  ); ?>
 			</div>
 		</div>
 		<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de um projeto.</div><br>
 	</div>
-	<?php endif;?>
 		
 	<div class="span5">
 		<div class="input">

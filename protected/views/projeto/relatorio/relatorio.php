@@ -42,8 +42,12 @@ $('.atv-desc').each(function(){
 		<br />
 		<b><?php echo CHtml::encode($model->getAttributeLabel('data_relatorio')); ?>:</b>
 		<?php echo CHtml::encode(Sipesq::date($model->data_relatorio)); ?>
-</div>
 
+		<h5>Instrumento Jurídico Fundação de Apoio</h5>
+		<?php $this->renderPartial('/projeto/_view_convenio', array('model'=>$model->convenio)); ?>
+		<h5>Instrumento Jurídico Parceiro Institucional</h5>
+		<?php $this->renderPartial('/projeto/_view_inst_juridico', array('model'=>$model->instrumento_juridico)); ?>
+</div>
 <br />
 <br />
 

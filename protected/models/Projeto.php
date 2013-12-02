@@ -30,6 +30,7 @@
  * @property Pessoa $graduando
  * @property ProjetoCategoria $categoria
  * @property Pessoa[] $pessoas_atuantes
+ * @property Pessoa[] $pessoas_inativas
  * @property Pessoa[] $pessoas_permitidas
  * @property PatrimonioTermos[] $patrimonio_termos
  * @property Livro[] $livros
@@ -149,7 +150,8 @@ class Projeto extends CActiveRecord
 			'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
 			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
-			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome'),
+			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
+			'pessoas_inativas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_inativas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = false'),
 			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim asc'),
 			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),			
 			'categoria' => array(self::BELONGS_TO, 'ProjetoCategoria', 'cod_categoria'),

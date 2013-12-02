@@ -72,9 +72,8 @@ Yii::app()->clientScript->registerScript("calendar", "
 		<div class="pull-left">
 		<h3 id="curr-date"></h3>
 		<ul class="unstyled inline">
-			<li><span class="pull-left event event-inverse"></span>&nbsp;Projeto</li>
+			<li><span class="pull-left event event-info"></span>&nbsp;Projeto</li>
 			<li><span class="pull-left event event-important"></span>&nbsp;Atividade</li>
-			<li><span class="pull-left event event-warning"></span>&nbsp;Passo</li>
 		</ul>
 		</div>
 		

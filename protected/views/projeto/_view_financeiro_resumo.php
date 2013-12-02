@@ -3,8 +3,8 @@
 /* @var $model Projeto */
 $url = $this->createUrl('/projeto/morrisData', array('id'=>$model->cod_projeto));
 $baseUrl = Yii::app()->baseUrl;// .'/js/morris/';
-Yii::app()->clientScript->registerScriptFile("{$baseUrl}/js/morris/raphael-min.js", CClientScript::POS_END);
-Yii::app()->clientScript->registerScriptFile("{$baseUrl}/js/morris/morris-0.4.3.min.js", CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile("{$baseUrl}/js/morris/raphael-min.js", CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile("{$baseUrl}/js/morris/morris-0.4.3.min.js", CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerCssFile("{$baseUrl}/js/morris/morris-0.4.3.min.css");
 
 

@@ -13,7 +13,7 @@ $this->menu=array(
 );
 
 Yii::app()->clientScript->registerScript("popover", "
-	$('.tip').css('cursor', 'pointer').tooltip();	
+	$('.tip').css('cursor', 'pointer').tooltip();
 
 	$('.help').click(function(e){
 		console.log('click');
@@ -23,6 +23,8 @@ Yii::app()->clientScript->registerScript("popover", "
  			});
  	
 	});
+
+	
 ");
 
 ?>
@@ -40,7 +42,7 @@ function printChildren($rubrica, $receita){
 	 		if($rubrica != null){
 
 	 			if(count($rubrica->filhas) < 1){
-	 				echo '<li>';
+	 				echo '<li class="rub-item">';
 	 				echo CHtml::link('<i class="icon icon-question-sign"></i> ', array('/rubrica/help', 'id'=>$rubrica->cod_rubrica), array('data-toggle'=>'modal', 'data-target'=>'helpRubrica', 'class'=>'help'));
 	 				echo CHtml::link($rubrica->numero .' ' .$rubrica->nome
 							, array('/projetoDespesa/add', 'id'=>$receita->cod_verba, 'ru'=>$rubrica->cod_rubrica));
@@ -71,7 +73,7 @@ function printChildren($rubrica, $receita){
 					$saldo = $recebido - $gasto_comprometido
 				?>
 				<li>
-					<?php echo CHtml::link('<i class="icon icon-question-sign"></i> ', array('/rubrica/help', 'id'=>$rubrica->cod_rubrica), array('data-toggle'=>'modal', 'data-target'=>'helpRubrica', 'class'=>'help')); ?>
+					<?php echo CHtml::link('<i class="icon icon-question-sign rub-help"></i> ', array('/rubrica/help', 'id'=>$rubrica->cod_rubrica), array('data-toggle'=>'modal', 'data-target'=>'helpRubrica', 'class'=>'help')); ?>
 					<b><?php echo $rubrica->numero .' ' .$rubrica->nome?></b>
 					<i>
 					R$ <?php echo Yii::app()->format->number($saldo)?>

@@ -39,7 +39,7 @@ class InstrumentoJuridico extends CFormModel
 			, 'unidade_admin_responsavel'=>'Unidade Administrativa Responsável'
 			, 'gestao_recebedora'=>'U/G Gestão Recebedora'
 			, 'gestao_repassadora'=>'U/G Gestão Recepassadora'
-			, 'data_assinatura'=>'Data da Assinatura do Termo'
+			, 'data_assinatura'=>'Data de Assinatura'
 			, 'vigencia'=>'Vigência'
 		);
 	}

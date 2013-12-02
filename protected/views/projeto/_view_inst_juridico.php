@@ -1,9 +1,9 @@
-<b><?php echo CHtml::encode($model->getAttributeLabel('nro_inst_juridico')); ?>:</b>
-<?php echo CHtml::encode($model->nro_inst_juridico); ?>
-<br />
-
 <b><?php echo CHtml::encode($model->getAttributeLabel('tipo_inst_juridico')); ?>:</b>
 <?php echo CHtml::encode($model->tipo_inst_juridico); ?>
+<br />
+
+<b><?php echo CHtml::encode($model->getAttributeLabel('nro_inst_juridico')); ?>:</b>
+<?php echo CHtml::encode($model->nro_inst_juridico); ?>
 <br />
 
 <b><?php echo CHtml::encode($model->getAttributeLabel('unidade_admin_responsavel')); ?>:</b>

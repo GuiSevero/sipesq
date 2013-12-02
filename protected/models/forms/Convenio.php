@@ -45,7 +45,7 @@ class Convenio extends CFormModel
 			, 'vigencia'=>'Vigencia'
 			, 'protocolo_financeiro'=>'Portocolo Financeiro'
 			, 'portal_siconv'=>'Portal SICONV'
-			, 'cod_projeto_faufrgs'=>'Código do Projeto na FAURGS'
+			, 'cod_projeto_faufrgs'=>'Código do Projeto na Fundação de Apoio'
 			, 'nome_proplan'=>'Nome na Proplan'
 			, 'vigencia'=>'Vigência'
 		);

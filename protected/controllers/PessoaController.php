@@ -173,27 +173,31 @@ class PessoaController extends Controller
 		
 		if(isset($_POST['Pessoa']))
 		{
+				
+			
+			$model->attributes=$_POST['Pessoa'];
+			
+			if(isset($_POST['Pessoa']['projetos_atuante'])){
 				$connection=Yii::app()->db;
 				$sql = "delete from projeto_pessoa_atuante where cod_pessoa = :cod_pessoa";
 				$command = $connection->createCommand($sql);
 				$command->bindParam(":cod_pessoa",$id,PDO::PARAM_STR);
 				$command->execute();
-			
-			$model->attributes=$_POST['Pessoa'];
-			
-			if(isset($_POST['Pessoa']['projetos_atuante']))
+
 				$model->projetos_atuante = $_POST['Pessoa']['projetos_atuante'];
+			}
+				
 				
 			
 			if($model->save()){
-				
-				foreach ($model->projetos_atuante as $p){
-					$ppa = new ProjetoPessoaAtuante();
-					$ppa->cod_pessoa = $model->cod_pessoa;
-					$ppa->cod_projeto = $p;
-					$ppa->save();
-					unset($ppa);		
-				}
+				if(isset($_POST['Pessoa']['projetos_atuante']))
+					foreach ($model->projetos_atuante as $p){
+						$ppa = new ProjetoPessoaAtuante();
+						$ppa->cod_pessoa = $model->cod_pessoa;
+						$ppa->cod_projeto = $p;
+						$ppa->save();
+						unset($ppa);		
+					}
 				
 				$this->redirect(array('view','id'=>$model->cod_pessoa));
 			}

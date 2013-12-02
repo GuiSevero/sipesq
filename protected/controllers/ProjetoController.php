@@ -151,7 +151,7 @@ class ProjetoController extends Controller
 			),
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'create'),
+				'actions'=>array('update', 'create' , 'setMembro'),
 				'expression'=> function(){
 
 							//http://localhost/sipesq/index.php/projeto/updatepermissao?pessoa=119&projeto=28
@@ -692,7 +692,7 @@ public function actionRelatorio($id)
 	
 			if($projeto == null) throw new CHttpException(404,'Página não encontrada.');
 			
-			$this->render('_form_permissao', array('projeto'=>$projeto, 'model'=>$model));	
+			$this->render('forms/_form_permissao', array('projeto'=>$projeto, 'model'=>$model));	
 		
 	}
 
@@ -720,7 +720,7 @@ public function actionRelatorio($id)
 				$model->permissao = $perm_projeto->load(json_decode($model->permissao));				
 		}								
 			
-		$this->render('_form_permissao', array('projeto'=>$model->projeto, 'model'=>$model));	
+		$this->render('forms/_form_permissao', array('projeto'=>$model->projeto, 'model'=>$model));	
 		
 	}
 	
@@ -928,7 +928,7 @@ public function actionRelatorio($id)
 				$this->redirect(array('/projeto/docs', 'id'=>$id));	            
 	        }
 	    }
-	    $this->render('_form_arquivo',array('model'=>$model, 'projeto'=>$this->loadModel($id)));
+	    $this->render('forms/_form_arquivo',array('model'=>$model, 'projeto'=>$this->loadModel($id)));
 	}
 	
 /**
@@ -969,7 +969,7 @@ public function actionRelatorio($id)
 	            $this->redirect(array('/projeto/docs', 'id'=>$model->cod_projeto));
 	        }
 	    }
-	    $this->render('_form_arquivo',array('model'=>$model, 'projeto'=>$this->loadModel($model->cod_projeto)));
+	    $this->render('forms/_form_arquivo',array('model'=>$model, 'projeto'=>$this->loadModel($model->cod_projeto)));
 	}
 	
 	/**
@@ -1297,6 +1297,31 @@ public function actionRelatorio($id)
 		}
 		
 		
+	}
+
+	public function actionSetMembro(){
+
+		if (!Yii::app()->request->isPostRequest) throw new CHttpException(404);
+
+		$pessoa = $_POST['membro']['cod_pessoa'];
+		$projeto = $_POST['membro']['cod_projeto'];
+		$ativo = $_POST['membro']['ativo'];
+
+		$model = ProjetoPessoaAtuante::model()->findByPk(array('cod_pessoa'=>$pessoa, 'cod_projeto'=>$projeto));
+
+		if ($model == null)	$model = new ProjetoPessoaAtuante();
+
+		//Set Attributes
+		$model->cod_pessoa = $pessoa;
+		$model->cod_projeto = $projeto;
+		$model->ativo = $ativo;
+
+		$model->save();
+
+		echo var_dump($_POST['membro']);
+		echo $model->ativo;
+		//echo $model->attributes;
+
 	}
 
 	public function actionMorrisData($id){

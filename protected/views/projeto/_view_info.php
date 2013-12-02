@@ -39,11 +39,11 @@
 </div> <!--/row-->
 	<div class="row-fluid">
 		<div class="span6">
-			<h5>Convênio</h5>
+			<h5>Instrumento Jurídico Fundação de Apoio</h5>
 			<?php $this->renderPartial('_view_convenio', array('model'=>$model->convenio)); ?>
 		</div>
 		<div class="span6">
-			<h5>Instrumento Jurídico</h5>
+			<h5>Instrumento Jurídico Parceiro Institucional</h5>
 			<?php $this->renderPartial('_view_inst_juridico', array('model'=>$model->instrumento_juridico)); ?>
 		</div>
 	</div>
@@ -81,12 +81,76 @@
 		</div>
 		<div class="span6">
 			<h5>Equipe de Apoio</h5>
-			<ul class="unstyled">
+			<ul class="unstyled" id="membros-ativos">
 			<?php foreach($model->pessoas_atuantes as $pessoa):?>
-				 <li><b><?php echo CHtml::link(CHtml::encode($pessoa->nome), array('pessoa/view', 'id'=>$pessoa->cod_pessoa)); ?></b></li>
+				 <li class="membro">
+				 	<b><?php echo CHtml::link(CHtml::encode($pessoa->nome), array('pessoa/view', 'id'=>$pessoa->cod_pessoa)); ?></b>
+				 	 <button class="set-status btn btn-small btn-primary pull-right" title="Desativar Membro" data-pess="<?php echo $pessoa->cod_pessoa?>" data-prj="<?php echo $model->cod_projeto?>" data-status="0">
+				 	 	Desativar Membro
+				 	 </button>
+				 </li>
 			<?php endforeach;?>
 			</ul>	
+			<h5>Equipe Inativa</h5>
+			<ul class="unstyled" id="membros-inativos">
+			<?php foreach($model->pessoas_inativas as $pessoa):?>
+				 <li class="membro">
+				 	<b><?php echo CHtml::link(CHtml::encode($pessoa->nome), array('pessoa/view', 'id'=>$pessoa->cod_pessoa)); ?></b>
+				 	 <button class="set-status btn btn-small btn-primary pull-right" title="Ativar Membro" data-pess="<?php echo $pessoa->cod_pessoa?>" data-prj="<?php echo $model->cod_projeto?>" data-status="1">
+				 	 	Ativar Membro
+				 	 </button>
+				 </li>
+			<?php endforeach;?>
+			</ul>
 		</div>
 		
 	
 </div>
+
+<?php 
+$url_set = $this->createUrl('/projeto/setMembro');
+Yii::app()->clientScript->registerScript("membro","
+$('.set-status').hide();
+
+$('.membro').hover(function(){
+	$(this).children('.set-status').show();
+	$(this).css('background-color', '#EEE');
+}, function(){
+	$(this).children('.set-status').hide();
+	$(this).css('background-color', '#FFF');
+});
+
+$('.set-status').click(function(){
+	var data = {
+		cod_pessoa: $(this).attr('data-pess'),
+		cod_projeto: $(this).attr('data-prj'),
+		ativo: $(this).attr('data-status')
+	}
+	
+	var container = this;
+
+	$.post('{$url_set}', {membro: data}, function(response){
+		var new_obj = $(container).parent().clone(true);
+		$(container).parent().remove();
+
+		if(data.ativo == '1'){
+
+			var button = $(new_obj).children('.set-status');
+			$(button).attr('data-status', 0);
+			$(button).text('Desativar Membro');
+
+			$('#membros-ativos').append(new_obj);
+
+		}else{
+			
+			var button = $(new_obj).children('.set-status');		
+			$(button).attr('data-status', 1);
+			$(button).text('Ativar Membro');
+			$('#membros-inativos').append(new_obj);
+		}
+
+		$('.set-status').hide();
+	})
+});
+
+");

@@ -22,9 +22,11 @@
    
    
    <?php //Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+   
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/jquery.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/ejs.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/less.js' ?>"></script>
+
    
 	<title><?php echo CHtml::encode("SIPESQ"); ?></title>
 	<style>
@@ -39,6 +41,7 @@
 </head>
 
 <body>
+	 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/bootstrap.min.js' ?>"></script>
 <?php /*
 <div class="navbar-fixed-top">
 	<?php $this->widget('application.extensions.mbmenu.MbMenu',array(
@@ -78,7 +81,7 @@
 		</div>
     </div> <!-- /container -->
 </body>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/bootstrap.min.js' ?>"></script>
+
 <script>
 
 $('#sq').change(function(){
