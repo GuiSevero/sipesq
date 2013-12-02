@@ -35,6 +35,7 @@
  * @property PatrimonioTermos[] $patrimonio_termos
  * @property Livro[] $livros
  * @property Atividade[] $atividades
+ * @property Atividade[] $atividades_finalizadas
  * 
  * Financeiro Novo
  * @property ProjetoDespesa[] $despesas
@@ -153,6 +154,7 @@ class Projeto extends CActiveRecord
 			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
 			'pessoas_inativas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_inativas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = false'),
 			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim asc'),
+			'atividades_finalizadas' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades_finalizadas.data_fim asc', 'condition'=>'atividades_finalizadas.estagio = true'),
 			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),			
 			'categoria' => array(self::BELONGS_TO, 'ProjetoCategoria', 'cod_categoria'),
 			'documentos' => array(self::HAS_MANY, 'ProjetoArquivo', 'cod_projeto'),

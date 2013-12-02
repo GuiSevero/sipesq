@@ -2,7 +2,7 @@
 	<div class="view">Não há atividades cadastradas neste projeto</div>
 <?php endif;?>
 		
-<?php foreach ($model->atividades as $atividade):?>
+<?php foreach ($model->atividades_finalizadas as $atividade):?>
 	<div class="view view-atividade">
 		<div class="atv-nome">
 			<?php echo CHtml::encode($atividade->nome_atividade); ?>
