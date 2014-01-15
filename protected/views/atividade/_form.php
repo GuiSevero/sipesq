@@ -262,7 +262,7 @@ var socket = io && io.connect(server);
 
 	<div class="input">
 		<?php echo $form->labelEx($model,'projetos'); ?>
-		<?php if(Sipesq::isSupport()):?>
+		<?php if(Sipesq::getPermition('projeto.informacoes')):?>
 				<?php echo $form->listBox($model,'projetos', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome', 'categoria.nome'), array("multiple"=>"multiple", "size"=>"15", "class"=>"input-xxlarge",)  ); ?>
 		<?php else:?>
 			<?php echo $form->listBox($model,'projetos', CHtml::listData(Projeto::findAllOfUser(), 'cod_projeto', 'nome', 'categoria.nome'), array("multiple"=>"multiple", "size"=>"15", "class"=>"input-xxlarge",)  ); ?>

@@ -85,17 +85,16 @@ foreach($model->receitas as $rec){
 <div class="tsabbable tabs-sleft">
 
 <ul class="nav nav-tabs">
-	  <li class="active"><a href="#view-resumo" data-toggle="tab">Resumo</a></li>
-      <li><a href="#view-table" data-toggle="tab">Tabela</a></li>
+	  
+      <li class="active"><a href="#view-table" data-toggle="tab">Tabela</a></li>
       <li><a href="#view-charts" data-toggle="tab">Gráficos</a></li>
+      <li><a href="#view-resumo" data-toggle="tab">Resumo</a></li>
 </ul>
 
 
 <div class="tab-content">
-	<div class="tab-pane active" id="view-resumo">
-		<?php $this->renderPartial('_view_financeiro_resumo', array('model'=>$model)); ?>
-	</div>
-	<div class="tab-pane" id="view-table">
+	
+	<div class="tab-pane active" id="view-table">
 		<div id="tabela-financeiro">
 			<div  class="tabela_detalhes " >
 			
@@ -136,6 +135,8 @@ foreach($model->receitas as $rec){
 			</div> <!-- /tabela_detalhes -->
 		</div>
 	</div> <!-- Fim Tab Tabela -->
+
+	
 	
 	<div class="tab-pane" id="view-charts">
 			<div class="navbar">
@@ -214,6 +215,11 @@ foreach($model->receitas as $rec){
 	 	<div id="pie_chart" class="span12"></div>
 	 </div>
 	</div> <!-- Fim tab  Graficos -->
+
+
+	<div class="tab-pane" id="view-resumo">
+		<?php $this->renderPartial('_view_financeiro_resumo', array('model'=>$model)); ?>
+	</div>
 </div>
 </div>
 

@@ -186,6 +186,7 @@ $this->menu=array(
 <div class="view <?php echo $model->class;?>">
 <h4 align="center"><b><?php echo $model->nome_atividade; ?></b></h4>
 
+
 <div class="row-fluid">
 <div class="span4">
 
@@ -223,10 +224,16 @@ $this->menu=array(
 	<?php echo CHtml::encode(Sipesq::date($model->data_edicao)); ?>
 	<br />
 </div>
-<div class="span8">	
+<div class="span7">	
 	<?php echo $model->descricao; ?>
 </div>
+<div class="span1">	
+	<button id="atv-edit" class="btn btn-primary btn-small" data-atv-id="<?php echo $model->cod_atividade?>">Editar</button>
+	<?php $this->renderPartial('_modal_form', array('model'=>$model)); ?>
 </div>
+
+</div><!-- /header -->
+
 <hr>
 <div class="row-fluid">
 <div class="span6">
@@ -246,10 +253,6 @@ $this->menu=array(
 </div>
 </div>
 </div>
-
-
-
-
 
 <?php $userId = Yii::app()->user->getId(); ?>
 <?php if($model->isResponsible($userId) || $model->isParticipating($userId) || $model->hasStep($userId) || Sipesq::getPermition('atividade.informacoes' >= 2)): ?>

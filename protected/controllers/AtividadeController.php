@@ -44,7 +44,7 @@ class AtividadeController extends Controller
 		 */
 		return array(
 			array('allow',  // Qualquer pessoa logada
-				'actions'=>array('create','tokenPessoa', 'calendar','loadColumn', 'index'),
+				'actions'=>array('create','tokenPessoa', 'calendar','loadColumn', 'index', 'excelExport'),
 				'users'=>array('@'),
 				//'expression'=>function($user, $rule){}
 			),
@@ -60,7 +60,10 @@ class AtividadeController extends Controller
 				'actions'=>array('json', 'view', 'tokenPessoa','createPasso','loadPassos','loadKanbanItem'),
 				'expression'=>function($user, $rule){
 					//Se é alguém do suporte pode editar a atividade
-					if( Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividade.informacoes') >= 1) return true;
+					if( Sipesq::isSupport($user->getId()) 
+						|| (Sipesq::getPermition('atividade.informacoes') >= 1)
+						|| (Sipesq::getPermition('projeto.atividades') >= 1)
+					) return true;
 					
 					if(isset($_GET['id'])) 
 						$id = $_GET['id'];
@@ -84,7 +87,11 @@ class AtividadeController extends Controller
 					'actions'=>array('updatePasso', 'deletePasso', 'passoConcluido'),
 					'expression'=>function($user, $rule){
 						//Se é alguém do suporte pode editar a atividade
-						if( Sipesq::isSupport($user->getId()) || Sipesq::getPermition('atividade.informacoes') >= 2) return true;
+						
+						if( Sipesq::isSupport($user->getId()) 
+							|| (Sipesq::getPermition('atividade.informacoes') >= 2)
+							|| (Sipesq::getPermition('projeto.atividades') >= 2)
+						) return true;
 							
 						if(isset($_GET['id']))
 							$id = $_GET['id'];
@@ -110,7 +117,11 @@ class AtividadeController extends Controller
 			array('allow', // Suporte ou admin
 				'actions'=>array('update', 'delete','atvToday', 'atvDone', 'atvTodo', 'atvProgress','saveActivity', 'setDone'),
 				'expression'=>function($user, $rule){
-					if ( Sipesq::isSupport() || Sipesq::getPermition('atividades.informacoes') >= 100) return true;
+					
+					if( Sipesq::isSupport($user->getId()) 
+						|| (Sipesq::getPermition('atividade.informacoes') >= 100)
+						|| (Sipesq::getPermition('projeto.atividades') >= 100)
+					) return true;
 
 					if(isset($_GET['id'])) 
 						$id = $_GET['id'];
@@ -184,10 +195,6 @@ class AtividadeController extends Controller
 			
  			$model->cod_categoria = $_POST['Atividade']['cod_categoria'];
 			
- 			if(isset($_POST['Atividade']['bolsas'])) 
-				$model->bolsas = $_POST['Atividade']['bolsas'];
-				
-				
 			//Atualiza a data de edição e criação
 			$model->data_criacao = date('Y-m-d');
 			$model->data_edicao = date('Y-m-d');
@@ -197,9 +204,6 @@ class AtividadeController extends Controller
 					$this->salvaProjetos($model->cod_atividade, $model->projetos);
 					$this->salvaPessoas($model->cod_atividade, $model->pessoas);
 				
-					if(count($model->bolsas) > 0)
-						$this->salvaBolsas($model->cod_atividade, $model->bolsas);
-
 				$this->broadCast($model->cod_atividade, "adicionou você na atividade");
 						
 				$this->redirect(array('view','id'=>$model->cod_atividade));
@@ -967,10 +971,44 @@ class AtividadeController extends Controller
 		,	$results);
 		
 		header('Content-type: application/json');
-		header('Content-Enconding: gzip');
 		echo json_encode($atvs);
 		Yii::app()->end();
 		
+	}
+
+	public function actionExcelExport(){
+
+		$command =  Yii::app()->db->createCommand();
+
+		$command->select = 'nome_atividade as atividade, projeto.nome as projeto, atividade.data_fim, atividade.estagio, projeto.data_inicio as inicio_projeto, projeto.data_fim as fim_projeto';
+		$command->from('projeto, atividade, atividade_projeto');
+		$command->where = 'atividade.cod_atividade = atividade_projeto.cod_atividade AND projeto.cod_projeto = atividade_projeto.cod_projeto';
+		$command->order = 'projeto.nome, atividade.data_fim ASC, atividade.nome_atividade';
+
+		//Return array
+		$results = $command->queryAll();
+
+		echo "<table border='1'>";
+		foreach ($results as $item) {
+				echo implode(" ", array(
+					"<tr><td>",				
+					date('d/m/Y', strtotime($item['data_fim'])),
+					"</td><td>",
+					$item['atividade'],
+					"</td><td>",
+					$item['projeto'],
+					"</td><td>",
+					$item['estagio'] ? 1 : 0,
+					"</td><td>",
+					date('d/m/Y', strtotime($item['inicio_projeto'])),
+					"</td><td>",
+					"</td><td>",
+					date('d/m/Y', strtotime($item['fim_projeto'])),
+					"</td><td>",
+					"</td></tr>"
+				));
+		}
+		echo "</table>";	
 	}
 	
 

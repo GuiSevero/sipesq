@@ -41,7 +41,7 @@
 			font-size: 11pt;
 		}
 
-		#section4 {
+		.section-break {
 			page-break-before: always;
 		}
 
@@ -50,20 +50,15 @@
 			page-break-inside: avoid;
 		}
 
-		.atv-section {
+		#atv-section {
 			display: inline;
 			font-size: 11pt;
 			font-weight: 700;
 		}
 
-		.atv-text {
+		#atv-text {
 			display: inline;
 			font-size: 11pt;
-			text-align: justify;
-		}
-
-		.atv-desc{
-			text-align: justify;
 		}
 
 		.atv-nome {
@@ -82,6 +77,11 @@
 		.table-relatorio tbody > tr:nth-child(odd) > th {
 			background-color: #ececec;
 		}
+
+		.bar_chart {
+			page-break-inside: avoid;
+		}
+
 
 	}
 
@@ -135,13 +135,7 @@
 		}
 	}
 
-	.bar_chart{
-		width: 800px;
-		height: 300px;
-	}
-	.char-table{
-		margin-top: 20px;
-	}
+	
 
 	.view-atividade{
 		font-weight: 400;
@@ -153,17 +147,13 @@
 	
 
 	@media screen {
-		.atv-section{
+		#atv-section{
 	 		font-weight: 100;
 	 		text-align: right;
 		}
-		.atv-desc{
-			text-align: justify;
-		}
-		
-		.atv-text {
+
+		#atv-text {
 			font-weight: 100;
-			text-align: justify;
 		}
 
 		.print {
@@ -201,6 +191,15 @@
 		.table-relatorio tbody tr:hover > td,
 		.table-relatorio tbody tr:hover > th {
 			background-color: #adadad;
+		}
+
+		.bar_chart{
+		width: 800px;
+		height: 300px;
+		}
+
+		.char-table{
+			margin-top: 20px;
 		}
 	}
 	

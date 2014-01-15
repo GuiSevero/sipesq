@@ -127,7 +127,7 @@ class Notificacao extends CActiveRecord
 		$command->params = array('receiver'=>$id);
 		$command->where = "receiver = :receiver";
 		$command->select = implode(', ', $select);
-		$command->order = 'time DESC';
+		$command->order = 'read ASC, time DESC';
 		$command->limit($limit, $offset);
 		
 		$result['items'] =  array_map(function($item){

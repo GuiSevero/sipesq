@@ -6,3 +6,4 @@
 	<?php foreach ($model->atividades as $atividade):?>
 		<?php $this->renderPartial('/atividade/_view', array('data'=>$atividade));?> 
 	<?php endforeach;?>
+?>

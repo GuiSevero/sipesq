@@ -9,10 +9,10 @@
 		</div>
 		
 		<div class="row-fluid">
-		<div class="span2" class="atv-section">
+		<div class="span2" id="atv-section">
 			Categoria<span class="print">:</span>
 		</div>
-		<div class="span10" class="atv-text">
+		<div class="span10" id="atv-text">
 			<?php if(is_object($atividade->categoria)):?>
 			<?php if($atividade->categoria->categoriaPai->cod_categoria != $atividade->categoria->cod_categoria ):?>
 				<?php echo CHtml::encode($atividade->categoria->categoriaPai->nome);?> <b>&gt;</b> 
@@ -22,37 +22,35 @@
 		</div>
 	</div>
 		<div class="row-fluid">
-		<div class="span2" class="atv-section">
+		<div class="span2" id="atv-section">
 			Prazo<span class="print">: </span>
 		</div>
-		<div class="span10" class="atv-text">
+		<div class="span10" id="atv-text">
 			<?php echo Sipesq::date($atividade->data_inicio);?> a <?php echo Sipesq::date($atividade->data_fim);?>
 		</div>
 	</div>
 		<div class="row-fluid">
-		<div class="span2" class="atv-section">
+		<div class="span2" id="atv-section">
 			Responsável<span class="print">: </span>
 		</div>
-		<div class="span10" class="atv-text">
+		<div class="span10" id="atv-text">
 			<?php echo CHtml::encode($atividade->responsavel->nome); ?>
 		</div>
 	</div>
 		<div class="row-fluid">
-		<div class="span2" class="atv-section">
+		<div class="span2" id="atv-section">
 			Participantes<span class="print">: </span>
 		</div>
-		<div class="span10" class="atv-text">
+		<div class="span10" id="atv-text">
 			<?php $pess = array(); foreach($atividade->pessoas as $p) $pess[] = $p->nome; echo implode(', ', $pess); ?>
 		</div>
 	</div>
 		<div class="row-fluid">
-		<div class="span2" class="atv-section">
+		<div class="span2" id="atv-section">
 			Descrição<span class="print">: </span>
 		</div>
-		<div class="span10" class="atv-text">
-			<span class="atv-desc">
-				<?php echo $atividade->descricao ?>
-			</span>
+		<div class="span10" id="atv-text">
+			<span class="atv-desc"><?php echo $atividade->descricao ?></span>
 		</div>
 	</div>
 	</div>

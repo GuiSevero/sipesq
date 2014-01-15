@@ -82,7 +82,7 @@ class ProjetoVerba extends CActiveRecord
 			'projeto' => array(self::BELONGS_TO, 'Projeto', 'cod_projeto'),
 			'rubricas' => array(self::MANY_MANY, 'Rubrica', 'projeto_verba_rubrica(cod_rubrica, cod_verba)'),
 			'desembolsos' =>array(self::HAS_MANY, 'ProjetoDesembolso', 'cod_verba'),
-			'despesas' =>array(self::HAS_MANY, 'ProjetoDespesa', 'cod_verba'),
+			'despesas' =>array(self::HAS_MANY, 'ProjetoDespesa', 'cod_verba', 'order'=>'data_compra desc'),
 			'recebido'=>array(self::STAT, 'ProjetoDesembolso','cod_verba' ,'select'=>'SUM(valor)'),
 		);
 	}
@@ -169,6 +169,7 @@ class ProjetoVerba extends CActiveRecord
 	 * Retorna a soma dos valores orcamentados para as rubricas desta verba
 	 */
 	public function getOrcamentado(){
+		
 		$orcamentado = 0;
 		foreach($this->rubricas as $rub){
 			$orcamentado += $rub->getOrcamentado($this->cod_projeto);

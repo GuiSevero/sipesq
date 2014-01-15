@@ -28,25 +28,18 @@ $('.atv-desc').each(function(){
 <br />
 
 <div class="relatorio-text">	
-		<b><?php echo CHtml::encode("Coordenador"); ?>:</b>
-		<?php echo CHtml::encode($model->professor->nome); ?>
-		<br />
-		<b><?php echo CHtml::encode($model->getAttributeLabel('codigo_projeto')); ?>:</b>
-		<?php echo CHtml::encode($model->codigo_projeto); ?>
-		<br />
-		<b><?php echo CHtml::encode($model->getAttributeLabel('data_inicio')); ?>:</b>
-		<?php echo CHtml::encode(Sipesq::date($model->data_inicio)); ?>
-		<br />
-		<b><?php echo CHtml::encode($model->getAttributeLabel('data_fim')); ?>:</b>
-		<?php echo CHtml::encode(Sipesq::date($model->data_fim)); ?>
-		<br />
-		<b><?php echo CHtml::encode($model->getAttributeLabel('data_relatorio')); ?>:</b>
-		<?php echo CHtml::encode(Sipesq::date($model->data_relatorio)); ?>
-
-		<h5>Instrumento Jurídico Fundação de Apoio</h5>
-		<?php $this->renderPartial('/projeto/_view_convenio', array('model'=>$model->convenio)); ?>
-		<h5>Instrumento Jurídico Parceiro Institucional</h5>
-		<?php $this->renderPartial('/projeto/_view_inst_juridico', array('model'=>$model->instrumento_juridico)); ?>
+		<div class="view view-atividade">
+			<div class="atv-nome">
+		Instrumento Jurídico Fundação de Apoio
+	</div>
+		<?php $this->renderPartial('/projeto/relatorio/_convenio', array('model'=>$model->convenio)); ?>
+	</div>
+	<div class="view view-atividade">
+			<div class="atv-nome">
+		Instrumento Jurídico Parceiro Institucional
+	</div>
+		<?php $this->renderPartial('/projeto/relatorio/_inst_juridico', array('model'=>$model->instrumento_juridico)); ?>
+	</div>
 </div>
 <br />
 <br />
@@ -56,7 +49,22 @@ $('.atv-desc').each(function(){
 </div>
 <br />
 <div class="relatorio-text">
-	<?php foreach($model->pessoas_atuantes as $pessoa) echo  $pessoa->nome. "<br />" ?>
+	<div class="row-fluid">
+		<div class="span2" id="atv-section">
+			<?php echo CHtml::encode("Coordenador"); ?><span class="print">:</span>
+		</div>
+		<div class="span10" id="atv-text">
+			<?php echo CHtml::encode($model->professor->nome); ?>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span2" id="atv-section">
+			<?php echo CHtml::encode("Equipe"); ?> (<?php echo count($model->pessoas_atuantes); ?>)<span class="print">:</span>
+		</div>
+		<div class="span10" id="atv-text">
+			<?php foreach($model->pessoas_atuantes as $pessoa) echo  $pessoa->nome. "<br />" ?>
+		</div>
+	</div>
 </div>
 
 <br />
@@ -66,14 +74,14 @@ $('.atv-desc').each(function(){
 	<span class="relatorio-number">3</span>Descrição
 </div>
 <br />
-<div class="relatorio-text">
+<div class="relatorio-text" id="atv-text">
 	<?php echo $model->descricao; ?>
 </div>
 
 <br />
 <br />
 
-<div class="relatorio-section" id="section4">
+<div class="relatorio-section section-break">
 	<span class="relatorio-number">4</span>Atividades
 </div>
 <br />
@@ -84,7 +92,7 @@ $('.atv-desc').each(function(){
 <br />
 <br />
 
-<div class="relatorio-section">
+<div class="relatorio-section section-break">
 	<span class="relatorio-number">5</span>Financeiro
 </div>
 

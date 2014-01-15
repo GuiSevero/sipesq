@@ -37,7 +37,7 @@ class ProjetoController extends Controller
 			**/
 		
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro', 'morrisData'),
+					'actions'=>array('tabFinanceiro','relatorio','financeiro', 'ajaxDespesas', 'jsonFinanceiro', 'morrisData', 'jsonRubricas'),
 					'expression'=> function(){
 
 						if(isset($_GET['id'])){
@@ -458,23 +458,44 @@ public function actionRelatorio($id)
 				$model->convenio = json_encode($_POST['Convenio']);
 			}
 
-			
-			//Retira a permisssão do coordenador antigo
-			$this->deleteDafaultPermissions($model);
-				
 			$model->attributes=$_POST['Projeto'];
-			if($model->save()){
-				
-				if(!$this->salvaOrcamento($model->cod_projeto, $orcamentos))
-					throw new CHttpException(500, "ERRO AO ADICIONAR ORCAMENTOS");
-				
-				//Atualiza permissão do coordenador
-				//$this->createDafaultPermissions($model);
-				$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes));
 
-				$this->broadCast($model->cod_projeto, "atualizou o projeto");
-				$this->redirect(array('view','id'=>$model->cod_projeto));
+			$connection = Yii::app()->db; 
+			$transaction=$connection->beginTransaction();
+
+			try
+			{
+			    //Retira a permisssão do coordenador antigo
+				//$this->deleteDafaultPermissions($model);
+
+			    if($model->save()){
+					
+					if(!$this->salvaOrcamento($model->cod_projeto, $orcamentos))
+						$model->addError('orcamentos', "Erro ao salvar orçamentos");
+					
+					//Atualiza permissão do coordenador
+					//$this->createDafaultPermissions($model);
+
+					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes))) 
+						$model->addError('pessoas_atuantes', "Erro ao adicionar equipe");
+
+					//Verifica erros e gera exceção
+					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
+
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
+					//Redireciona
+					$this->redirect(array('view','id'=>$model->cod_projeto));
+
+				}
 			}
+			catch(Exception $e) // uma exceção é disparada caso uma das consultas falhe
+			{
+			    $transaction->rollBack();	
+			    $model->instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
+				$model->convenio = Convenio::load(json_decode($model->convenio));	
+			}
+			
 		}
 
 		$this->render('update',array(
@@ -791,14 +812,17 @@ public function actionRelatorio($id)
 	 * @param unknown $pessoas
 	 */
 	private function salvaPessoas($cod_projeto,$pessoas){
-		ProjetoPessoaAtuante::model()->deleteAll('cod_projeto = '.$cod_projeto);
-		foreach ($pessoas as $p){
-			$a = new ProjetoPessoaAtuante();
-			$a->cod_projeto = $cod_projeto;
-			$a->cod_pessoa = $p;
-			$a->save();
-			unset($a);		
-		}
+
+			ProjetoPessoaAtuante::model()->deleteAll('cod_projeto = '.$cod_projeto);
+			foreach ($pessoas as $p){
+				$a = new ProjetoPessoaAtuante();
+				$a->cod_projeto = $cod_projeto;
+				$a->cod_pessoa = $p;
+				if(!$a->save()) return false;
+				unset($a);		
+			}
+		
+		return true;
 	}
 	
 	
@@ -809,7 +833,7 @@ public function actionRelatorio($id)
 	 * @return boolean - caso todas as alterações tenham sido efetivas. Util para fazer transactions
 	 */
 	private function salvaOrcamento($cod_projeto, $rubricas){
-		
+
 		$rows = ProjetoOrcamento::model()->deleteAll('cod_projeto = '.$cod_projeto);
 
 		if($rubricas === null)
@@ -822,10 +846,9 @@ public function actionRelatorio($id)
 			$orc->cod_projeto = $cod_projeto;
 			$orc->valor = $r['valor'];
 
-			//erro ao salvar - retorna false
-			if(!$orc->save()){
-				return false;
-			}
+			//erro ao salvar -> retorna false
+			if(!$orc->save()) return false;
+			
 			unset($orc);
 		}
 		
@@ -1322,6 +1345,41 @@ public function actionRelatorio($id)
 		echo $model->ativo;
 		//echo $model->attributes;
 
+	}
+
+	public function actionJsonRubricas($id){
+
+		$model = $this->loadModel($id);
+		$data = array();
+		$data[] = array('Rubrica', 'Orçamentado', 'Recebido', 'Gastos Comprometidos', 'Gastos Correntes', 'Saldo Disponível', 'Saldo Corrente');
+
+		 foreach($model->receitas as $receita)
+			 foreach($receita->rubricas as $rub){
+			 	//$recebido = $rub->calculaReceitas($rub, $model->cod_projeto);
+		 		$gasto_rubrica = $receita->gastosComprometidos($rub);
+		 		$recebido = $gasto_rubrica
+		 		+ min($receita->saldo_comprometido,
+		 			 ($receita->projeto->getOrcamentado($rub->cod_rubrica) - $gasto_rubrica)
+		 			  
+		 		);
+		 		$gasto_comprometido = $receita->gastosComprometidos($rub);
+		 		$gasto_corrente = $receita->gastosCorrentes($rub);
+
+		 		$data[] = array($rub->nome
+			 			, $model->getOrcamentado($rub->cod_rubrica) * 1.0
+			 			, $recebido * 1.0
+			 			, $gasto_comprometido * 1.0
+			 			, $gasto_corrente * 1.0
+			 			, ($recebido - $gasto_comprometido) * 1.0
+			 			, ($recebido - $gasto_corrente) * 1.0
+		 			);
+			 }
+			
+			$this->layout=false;
+			header('Content-type: application/json');
+			echo json_encode($data);
+			Yii::app()->end();
+	
 	}
 
 	public function actionMorrisData($id){

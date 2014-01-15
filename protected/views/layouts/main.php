@@ -22,6 +22,7 @@
    
    
    <?php //Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+
    
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/jquery.js' ?>"></script>
    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl .'/js/ejs.js' ?>"></script>
@@ -83,7 +84,25 @@
 </body>
 
 <script>
-
+jQuery(function($) {
+    $('form[data-async]').on('submit', function(event) {
+      console.log('on');
+        var form = $(this);
+        var target = $(form.attr('data-target'));
+ 
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+ 
+            success: function(data, status) {
+                target.html(data);
+            }
+        });
+ 
+        event.preventDefault();
+    });
+});
 $('#sq').change(function(){
 	if($('#sq').val().trim().length > 2)
 		window.location.href = '/sipesq/index.php/site/search/?q=' + $('#sq').val().trim();

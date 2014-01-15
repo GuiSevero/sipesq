@@ -254,7 +254,8 @@ class ProjetoDespesaController extends Controller
 					}
 				}//PostDespesaInfo
 				
-				$this->redirect(array('view','id'=>$model->cod_despesa));
+				//$this->redirect(array('view','id'=>$model->cod_despesa));
+				$this->redirect(array('/projeto/financeiro/','id'=>$model->verba->projeto->cod_projeto));
 			}
 				
 		}

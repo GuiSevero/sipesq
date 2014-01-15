@@ -39,6 +39,28 @@ Yii::app()->clientScript->registerScript('morris',"
 
 
 	});
+
+Morris.Bar({
+  element: 'morris2',
+  data: [
+    { y: 'Orçamentado', a: 89},    
+    { y: 'Recebido', a: 33},  
+    { y: 'Gasto Corrente', a: 24},    
+    { y: 'Gasto Comprometido', a: 19},
+    { y: 'Saldo', a: 10},    
+    { y: 'Saldo Corrente', a: 30}    
+
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['Valor'],
+  xLabelAngle: 0,
+  hideHover: true,
+  barColors: function (row, series, type) {  	
+  	var colors = ['#25BA37', '#40C950', '#CC4523', '#E37768','#3E60CF','#5F7DDE'];
+    return colors[row.x];
+   }
+});
 	
 
 ");
@@ -62,5 +84,6 @@ Yii::app()->clientScript->registerScript('morris',"
 <div class="row-fluid">
  <div class="span12">
 		<div id="morris" style="max-width: 90%;"></div>
+		<div id="morris2"></div>
 </div>
 </div>	

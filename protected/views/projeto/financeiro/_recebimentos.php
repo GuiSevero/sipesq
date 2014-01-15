@@ -22,7 +22,7 @@
 			<td>R$ <?php echo number_format($rec->gasto_comprometido, 2, ',','.');?></td>
 			<td>R$ <?php echo number_format($rec->saldo_comprometido, 2, ',','.');?></td>
 			<td>
-				<?php echo CHtml::link("<i class='icon icon-plus'></i>",array('/projetoDespesa/add', 'id'=>$rec->cod_verba), array('class'=>'link tip', 'title'=>'Adicionar Despesa'));?>
+				<?php echo CHtml::link('<i class="icon icon-plus"></i>' ,array('/projetoDespesa/create/','id'=>$projeto->cod_projeto), array('class'=>'tip', 'title'=>"Adicionar Despesa"))?>
 				<?php echo CHtml::link("<i class='icon icon-search'></i>",array('/projetoVerba/view', 'id'=>$rec->cod_verba), array('class'=>'link tip', 'title'=>'Mais Informações'));?>
 				<?php echo CHtml::link("<i class='icon icon-pencil'></i>",array('/projetoVerba/update', 'id'=>$rec->cod_verba, 'ajax'=>false) ,array('title'=>'Editar', 'class'=>'tip' /*, 'data-toggle'=>'modal', 'data-target'=>'#modal-info' */))?>
 				<?php echo CHtml::link("<i class='icon icon-trash'></i>",'#', array(
