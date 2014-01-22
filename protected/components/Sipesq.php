@@ -48,7 +48,7 @@ class Sipesq
 			return false; //não é do suporte
 	}
 	
-	
+
 	public static function getPermition($route, $id=null){
 		
 		if (Yii::app()->user->isGuest) return 0;
