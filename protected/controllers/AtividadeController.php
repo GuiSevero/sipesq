@@ -208,6 +208,34 @@ class AtividadeController extends Controller
 						
 				$this->redirect(array('view','id'=>$model->cod_atividade));
 			}
+
+
+			$connection = Yii::app()->db; 
+			$transaction=$connection->beginTransaction();
+			try
+			{
+				if($model->save()){
+
+					if(!$this->salvaProjetos($model->cod_atividade, $model->projetos))
+						$model->addError('projetos', "Erro ao salvar projetos");
+
+					if(!$this->salvaPessoas($model->cod_atividade, $model->pessoas))
+						$model->addError('pessoas', "Erro ao salvar pessoas");
+				
+					$this->broadCast($model->cod_atividade, "adicionou você na atividade");
+
+					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR ATIVIDADE");
+					
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
+					$this->redirect(array('view','id'=>$model->cod_atividade));
+			 
+					
+				}
+			} catch (Exception $e)
+			{
+			    $transaction->rollBack();	
+			}
 				
 		}
 
@@ -281,17 +309,33 @@ class AtividadeController extends Controller
 
 			$model->data_edicao = date('Y-m-d');
 			
-			if($model->save()){
-				
-				if(count($model->pessoas) > 0)
-					$this->salvaPessoas($model->cod_atividade, $model->pessoas);
-				
-				if(count($model->projetos) > 0)
-					$this->salvaProjetos($model->cod_atividade, $model->projetos);
+			$connection = Yii::app()->db; 
+			$transaction=$connection->beginTransaction();
+			try
+			{
+				if($model->save()){
 
-				$this->broadCast($model->cod_atividade, "atualizou a atividade");
-							
-				$this->redirect(array('view','id'=>$model->cod_atividade));
+					if(count($model->pessoas) > 0)
+						if(!$this->salvaPessoas($model->cod_atividade, $model->pessoas))
+							$model->addError('pessoas', "Erro ao salvar pessoas");
+				
+					if(count($model->projetos) > 0)
+						if(!$this->salvaProjetos($model->cod_atividade, $model->projetos))
+							$model->addError('projetos', "Erro ao salvar projetos");
+
+					$this->broadCast($model->cod_atividade, "atualizou a atividade");
+			 
+					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR ATIVIDADE");
+					
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
+					$this->redirect(array('view','id'=>$model->cod_atividade));
+					
+				}
+			} catch (Exception $e)
+			{
+			    $transaction->rollBack();	
+
 			}
 		}
 
@@ -379,29 +423,17 @@ class AtividadeController extends Controller
 			Yii::app()->end();		
 		}
 	}
-	
-	private function salvaBolsas($cod_atividade, $bolsas){
-		AtividadeFinanceiro::model()->deleteAll('cod_atividade = '.$cod_atividade);
-		foreach ($bolsas as $bolsa){
-			$a = new AtividadeFinanceiro();
-			$a->cod_atividade = $cod_atividade;
-			$a->cod_financeiro = $bolsa;
-			$a->save();
-			unset($a);		
-		}
 		
-	}
-	
 	private function salvaProjetos($cod_atividade,$projetos){
 		AtividadeProjeto::model()->deleteAll('cod_atividade = '.$cod_atividade);
 		foreach ($projetos as $p){
 			$a = new AtividadeProjeto();
 			$a->cod_atividade = $cod_atividade;
 			$a->cod_projeto = $p;
-			$a->save();
+			if(!$a->save()) return false;
 			unset($a);		
 		}
-		
+		return true;
 	}
 
 	/**
@@ -533,14 +565,16 @@ class AtividadeController extends Controller
 	 * @param Array $pessoas
 	 */
 	private function salvaPessoas($cod_atividade,$pessoas){
+
 		AtividadePessoa::model()->deleteAll('cod_atividade = '.$cod_atividade);
 		foreach ($pessoas as $p){
 			$a = new AtividadePessoa();
 			$a->cod_atividade = $cod_atividade;
 			$a->cod_pessoa = $p;
-			$a->save();
+			if(!$a->save()) return false;
 			unset($a);		
 		}
+		return true;
 	}
 	
 	public function actionPassoConcluido($id){
