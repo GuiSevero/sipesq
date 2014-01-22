@@ -423,9 +423,11 @@ public function actionRelatorio($id)
 					//Verifica erros e gera exceção
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
 					
-					
 					//Notifica usuarios
 					$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
+
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
 
 					//Redireciona
 					$this->redirect(array('view','id'=>$model->cod_projeto));
