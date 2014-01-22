@@ -405,21 +405,37 @@ public function actionRelatorio($id)
 				
 			} 
 			
-			if($model->save()){
-				//Cria permissão para o coordenador
-				
-				if(!$this->salvaOrcamento($model->cod_projeto, $model->orcamentos))
-					throw new CHttpException(500, "ERRO AO ADICIONAR ORCAMENTOS");
-				
-				//$this->createDafaultPermissions($model);
-				$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes));
-				
-				//Notifica usuarios
-				$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
 
-				//Redireciona
-				$this->redirect(array('view','id'=>$model->cod_projeto));
-				
+			$connection = Yii::app()->db; 
+			$transaction=$connection->beginTransaction();
+
+			try
+			{
+				if($model->save()){
+
+					
+					if(!$this->salvaOrcamento($model->cod_projeto, $model->orcamentos))
+							$model->addError('orcamentos', "Erro ao salvar orçamentos");
+
+					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes))) 
+						$model->addError('pessoas_atuantes', "Erro ao adicionar equipe");
+
+					//Verifica erros e gera exceção
+					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
+					
+					
+					//Notifica usuarios
+					$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
+
+					//Redireciona
+					$this->redirect(array('view','id'=>$model->cod_projeto));
+					
+				}
+			} catch (Exception $e)
+			{
+			    $transaction->rollBack();	
+			    $model->instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
+				$model->convenio = Convenio::load(json_decode($model->convenio));	
 			}
 		}
 

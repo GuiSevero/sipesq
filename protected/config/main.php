@@ -102,7 +102,7 @@ return array(
 		*/
 		// Banco de dados de desenvolvimento
 		'db'=>array(
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sipesq_prod',
+			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sip08012014',
 			//'emulatePrepare' => true, //causa bug na conversao de boolean
 			'username' => 'postgres',
 			'password' => 'gorder',

@@ -286,6 +286,7 @@ class ProjetoVerbaController extends Controller
 		}
 		
 		$model->cod_verba = $verba->cod_verba;
+		$model->verba = $verba;
 		
 		
 		if(isset($_POST['ProjetoDesembolso']))

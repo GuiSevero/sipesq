@@ -29,7 +29,7 @@ class LivroController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','all','view','search','emprestimos','devolucao', 'create', 'update'),
+				'actions'=>array('index','all','view','search','emprestimos','devolucao', 'create', 'update', 'emprestimo'),
 				'users'=>array('@'),
 			),
 			/*
