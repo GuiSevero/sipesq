@@ -104,6 +104,56 @@ class Calendar
 		return array_map($map, $results);
 		
 	}
+
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @return Atividade the static model class
+	 */
+	public static function passos($from=null, $to=null)
+	{
+		
+		$params = array();
+		
+		if($from == null || $to == null){
+			$params['start'] = date('Y-m-d');
+			$params['end'] = date('Y-m-d');
+		}
+		else{
+			$params['start'] = date('Y-m-d', $from / 1000);
+			$params['end'] =  date('Y-m-d', $to / 1000);
+		}
+		
+		//Cria comando para execução
+		$where = " (data_prazo >= :start AND data_prazo <= :end) ";
+		
+		//Se não for do suporte mostra só as atividades dele
+		if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1 || true){
+			$where .= " AND cod_pessoa = :id ";
+			$params['id'] = Yii::app()->user->getId();
+		}
+		
+		$command =  Yii::app()->db->createCommand()
+		->select('descricao, data_prazo, cod_pessoa, cod_passo, cod_atividade')
+		->where($where, $params)
+		->from('atividade_passo');
+		
+		$results = $command->queryAll();
+		
+		$func_map = function($passo){
+			$result = array(
+					'id'=> "" .$passo['cod_passo']
+					,'title'=>$passo['descricao']
+					,'url'=>"" .Yii::app()->createUrl('/atividade/view', array('id'=>$passo['cod_atividade']))
+					,'class'=>'event-special'
+					,'start'=>""  .strtotime($passo['data_prazo']) * 1000 + 3600
+					,'end'=>"" .strtotime($passo['data_prazo']) * 1000 + 3600*2
+			);
+			return $result;
+		};
+		
+		return array_map($func_map, $results);
+	}
 	
 	public static function projetosPessoa($from, $to){
 		

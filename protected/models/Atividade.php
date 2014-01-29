@@ -312,7 +312,10 @@ class Atividade extends CActiveRecord
 	 * Verifica se o usuario $id participa desta atividade
 	 * @param integer $id - Identificador do usuario
 	 */
-	public function isParticipating($id){
+	public function isParticipating($id = null){
+
+		if($id === null) $id = Yii::app()->user->getId();
+
 		return (bool)Yii::app()->db->createCommand()
 		->select('count(cod_pessoa)')
 		->where("cod_atividade = :atv AND cod_pessoa = :id", array('id'=>$id,'atv'=>$this->cod_atividade))

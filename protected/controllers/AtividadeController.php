@@ -868,10 +868,12 @@ class AtividadeController extends Controller
 		$projetos = array();
 		$atividades = Calendar::atividades($from, $to);
 		$projetos = Calendar::projetos($from, $to);
+		$passos = Calendar::passos($from, $to);
+
 
 		$calendarData = array(
 				 'success'=>1
-				, 'result'=> array_merge($atividades, $projetos)
+				, 'result'=> array_merge($atividades, $projetos, $passos)
 		);
 		
 		$this->layout=false;
@@ -880,7 +882,8 @@ class AtividadeController extends Controller
 		Yii::app()->end();
 		
 	}
-	
+
+
 	
 	/**
 	 * 
