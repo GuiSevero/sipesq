@@ -239,7 +239,7 @@ $this->menu=array(
 <div class="span6">
 	<label><b>Participantes</b></label>
 	<?php foreach($model->pessoas as $pessoa):?>
-		<?php echo CHtml::encode($pessoa->nome); ?>
+		<?php echo CHtml::link(CHtml::encode($pessoa->nome), array('/pessoa/view', 'id'=>$pessoa->cod_pessoa)); ?>
 		<br />
 	<?php endforeach;?>
 </div>
@@ -247,7 +247,9 @@ $this->menu=array(
 <div class="span6">
 	<label><b>Projetos</b></label>
 	<?php foreach($model->projetos as $projeto):?>
-		<?php echo CHtml::encode($projeto->nome); ?>
+		<?php echo CHtml::link(CHtml::encode($projeto->nome)
+			, array('/projeto/view', 'id'=>$projeto->cod_projeto)
+		); ?>
 		<br />
 	<?php endforeach;?>
 </div>
