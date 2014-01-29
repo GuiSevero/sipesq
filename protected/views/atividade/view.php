@@ -248,7 +248,7 @@ $this->menu=array(
 	<label><b>Projetos</b></label>
 	<?php foreach($model->projetos as $projeto):?>
 		<?php echo CHtml::link(CHtml::encode($projeto->nome)
-			, array('/projeto/view', 'id'=>$projeto->cod_projeto)
+			, array('/projeto/atividades', 'id'=>$projeto->cod_projeto)
 		); ?>
 		<br />
 	<?php endforeach;?>
