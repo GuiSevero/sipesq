@@ -329,6 +329,7 @@ public function actionFileBrowser()
 		$criteriaPessoas = new CDbCriteria();
 		$criteriaProjetos = new CDbCriteria();
 		$criteriaContatos = new CDbCriteria();
+		$criteriaAtividades = new CDbCriteria();
 
 		$pessoa = CHtml::encode($q);
 		
@@ -351,17 +352,31 @@ public function actionFileBrowser()
 		$criteriaContatos->addCondition("instituicao ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaContatos->addCondition("telefone ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaContatos->addCondition("descricao ILIKE '%{$pessoa}%'", 'OR');
+
+
+		//Pesquisa os contatos
 		
+		$criteriaAtividades->with = array('responsavel', 'pessoas', 'projetos');
+		$criteriaAtividades->together=true;
+		$criteriaAtividades->limit = 10;
+		$criteriaAtividades->addCondition("nome_atividade ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaAtividades->addCondition("nome_atividade ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaAtividades->addCondition("responsavel.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaAtividades->addCondition("pessoas.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaAtividades->addCondition("projetos.nome ILIKE '%{$pessoa}%'", 'OR');
+
 		
 		//Pesquisa os projetos
 		$criteriaProjetos->with = array('pessoas_atuantes', 'pos_graduando', 'graduando', 'professor');
 		$criteriaProjetos->together=true;
 		$criteriaProjetos->addCondition("t.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("t.codigo_projeto ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("t.nome_curto ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("pessoas_atuantes.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("professor.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("pos_graduando.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("graduando.nome ILIKE '%{$pessoa}%'", 'OR');
+
 		
 		
 		/*
@@ -388,12 +403,18 @@ public function actionFileBrowser()
 							'pagination'=>array('pageSize'=>10,),
 							'criteria'=>$criteriaContatos
     						));
+
+    	$dataProviderAtividades=new CActiveDataProvider('Atividade', array( 
+							'pagination'=>array('pageSize'=>10,),
+							'criteria'=>$criteriaAtividades
+    						));
 		
     						
 		$this->render('/site/search',array(
 			'dataProviderPessoas'=>$dataProviderPessoas,
 			'dataProviderProjetos'=>$dataProviderProjetos,
 			'dataProviderContatos'=>$dataProviderContatos,
+			'dataProviderAtividades'=>$dataProviderAtividades,
 		));
 		
 	}

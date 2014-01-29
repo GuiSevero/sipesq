@@ -32,3 +32,12 @@
 		'itemView'=>'/contato/_sresult',
 	)); ?>
 </div>
+
+<h3>Atividades</h3>
+<div class="search-results view">
+	<?php $this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProviderAtividades,
+		'itemView'=>'/atividade/_sresult',
+	)); ?>
+</div>
+<br>
