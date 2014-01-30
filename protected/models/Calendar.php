@@ -15,12 +15,12 @@ class Calendar
 	 * Returns the static model of the specified AR class.
 	 * @return Atividade the static model class
 	 */
-	public static function atividades($from=null, $to=null)
+	public static function atividades($from=null, $to=null, $showAll=false)
 	{
 		
 		$params = array();
 		
-		if($from == null|| $to == null){
+		if($from == null || $to == null){
 			$params['start'] = date('Y-m-d');
 			$params['end'] = date('Y-m-d');
 		}
@@ -28,21 +28,34 @@ class Calendar
 			$params['start'] = date('Y-m-d', $from / 1000);
 			$params['end'] =  date('Y-m-d', $to / 1000);
 		}
-		
+
 		//Cria comando para execução
 		$where = " ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end)) ";
+		$where .= " AND atividade.cod_atividade = atividade_pessoa.cod_atividade ";
 		
 		//Se não for do suporte mostra só as atividades dele
-		if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1){
-			$where .= " AND cod_pessoa = :id ";
+		//if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1){
+		if(true){
+
+			$where .= " AND atividade_pessoa.cod_pessoa = :id";
 			$params['id'] = Yii::app()->user->getId();
 		}
+
+		$union = implode(" ", array(
+			"SELECT nome_atividade, data_inicio, data_fim, atividade.cod_pessoa, atividade.cod_atividade",
+			"FROM atividade",
+			"WHERE cod_pessoa = :id",
+			" AND ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end))",
+		)); 
 		
+
 		$command =  Yii::app()->db->createCommand()
-		->select('nome_atividade, data_inicio, data_fim, cod_pessoa, cod_atividade')
+		->select('nome_atividade, data_inicio, data_fim, atividade_pessoa.cod_pessoa, atividade.cod_atividade')
 		->where($where, $params)
-		->from('atividade');
-		
+		->from('atividade, atividade_pessoa')
+		->union($union);
+
+
 		$results = $command->queryAll();
 		
 		$atividades = function($atv){
@@ -128,10 +141,8 @@ class Calendar
 		$where = " (data_prazo >= :start AND data_prazo <= :end) ";
 		
 		//Se não for do suporte mostra só as atividades dele
-		if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1 || true){
-			$where .= " AND cod_pessoa = :id ";
-			$params['id'] = Yii::app()->user->getId();
-		}
+		$where .= " AND cod_pessoa = :id ";
+		$params['id'] = Yii::app()->user->getId();
 		
 		$command =  Yii::app()->db->createCommand()
 		->select('descricao, data_prazo, cod_pessoa, cod_passo, cod_atividade')

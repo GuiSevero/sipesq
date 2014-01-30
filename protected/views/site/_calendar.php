@@ -40,7 +40,7 @@ Yii::app()->clientScript->registerScript("calendar", "
 								,	'</a>'
 								, 	' <i>' + val.date + '</i>'
 								].join(''))
-								.addClass('view')
+								.addClass('view ' + ' day-highlight dh-' + val.class)
 								.appendTo(list);
 						});
 					}
@@ -74,6 +74,7 @@ Yii::app()->clientScript->registerScript("calendar", "
 		<ul class="unstyled inline">
 			<li><span class="pull-left event event-info"></span>&nbsp;Projeto</li>
 			<li><span class="pull-left event event-important"></span>&nbsp;Atividade</li>
+			<li><span class="pull-left event event-special"></span>&nbsp;Passo</li>
 		</ul>
 		</div>
 		
@@ -117,7 +118,7 @@ Yii::app()->clientScript->registerScript("calendar", "
 	</div>
 	<div class="span4">
 		<h4>Lista de Atividades</h4>
-		<div id="eventlist" style="overflow: auto;"></div>
+		<div id="eventlist" style="overflow: auto; min-height: 300px"></div>
 	</div>
 </div>
 
