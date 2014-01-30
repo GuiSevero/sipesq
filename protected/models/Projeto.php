@@ -29,7 +29,7 @@
  * @property Pessoa $pos_graduando
  * @property Pessoa $graduando
  * @property ProjetoCategoria $categoria
- * @property Pessoa[] $pessoas_atuantes
+ * @property Pessoa[] $pessoas
  * @property Pessoa[] $pessoas_inativas
  * @property Pessoa[] $pessoas_permitidas
  * @property PatrimonioTermos[] $patrimonio_termos
@@ -133,7 +133,7 @@ class Projeto extends CActiveRecord
 			//array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
 			array('cod_professor, cod_grad, cod_pos_grad,  cod_categoria', 'numerical', 'integerOnly'=>true),
 			array('verba_custeio, verba_capital, verba_bolsa', 'numerical'),
-			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas_atuantes, nome_curto, instrumento_juridico, convenio, skydrive', 'safe'),
+			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas, nome_curto, instrumento_juridico, convenio, skydrive', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cod_projeto, nome, codigo_projeto, data_inicio, data_fim, data_relatorio, descricao, verba_custeio, verba_capital, verba_bolsa', 'safe', 'on'=>'search'),
@@ -151,7 +151,7 @@ class Projeto extends CActiveRecord
 			'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
 			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
-			'pessoas_atuantes' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_atuantes.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
+			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
 			'pessoas_inativas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_inativas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = false'),
 			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim asc'),
 			'atividades_finalizadas' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades_finalizadas.data_fim asc', 'condition'=>'atividades_finalizadas.estagio = true'),
@@ -193,9 +193,14 @@ class Projeto extends CActiveRecord
 			'gasto_bolsa'=>'Gasto Bolsa',
 			'finalizado'=>'Finalizado',
 			'cod_categoria'=>'Tipo de Projeto',
+			//Coordenador, Vice-Coordenador, Fiscal, Bolsista Responsável
 			'cod_professor'=>'Professor',
 			'cod_pos_grad'=>'Pós-Graduando',
 			'cod_grad'=>'Graduando',
+			/*
+			'cod_professor'=>'Professor',
+			'cod_pos_grad'=>'Pós-Graduando',
+			'cod_grad'=>'Graduando',*/
 			'skydrive'=>'Pasta no Skydrive',
 		);
 	}
@@ -390,7 +395,7 @@ class Projeto extends CActiveRecord
 		}
 		
 		
-		foreach($this->pessoas_atuantes as $p){
+		foreach($this->pessoas as $p){
 			$loginsArray[] = $p->login;
 		}
 		
@@ -401,12 +406,12 @@ class Projeto extends CActiveRecord
 	/**
 	 * 
 	 * Retorna um array com os logins das pessoas participantes permitidas a ver o projeto
-	 * @return array $pessoas_atuantes[]
+	 * @return array $pessoas[]
 	 */
 	public function pessoasAtuantesToArray(){
 		$pessoas = array();
 		
-		foreach($this->pessoas_atuantes as $p){
+		foreach($this->pessoas as $p){
 			$pessoas[] += $p->login;
 		}
 		
@@ -575,11 +580,11 @@ class Projeto extends CActiveRecord
 				$id = Yii::app()->user->getId();
 			}
 	
-			$criteria->with = array('pessoas_atuantes');
+			$criteria->with = array('pessoas');
 			$criteria->together = true;
 			$criteria->order = "situacao, t.nome";
 			$criteria->addCondition(
-				'pessoas_atuantes.cod_pessoa = :cod_pessoa
+				'pessoas.cod_pessoa = :cod_pessoa
 				 OR t.cod_pos_grad = :cod_pessoa
 				 OR t.cod_grad = :cod_pessoa
 				 OR t.cod_professor = :cod_pessoa', 'AND');

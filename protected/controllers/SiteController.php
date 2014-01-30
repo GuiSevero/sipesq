@@ -367,12 +367,12 @@ public function actionFileBrowser()
 
 		
 		//Pesquisa os projetos
-		$criteriaProjetos->with = array('pessoas_atuantes', 'pos_graduando', 'graduando', 'professor');
+		$criteriaProjetos->with = array('pessoas', 'pos_graduando', 'graduando', 'professor');
 		$criteriaProjetos->together=true;
 		$criteriaProjetos->addCondition("t.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("t.codigo_projeto ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("t.nome_curto ILIKE '%{$pessoa}%'", 'OR');
-		$criteriaProjetos->addCondition("pessoas_atuantes.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("pessoas.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("professor.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("pos_graduando.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("graduando.nome ILIKE '%{$pessoa}%'", 'OR');
@@ -383,7 +383,7 @@ public function actionFileBrowser()
 		 * 'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
 			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
-			'pessoas_atuantes'
+			'pessoas'
 		 * 
 		 */
 		

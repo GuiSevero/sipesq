@@ -82,7 +82,7 @@
 		<div class="span6">
 			<h5>Equipe de Apoio</h5>
 			<ul class="unstyled" id="membros-ativos">
-			<?php foreach($model->pessoas_atuantes as $pessoa):?>
+			<?php foreach($model->pessoas as $pessoa):?>
 				 <li class="membro">
 				 	<b><?php echo CHtml::link(CHtml::encode($pessoa->nome), array('pessoa/view', 'id'=>$pessoa->cod_pessoa)); ?></b>
 				 	 <button class="set-status btn btn-small btn-primary pull-right" title="Desativar Membro" data-pess="<?php echo $pessoa->cod_pessoa?>" data-prj="<?php echo $model->cod_projeto?>" data-status="0">

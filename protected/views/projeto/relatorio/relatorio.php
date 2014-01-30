@@ -59,10 +59,10 @@ $('.atv-desc').each(function(){
 	</div>
 	<div class="row-fluid">
 		<div class="span2" id="atv-section">
-			<?php echo CHtml::encode("Equipe"); ?> (<?php echo count($model->pessoas_atuantes); ?>)<span class="print">:</span>
+			<?php echo CHtml::encode("Equipe"); ?> (<?php echo count($model->pessoas); ?>)<span class="print">:</span>
 		</div>
 		<div class="span10" id="atv-text">
-			<?php foreach($model->pessoas_atuantes as $pessoa) echo  $pessoa->nome. "<br />" ?>
+			<?php foreach($model->pessoas as $pessoa) echo  $pessoa->nome. "<br />" ?>
 		</div>
 	</div>
 </div>

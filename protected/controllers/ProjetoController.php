@@ -386,8 +386,8 @@ public function actionRelatorio($id)
 		{
 			$model->attributes=$_POST['Projeto'];
 			
-			if(isset($_POST['Projeto']['pessoas_atuantes'])){
-				$model->pessoas_atuantes = $_POST['Projeto']['pessoas_atuantes'];
+			if(isset($_POST['Projeto']['pessoas'])){
+				$model->pessoas = $_POST['Projeto']['pessoas'];
 			}
 
 			
@@ -417,8 +417,8 @@ public function actionRelatorio($id)
 					if(!$this->salvaOrcamento($model->cod_projeto, $model->orcamentos))
 							$model->addError('orcamentos', "Erro ao salvar orçamentos");
 
-					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes))) 
-						$model->addError('pessoas_atuantes', "Erro ao adicionar equipe");
+					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas))) 
+						$model->addError('pessoas', "Erro ao adicionar equipe");
 
 					//Verifica erros e gera exceção
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
@@ -457,8 +457,8 @@ public function actionRelatorio($id)
 		
 		if(isset($_POST['Projeto']))
 		{
-			if(isset($_POST['Projeto']['pessoas_atuantes'])){
-				$model->pessoas_atuantes =  $_POST['Projeto']['pessoas_atuantes'];
+			if(isset($_POST['Projeto']['pessoas'])){
+				$model->pessoas =  $_POST['Projeto']['pessoas'];
 			}
 			
 			
@@ -494,8 +494,8 @@ public function actionRelatorio($id)
 					//Atualiza permissão do coordenador
 					//$this->createDafaultPermissions($model);
 
-					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas_atuantes))) 
-						$model->addError('pessoas_atuantes', "Erro ao adicionar equipe");
+					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas))) 
+						$model->addError('pessoas', "Erro ao adicionar equipe");
 
 					//Verifica erros e gera exceção
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
@@ -554,10 +554,10 @@ public function actionRelatorio($id)
 	
 		/*/Se o usuário não for admin ou do suporte só mostra os seus próprios projetos
 		if(Pessoa::getAccessLevel(Yii::app()->user->getId()) < Sipesq::SUPPORT_PERMITION){
-			$criteria->with = array('pessoas_atuantes');
+			$criteria->with = array('pessoas');
 			$criteria->together = true;
 			$criteria->addCondition(
-				'pessoas_atuantes.cod_pessoa = :cod_pessoa
+				'pessoas.cod_pessoa = :cod_pessoa
 				 OR t.cod_pos_grad = :cod_pessoa
 				 OR t.cod_grad = :cod_pessoa
 				 OR t.cod_professor = :cod_pessoa', 'AND');
@@ -581,7 +581,7 @@ public function actionRelatorio($id)
 	{
 		$criteria = new CDbCriteria();
 		$criteria->order = 't.nome';
-		$criteria->with = 'pessoas_atuantes';
+		$criteria->with = 'pessoas';
 		$criteria->together = true;
 		$criteria->addCondition('finalizado = true', 'AND');
 		
@@ -589,7 +589,7 @@ public function actionRelatorio($id)
 		//Verifica se tem permissão para ver todos os projetos
 		if(Pessoa::getAccessLevel(Yii::app()->user->getId()) < Sipesq::SUPPORT_PERMITION){
 			$criteria->addCondition(
-				'pessoas_atuantes.cod_pessoa = :cod_pessoa
+				'pessoas.cod_pessoa = :cod_pessoa
 				 OR t.cod_pos_grad = :cod_pessoa
 				 OR t.cod_grad = :cod_pessoa
 				 OR t.cod_professor = :cod_pessoa', 'AND');
@@ -611,7 +611,7 @@ public function actionRelatorio($id)
 	{
 		$criteria = new CDbCriteria();
 		$criteria->order = 't.nome';
-		$criteria->with = 'pessoas_atuantes';
+		$criteria->with = 'pessoas';
 		$criteria->together = true;
 		$criteria->addCondition('finalizado = false', 'AND');
 		
@@ -619,7 +619,7 @@ public function actionRelatorio($id)
 		//Verifica se tem permissão para ver todos os projetos
 		if(Pessoa::getAccessLevel(Yii::app()->user->getId()) < Sipesq::SUPPORT_PERMITION){
 			$criteria->addCondition(
-				'pessoas_atuantes.cod_pessoa = :cod_pessoa
+				'pessoas.cod_pessoa = :cod_pessoa
 				 OR t.cod_pos_grad = :cod_pessoa
 				 OR t.cod_grad = :cod_pessoa
 				 OR t.cod_professor = :cod_pessoa', 'AND');
@@ -1321,7 +1321,7 @@ public function actionRelatorio($id)
 		$receivers[$model->cod_pos_grad] = $model->pos_graduando;
 		$receivers[$model->cod_grad] = $model->graduando;
 
-		foreach ($model->pessoas_atuantes as $p) {
+		foreach ($model->pessoas as $p) {
 			$receivers[$p->cod_pessoa] = $p;
 		}
 
