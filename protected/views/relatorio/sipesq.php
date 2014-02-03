@@ -44,8 +44,8 @@ Yii::app()->clientScript->registerScript('morris',"
               element: 'morris-sipesq',
               data: data,
               xkey: 'sipesq',
-              ykeys: ['p_elaboracao', 'p_negociacao','p_tramitacao', 'p_andamento', 'p_prestacao', 'p_encerrado'],
-              labels: ['Elaboração', 'Negociação', 'Tramitação', 'Andamento', 'Prestação de Contas', 'Encerrado'],
+              ykeys: ['p_elaboracao', 'p_negociacao','p_tramitacao', 'p_andamento', 'p_prestacao', 'p_encerrado', 'p_cancelado'],
+              labels: ['Elaboração', 'Negociação', 'Tramitação', 'Andamento', 'Prestação de Contas', 'Encerrado', 'Cancelado'],
               xLabels: ['SIPESQ'],
               parseTime: false,                
             });

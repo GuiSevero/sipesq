@@ -67,10 +67,9 @@ class Projeto extends CActiveRecord
 		'Negociação',
 		'Tramitação',
 		'Em andamento',
-		//'Em andamento: Meio',
-		//'Em andamento: Fim',
 		'Prestação de Contas',
 		'Encerrado',
+		'Cancelado',
 	);
 	
 	
@@ -98,6 +97,7 @@ class Projeto extends CActiveRecord
 			'Andamento',
 			'Prestação de Contas',
 			'Encerrados',
+			'Cancelados',
 	);
 	
 	/**

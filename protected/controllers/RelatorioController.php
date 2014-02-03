@@ -177,6 +177,9 @@ class RelatorioController extends Controller
 
 			'encerrado'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
 				->where('situacao = 5'),
+
+			'cancelado'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
+				->where('situacao = 6'),
 				
 		);
 
@@ -190,6 +193,7 @@ class RelatorioController extends Controller
 			, 'p_andamento'=>$projetos['andamento']->queryScalar()
 			, 'p_prestacao'=>$projetos['prestacao']->queryScalar()
 			, 'p_encerrado'=>$projetos['encerrado']->queryScalar()
+			, 'p_cancelado'=>$projetos['cancelado']->queryScalar()
 		);
 		
 
