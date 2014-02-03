@@ -15,8 +15,10 @@ class Calendar
 	 * Returns the static model of the specified AR class.
 	 * @return Atividade the static model class
 	 */
-	public static function atividades($from=null, $to=null, $showAll=false)
+	public static function atividades($from=null, $to=null, $user=null)
 	{
+
+		if ($user == null) $user = Yii::app()->getId();
 		
 		$params = array();
 		
@@ -33,13 +35,9 @@ class Calendar
 		$where = " ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end)) ";
 		$where .= " AND atividade.cod_atividade = atividade_pessoa.cod_atividade ";
 		
-		//Se não for do suporte mostra só as atividades dele
-		//if(!Sipesq::isSupport() && Sipesq::getPermition('atividade.informacoes') < 1){
-		if(true){
 
-			$where .= " AND atividade_pessoa.cod_pessoa = :id";
-			$params['id'] = Yii::app()->user->getId();
-		}
+		$where .= " AND atividade_pessoa.cod_pessoa = :id";
+		$params['id'] = Yii::app()->user->getId();
 
 		$union = implode(" ", array(
 			"SELECT nome_atividade, data_inicio, data_fim, atividade.cod_pessoa, atividade.cod_atividade",

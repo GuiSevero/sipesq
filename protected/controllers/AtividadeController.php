@@ -854,7 +854,7 @@ class AtividadeController extends Controller
 	/**
 	 * Renderiza o json para o calendario
 	 */	
-	public function actionCalendar(){
+	public function actionCalendar($id=null){
 		
 		$from = strtotime(date('Y-m-d')) * 1000 - 3600*24*15*1000; // 15 dias antes
 		$to = strtotime(date('Y-m-d')) * 1000 + 3600*24*15*1000; // 15 dias depois
@@ -863,12 +863,13 @@ class AtividadeController extends Controller
 			$from = $_POST["from"];
 			$to = $_POST["to"]; 
 		}
-		
+
 		$atividades = array();
 		$projetos = array();
-		$atividades = Calendar::atividades($from, $to);
-		$projetos = Calendar::projetos($from, $to);
-		$passos = Calendar::passos($from, $to);
+		$passos = array();
+		$atividades = Calendar::atividades($from, $to, $id);
+		$projetos = Calendar::projetos($from, $to, $id);
+		$passos = Calendar::passos($from, $to, $id);
 
 
 		$calendarData = array(
