@@ -63,12 +63,12 @@ class Projeto extends CActiveRecord
 	,	$situacao_text = ''
 	,	$class = "label-info"
 	,	$situacoes = array(
-		'Elaboração',
+		'Elaboração', 
 		'Negociação',
 		'Tramitação',
-		'Em andamento: Início',
-		'Em andamento: Meio',
-		'Em andamento: Fim',
+		'Em andamento',
+		//'Em andamento: Meio',
+		//'Em andamento: Fim',
 		'Prestação de Contas',
 		'Encerrado',
 	);
@@ -95,9 +95,7 @@ class Projeto extends CActiveRecord
 			'Elaboração',
 			'Negociação',
 			'Tramitação',
-			'Andamento: Início',
-			'Andamento: Meio',
-			'Andamento: Fim',
+			'Andamento',
 			'Prestação de Contas',
 			'Encerrados',
 	);

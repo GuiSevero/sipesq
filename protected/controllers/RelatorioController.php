@@ -170,13 +170,13 @@ class RelatorioController extends Controller
 				->where('situacao = 2'),
 
 			'andamento'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
-				->where('situacao = 3 OR situacao = 4 OR situacao = 5'),
+				->where('situacao = 3'),
 
 			'prestacao'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
-				->where('situacao = 6'),
+				->where('situacao = 4'),
 
 			'encerrado'=>Yii::app()->db->createCommand()->select('count(*)')->from('projeto')
-				->where('situacao = 7'),
+				->where('situacao = 5'),
 				
 		);
 
