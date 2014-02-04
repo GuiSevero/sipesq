@@ -30,17 +30,17 @@ $t = json_encode(array(
 		<tr>
 			<td><?php echo $model->professor->nome?></td>
 			<td>Admin</td>
-			<td>Professor Responsável</td>
+			<td><?php echo $model->getAttributeLabel('cod_professor') ?></td>
 		</tr>
 		<tr>
 			<td><?php echo $model->pos_graduando->nome?></td>
 			<td>Admin</td>
-			<td>Pós-graduando Responsável</td>
+			<td><?php echo $model->getAttributeLabel('cod_pos_grad') ?></td>
 		</tr>
 		<tr>
 			<td><?php echo $model->graduando->nome?></td>
 			<td>Admin</td>
-			<td>Graduando Responsável</td>
+			<td><?php echo $model->getAttributeLabel('cod_grad') ?></td>
 		</tr>
 		<tr><td colspan="3"><?php echo CHtml::link("Editar Projeto", array('/projeto/update','id'=>$model->cod_projeto), array('class'=>'btn btn-primary btn-small'))?> </td></tr>
 

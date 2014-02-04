@@ -59,11 +59,11 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<h5>Coordenadores</h5>
-			<b><?php echo CHtml::encode("Professor Responsável"); ?></b>
+			<b><?php echo $model->getAttributeLabel('cod_professor'); ?></b>
 			<?php echo CHtml::encode($model->professor->nome); ?>
 			<br />
 			
-			<b><?php echo CHtml::encode("Pós-Graduando Responsável"); ?>:</b>
+			<b><?php echo $model->getAttributeLabel('cod_pos_grad'); ?>:</b>
 			<?php if(is_object($model->pos_graduando)):?>
 				<?php echo CHtml::encode($model->pos_graduando->nome); ?>
 			<?php else:?>
@@ -71,7 +71,7 @@
 			<?php endif;?>
 			<br />
 			
-			<b><?php echo CHtml::encode("Graduando Responsável"); ?>:</b>
+			<b><?php echo $model->getAttributeLabel('cod_grad'); ?>:</b>
 			<?php if(is_object($model->graduando)):?>
 				<?php echo CHtml::encode($model->graduando->nome); ?>
 			<?php else:?>

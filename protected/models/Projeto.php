@@ -192,9 +192,9 @@ class Projeto extends CActiveRecord
 			'finalizado'=>'Finalizado',
 			'cod_categoria'=>'Tipo de Projeto',
 			//Coordenador, Vice-Coordenador, Fiscal, Bolsista Responsável
-			'cod_professor'=>'Professor',
-			'cod_pos_grad'=>'Pós-Graduando',
-			'cod_grad'=>'Graduando',
+			'cod_professor'=>'Coordenador',
+			'cod_pos_grad'=>'Vice-Coordenador',
+			'cod_grad'=>'Fiscal',
 			/*
 			'cod_professor'=>'Professor',
 			'cod_pos_grad'=>'Pós-Graduando',
