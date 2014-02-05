@@ -42,6 +42,11 @@ $t = json_encode(array(
 			<td>Admin</td>
 			<td><?php echo $model->getAttributeLabel('cod_grad') ?></td>
 		</tr>
+		<tr>
+			<td><?php echo $model->bolsista_responsavel->nome?></td>
+			<td>Admin</td>
+			<td><?php echo $model->getAttributeLabel('cod_bolsista_responsavel') ?></td>
+		</tr>
 		<tr><td colspan="3"><?php echo CHtml::link("Editar Projeto", array('/projeto/update','id'=>$model->cod_projeto), array('class'=>'btn btn-primary btn-small'))?> </td></tr>
 
 	</table>

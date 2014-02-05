@@ -372,6 +372,7 @@ public function actionRelatorio($id)
 		$model->cod_professor = $user_id;
 		$model->cod_grad = $user_id;
 		$model->cod_pos_grad = $user_id;
+		$model->cod_bolsista_responsavel = $user_id;
 
 		/*
 		$model->data_inicio = date("d/m/Y");

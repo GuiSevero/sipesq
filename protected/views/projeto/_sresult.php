@@ -20,6 +20,12 @@
 		<?php echo CHtml::link(CHtml::encode($data->fiscal->nome), array('/pessoa/view', 'id'=>$data->fiscal->cod_pessoa)); ?>
 		<br />
 	<?php endif;?>
+
+	<?php if($data->fiscal != null):?>
+		<i class="icon icon-user"  rel="tooltip" title="Bolsista Responsável"></i>
+		<?php echo CHtml::link(CHtml::encode($data->bolsista_responsavel->nome), array('/pessoa/view', 'id'=>$data->bolsista_responsavel->cod_pessoa)); ?>
+		<br />
+	<?php endif;?>
 	
 	<i class="icon icon-info-sign"  rel="tooltip" title="Situação"></i>
 	<?php echo CHtml::encode($data->situacao_text); ?>

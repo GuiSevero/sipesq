@@ -78,6 +78,14 @@
 			Não há fiscal.
 			<?php endif;?>
 			<br />
+
+			<b><?php echo $model->getAttributeLabel('cod_bolsista_responsavel'); ?>:</b>
+			<?php if(is_object($model->fiscal)):?>
+				<?php echo CHtml::encode($model->bolsista_responsavel->nome); ?>
+			<?php else:?>
+			Não há bolsista responsável.
+			<?php endif;?>
+			<br />
 		</div>
 		<div class="span6">
 			<h5>Assistentes de Projeto</h5>

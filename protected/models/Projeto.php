@@ -150,6 +150,7 @@ class Projeto extends CActiveRecord
 			'coordenador' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
 			'vice_coordenador' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
 			'fiscal' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
+			'bolsista_responsavel' => array(self::BELONGS_TO, 'Pessoa', 'cod_bolsista_responsavel', 'select'=>'cod_pessoa, nome'),
 
 			//Equipe
 			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
@@ -203,6 +204,7 @@ class Projeto extends CActiveRecord
 			'cod_professor'=>'Coordenador',
 			'cod_pos_grad'=>'Vice-Coordenador',
 			'cod_grad'=>'Fiscal',
+			'cod_bolsista_responsavel'=>'Bolsista Responsável',
 			
 			'coordenador' => 'Coordenador',
 			'vice_coordenador' => 'Vice-Coordenador',
