@@ -448,9 +448,7 @@ public function actionEquipe()
 	{
 		$pessoa = Pessoa::model()->findByPk($id);
 		
-		if($pessoa == null){
-			throw new CHttpException(404,'PÃ¡gina nÃ£o encontrada.');
-		}
+		if ($pessoa == null) throw new CHttpException(404);
 		
 		$model=new NewLoginForm;
 		
@@ -468,8 +466,6 @@ public function actionEquipe()
 		if(isset($_POST['NewLoginForm']))
 		{
 			$model->attributes=$_POST['NewLoginForm'];
-			
-			if(md5($model->old_password) === $pessoa->password){
 					
 				$pessoa->login = $model->login;
 				$pessoa->password = md5($model->password);
@@ -480,13 +476,8 @@ public function actionEquipe()
 				if($pessoa->save(false)){
 					$this->redirect(array('/pessoa/myself'));
 				}
-				
-			}else{
-				$model->addError('old_password','Sua senha antiga nao confere');
-				
-			}
-				
 		}
+		
 		// display the login form
 		$this->render('_form_login',array('model'=>$model));
 		
