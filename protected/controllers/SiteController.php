@@ -354,7 +354,7 @@ public function actionFileBrowser()
 		$criteriaContatos->addCondition("descricao ILIKE '%{$pessoa}%'", 'OR');
 
 
-		//Pesquisa os contatos
+		//Pesquisa as Atividades
 		
 		$criteriaAtividades->with = array('responsavel', 'pessoas', 'projetos');
 		$criteriaAtividades->together=true;
@@ -373,9 +373,10 @@ public function actionFileBrowser()
 		$criteriaProjetos->addCondition("t.codigo_projeto ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("t.nome_curto ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("pessoas.nome ILIKE '%{$pessoa}%'", 'OR');
-		$criteriaProjetos->addCondition("professor.nome ILIKE '%{$pessoa}%'", 'OR');
-		$criteriaProjetos->addCondition("pos_graduando.nome ILIKE '%{$pessoa}%'", 'OR');
-		$criteriaProjetos->addCondition("graduando.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("coordenador.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("vice_coordenador.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("fiscal.nome ILIKE '%{$pessoa}%'", 'OR');
+		$criteriaProjetos->addCondition("bolsista_responsavel.nome ILIKE '%{$pessoa}%'", 'OR');
 
 		
 		
