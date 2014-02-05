@@ -227,10 +227,11 @@ $this->menu=array(
 <div class="span7">	
 	<?php echo $model->descricao; ?>
 </div>
+<?php /*
 <div class="span1">	
 	<button id="atv-edit" class="btn btn-primary btn-small" data-atv-id="<?php echo $model->cod_atividade?>">Editar</button>
 	<?php $this->renderPartial('_modal_form', array('model'=>$model)); ?>
-</div>
+</div> */?>
 
 </div><!-- /header -->
 
