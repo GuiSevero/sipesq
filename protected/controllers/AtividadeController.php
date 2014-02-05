@@ -73,7 +73,7 @@ class AtividadeController extends Controller
 					if($model == null) return false;
 
 					foreach($model->projetos as $projetos){
-						if($model->getPermition('atividades') > 1) return true;
+						if($projeto->getPermition('atividades') > 1) return true;
 					}
 					
 					//Verifica se é responsável
