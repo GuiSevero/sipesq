@@ -316,10 +316,10 @@ class Atividade extends CActiveRecord
 
 		if($id === null) $id = Yii::app()->user->getId();
 
-		return (bool)Yii::app()->db->createCommand()
+		return ((bool)Yii::app()->db->createCommand()
 		->select('count(cod_pessoa)')
 		->where("cod_atividade = :atv AND cod_pessoa = :id", array('id'=>$id,'atv'=>$this->cod_atividade))
 		->from('atividade_pessoa')
-		->queryScalar();
+		->queryScalar()  || ($this->cod_pessoa == $id));
 	}
 }
