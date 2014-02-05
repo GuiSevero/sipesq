@@ -289,8 +289,10 @@ var socket = io && io.connect(server);
 	*/?>
 
 	<div class="input buttons">
-		<?php //echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar') ?> 					
-		<input class="btn btn-small btn-primary" type="button" name="btnSalvar" value="Salvar Atividade" id="submitButton">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Adicionar' : 'Salvar', array(
+			'id'=>'submitButton',
+			'class'=>'btn btn-small btn-primary'
+		)) ?> 					
 	</div>
 	
 	<?php if(!$model->isNewRecord):?>

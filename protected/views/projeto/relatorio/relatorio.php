@@ -51,10 +51,10 @@ $('.atv-desc').each(function(){
 <div class="relatorio-text">
 	<div class="row-fluid">
 		<div class="span2" id="atv-section">
-			<?php echo CHtml::encode("Coordenador"); ?><span class="print">:</span>
+			<?php echo $model->getAttributeLabel('cod_professor'); ?><span class="print">:</span>
 		</div>
 		<div class="span10" id="atv-text">
-			<?php echo CHtml::encode($model->professor->nome); ?>
+			<?php echo CHtml::encode($model->coordenador->nome); ?>
 		</div>
 	</div>
 	<div class="row-fluid">

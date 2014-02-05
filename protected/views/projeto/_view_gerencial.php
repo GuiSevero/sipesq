@@ -28,17 +28,17 @@ $t = json_encode(array(
 	<table class="table table-hover table-striped">
 		<tr><th>Nome</th><th>Nível de Acesso</th><th>Detalhe</th></tr>
 		<tr>
-			<td><?php echo $model->professor->nome?></td>
+			<td><?php echo $model->coordenador->nome?></td>
 			<td>Admin</td>
 			<td><?php echo $model->getAttributeLabel('cod_professor') ?></td>
 		</tr>
 		<tr>
-			<td><?php echo $model->pos_graduando->nome?></td>
+			<td><?php echo $model->vice_coordenador->nome?></td>
 			<td>Admin</td>
 			<td><?php echo $model->getAttributeLabel('cod_pos_grad') ?></td>
 		</tr>
 		<tr>
-			<td><?php echo $model->graduando->nome?></td>
+			<td><?php echo $model->fiscal->nome?></td>
 			<td>Admin</td>
 			<td><?php echo $model->getAttributeLabel('cod_grad') ?></td>
 		</tr>

@@ -60,27 +60,27 @@
 		<div class="span6">
 			<h5>Coordenadores</h5>
 			<b><?php echo $model->getAttributeLabel('cod_professor'); ?></b>
-			<?php echo CHtml::encode($model->professor->nome); ?>
+			<?php echo CHtml::encode($model->coordenador->nome); ?>
 			<br />
 			
 			<b><?php echo $model->getAttributeLabel('cod_pos_grad'); ?>:</b>
-			<?php if(is_object($model->pos_graduando)):?>
-				<?php echo CHtml::encode($model->pos_graduando->nome); ?>
+			<?php if(is_object($model->vice_coordenador)):?>
+				<?php echo CHtml::encode($model->vice_coordenador->nome); ?>
 			<?php else:?>
-			Não há pós-graduando responsável
+			Não há vice-coordenador.
 			<?php endif;?>
 			<br />
 			
 			<b><?php echo $model->getAttributeLabel('cod_grad'); ?>:</b>
-			<?php if(is_object($model->graduando)):?>
-				<?php echo CHtml::encode($model->graduando->nome); ?>
+			<?php if(is_object($model->fiscal)):?>
+				<?php echo CHtml::encode($model->fiscal->nome); ?>
 			<?php else:?>
-			Não há graduando responsável
+			Não há fiscal.
 			<?php endif;?>
 			<br />
 		</div>
 		<div class="span6">
-			<h5>Equipe de Apoio</h5>
+			<h5>Assistentes de Projeto</h5>
 			<ul class="unstyled" id="membros-ativos">
 			<?php foreach($model->pessoas as $pessoa):?>
 				 <li class="membro">
@@ -91,7 +91,7 @@
 				 </li>
 			<?php endforeach;?>
 			</ul>	
-			<h5>Equipe Inativa</h5>
+			<h5>Assistentes Inativos</h5>
 			<ul class="unstyled" id="membros-inativos">
 			<?php foreach($model->pessoas_inativas as $pessoa):?>
 				 <li class="membro">

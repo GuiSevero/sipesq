@@ -145,23 +145,31 @@ class Projeto extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(			
-			'professor' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
-			'pos_graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
-			'graduando' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
+		return array(
+			//Coordenadores			
+			'coordenador' => array(self::BELONGS_TO, 'Pessoa', 'cod_professor', 'select'=>'cod_pessoa, nome'),
+			'vice_coordenador' => array(self::BELONGS_TO, 'Pessoa', 'cod_pos_grad', 'select'=>'cod_pessoa, nome'),
+			'fiscal' => array(self::BELONGS_TO, 'Pessoa', 'cod_grad', 'select'=>'cod_pessoa, nome'),
+
+			//Equipe
 			'pessoas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = true'),
 			'pessoas_inativas' => array(self::MANY_MANY, 'Pessoa', 'projeto_pessoa_atuante(cod_pessoa, cod_projeto)', 'order'=>'pessoas_inativas.nome', 'select'=>'cod_pessoa, nome', 'condition'=>'ativo = false'),
+
+			//Atividades
 			'atividades' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades.estagio, atividades.data_fim asc'),
 			'atividades_finalizadas' => array(self::MANY_MANY, 'Atividade', 'atividade_projeto(cod_atividade, cod_projeto)', 'order'=>'atividades_finalizadas.data_fim asc', 'condition'=>'atividades_finalizadas.estagio = true'),
+
 			'livros' => array(self::HAS_MANY, 'Livro', 'cod_projeto', 'order'=>'titulo', 'select'=>'cod_livro, titulo'),			
 			'categoria' => array(self::BELONGS_TO, 'ProjetoCategoria', 'cod_categoria'),
+			'permissoes'=>array(self::HAS_MANY, 'PermissaoProjeto', 'cod_projeto'),
+
 			'documentos' => array(self::HAS_MANY, 'ProjetoArquivo', 'cod_projeto'),
 			'despesas' => array(self::HAS_MANY, 'ProjetoDespesa', 'cod_projeto'),
 			'receitas' => array(self::HAS_MANY, 'ProjetoVerba', 'cod_projeto', 'order'=>'cod_verba'),
 			'orcamentos' => array(self::HAS_MANY, 'ProjetoOrcamento', 'cod_projeto'),
 			'verba_orcamentada'=>array(self::STAT, 'ProjetoOrcamento', 'cod_projeto', 'select' => 'SUM(valor)'),
 			'pessoas_permitidas' => array(self::MANY_MANY, 'Pessoa', 'permissao_projeto(cod_projeto, cod_pessoa)'),
-			'permissoes'=>array(self::HAS_MANY, 'PermissaoProjeto', 'cod_projeto')
+			
 		);
 	}
 
@@ -191,10 +199,15 @@ class Projeto extends CActiveRecord
 			'gasto_bolsa'=>'Gasto Bolsa',
 			'finalizado'=>'Finalizado',
 			'cod_categoria'=>'Tipo de Projeto',
-			//Coordenador, Vice-Coordenador, Fiscal, Bolsista Responsável
+			//Coordenador,Vice-Coordenador, Fiscal, Bolsista Responsável
 			'cod_professor'=>'Coordenador',
 			'cod_pos_grad'=>'Vice-Coordenador',
 			'cod_grad'=>'Fiscal',
+			
+			'coordenador' => 'Coordenador',
+			'vice_coordenador' => 'Vice-Coordenador',
+			'fiscal' => 'Fiscal',
+
 			/*
 			'cod_professor'=>'Professor',
 			'cod_pos_grad'=>'Pós-Graduando',

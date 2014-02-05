@@ -1,7 +1,7 @@
-<div class=" view ">test
+<div class=" view ">
 	<h4><b><?php echo CHtml::link(CHtml::encode($data->nome), array('view', 'id'=>$data->cod_projeto)); ?></b></h4>
 	<b><?php echo CHtml::encode($data->getAttributeLabel('cod_professor')); ?>:</b>
-	<?php echo CHtml::encode($data->professor->nome); ?>
+	<?php echo CHtml::encode($data->coordenador->nome); ?>
 	<br />
 	<b><?php echo CHtml::encode($data->getAttributeLabel('codigo_projeto')); ?>:</b>
 	<?php echo CHtml::encode($data->codigo_projeto); ?>
