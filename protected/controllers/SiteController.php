@@ -367,7 +367,7 @@ public function actionFileBrowser()
 
 		
 		//Pesquisa os projetos
-		$criteriaProjetos->with = array('pessoas', 'pos_graduando', 'graduando', 'professor');
+		$criteriaProjetos->with = array('pessoas', 'coordenador', 'vice_coordenador', 'fiscal', 'bolsista_responsavel');
 		$criteriaProjetos->together=true;
 		$criteriaProjetos->addCondition("t.nome ILIKE '%{$pessoa}%'", 'OR');
 		$criteriaProjetos->addCondition("t.codigo_projeto ILIKE '%{$pessoa}%'", 'OR');
