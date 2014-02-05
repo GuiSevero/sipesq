@@ -8,10 +8,10 @@ $this->menu=array(
 	
 	array('label'=>'Gerenciar Pessoas', 'url'=>array('admin'), 'visible'=>Sipesq::isAdmin()),
 	array('label'=>'Editar Dados', 'url'=>array('update', 'id'=>$data->cod_pessoa)),
-	array('label'=>'Restaurar Senha', 'url'=>array('restorePassword', 'id'=>$data->cod_pessoa), 'visible'=>Sipesq::isAdmin()),
+	array('label'=>'Restaurar Senha', 'url'=>array('restorePassword', 'id'=>$data->cod_pessoa), 'visible'=>(Sipesq::getPermition('pessoa.informacoes') >= 100)),
 	array('label'=>'Trocar Senha', 'url'=>array('changePassword'), 'visible'=>(Yii::app()->user->getId() === $data->cod_pessoa)),
-	array('label'=>'Deletar', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$data->cod_pessoa),'confirm'=>'Tem certeza que deseja deletar esta pessoa?'), 'visible'=>Sipesq::isAdmin()),
-	array('label'=>'+ Pessoa', 'url'=>array('create'), 'visible'=>Sipesq::isSupport()),
+	array('label'=>'Deletar', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$data->cod_pessoa),'confirm'=>'Tem certeza que deseja deletar esta pessoa?'), 'visible'=>(Sipesq::getPermition('pessoa.informacoes') >= 100)),
+	array('label'=>'+ Pessoa', 'url'=>array('create'), 'visible'=>(Sipesq::getPermition('pessoa.informacoes') >= 1)),
 	array('label'=>'+ Projeto Atuante', 'url'=>array('addprojetoatuante', 'id'=>$data->cod_pessoa)),
 	
 );
