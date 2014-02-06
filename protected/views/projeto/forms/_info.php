@@ -35,7 +35,7 @@ Yii::app()->clientScript->registerScript('text-areas',
 			
 				<div class="control-group">
 					<?php echo $form->labelEx($model,'situacao', array('class'=>'control-label')); ?>
-					<div class="controls"><?php  echo $form->dropDownList($model,'situacao', $model->situacoes, array('prompt'=>"Situação do Projeto", 'class'=>'input-xxlarge')); ?></div>
+					<div class="controls"><?php  echo $form->dropDownList($model,'situacao', $model->situacoes, array('class'=>'input-xxlarge')); ?></div>
 					<?php echo $form->error($model,'situacao'); ?>
 				</div>
 				<?php if(!$model->isNewRecord):?>
@@ -47,8 +47,18 @@ Yii::app()->clientScript->registerScript('text-areas',
 				<?php endif;?>
 				<div class="control-group">
 					<?php echo $form->labelEx($model,'cod_categoria', array('class'=>'control-label')); ?>
-					<div class="controls"><?php echo $form->dropDownList($model,'cod_categoria', CHtml::listData(ProjetoCategoria::model()->findAll(array('order'=>'nome')), 'cod_categoria', 'nome'), array('prompt'=>"Selecione uma Categoria", 'class'=>'input-xxlarge')); ?></div>
+					<div class="controls"><?php echo $form->dropDownList($model,'cod_categoria', CHtml::listData(ProjetoCategoria::model()->findAll(array('order'=>'nome')), 'cod_categoria', 'nome'), array('class'=>'input-xxlarge')); ?></div>
 					<?php echo $form->error($model,'cod_categoria'); ?>
+				</div>
+				<div class="control-group">
+					<?php echo $form->labelEx($model,'natureza', array('class'=>'control-label')); ?>
+					<div class="controls"><?php  echo $form->dropDownList($model,'natureza', array('Individual'=>'Individual', 'Coletivo'=>'Coletivo'), array('class'=>'input-xxlarge')); ?></div>
+					<?php echo $form->error($model,'natureza'); ?>
+				</div>
+				<div class="control-group">
+					<?php echo $form->labelEx($model,'gt', array('class'=>'control-label')); ?>
+					<div class="controls"><?php echo $form->textField($model,'gt', array('class'=>'input-xxlarge')); ?></div>
+					<?php echo $form->error($model,'gt'); ?>
 				</div>
 				<div class="control-group">
 					<?php echo $form->labelEx($model,'skydrive', array('class'=>'control-label')); ?>

@@ -14,6 +14,14 @@
 	<?php echo CHtml::encode($model->categoria->nome); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($model->getAttributeLabel('natureza')); ?>:</b>
+	<?php echo CHtml::encode($model->natureza); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($model->getAttributeLabel('gt')); ?>:</b>
+	<?php echo CHtml::encode($model->gt); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($model->getAttributeLabel('codigo_projeto')); ?>:</b>
 	<?php echo CHtml::encode($model->codigo_projeto); ?>
 	<br />

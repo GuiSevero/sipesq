@@ -18,7 +18,9 @@
  * @property double $verba_custeio
  * @property double $verba_capital
  * @property double $verba_bolsa
- * @property string $instrumento_juridico
+ * @property string $instrumento_juridico]
+ * @property string gt
+* @property string natureza
  * 
  *
  * The followings are the available model relations:
@@ -131,7 +133,7 @@ class Projeto extends CActiveRecord
 			//array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
 			array('cod_professor, cod_grad, cod_pos_grad,  cod_categoria', 'numerical', 'integerOnly'=>true),
 			array('verba_custeio, verba_capital, verba_bolsa', 'numerical'),
-			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas, nome_curto, instrumento_juridico, convenio, skydrive', 'safe'),
+			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas, nome_curto, instrumento_juridico, convenio, skydrive, gt, natureza', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cod_projeto, nome, codigo_projeto, data_inicio, data_fim, data_relatorio, descricao, verba_custeio, verba_capital, verba_bolsa', 'safe', 'on'=>'search'),
@@ -209,6 +211,8 @@ class Projeto extends CActiveRecord
 			'coordenador' => 'Coordenador',
 			'vice_coordenador' => 'Vice-Coordenador',
 			'fiscal' => 'Fiscal',
+			'gt'=>'Grupo de Trabalho',
+			'natureza'=>'Natureza do Projeto',
 
 			/*
 			'cod_professor'=>'Professor',
