@@ -1462,7 +1462,7 @@ public function actionRelatorio($id)
 		//Return array
 		$results = $command->queryAll();
 
-		echo "<table border='1'>";
+		echo "<table border='0'>";
 		foreach ($results as $item) {
 				echo implode(" ", array(
 					"<tr><td>",				
