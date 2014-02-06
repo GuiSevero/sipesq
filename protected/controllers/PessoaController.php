@@ -401,8 +401,11 @@ public function actionEquipe()
 	public function actionChangePassword()
 	{
 		
-		$model=new NewLoginForm;
-		$model->login = Yii::app()->user->name;
+		$pessoa = Pessoa::model()->findByPk(Yii::app()->user->getId());
+
+		$model=new NewLoginForm($pessoa);
+		
+		$model->login = $pessoa->login;
 
 		// if it is ajax validation request
 		if(isset($_POST['ajax']) && $_POST['ajax']==='new-login-form')
@@ -416,21 +419,17 @@ public function actionEquipe()
 		{
 			$model->attributes=$_POST['NewLoginForm'];
 
-			
-			$pessoa = Pessoa::model()->findByPk(Yii::app()->user->getId());
-			
 			if(md5($model->old_password) === $pessoa->password){
 					
-				$pessoa->login = $model->login;
 				$pessoa->password = md5($model->password);
 				$pessoa->first_login = false;
 				
 				if($pessoa->save(false)){
-					$this->redirect(array('/pessoa/myself'));
+					$this->redirect(array('/pessoa/view', 'id'=>$pessoa->cod_pessoa));
 				}
 				
 			}else{
-				$model->addError('old_password','Sua senha antiga nÃ£o confere');
+				$model->addError('old_password','Sua senha antiga não confere');
 				
 			}
 				
@@ -448,13 +447,8 @@ public function actionEquipe()
 	{
 		$pessoa = Pessoa::model()->findByPk($id);
 		
-		if ($pessoa == null) throw new CHttpException(404);
+		$model=new NewLoginForm($pessoa);
 		
-		$model=new NewLoginForm;
-		
-		$model->login = $pessoa->login;
-		
-
 		// if it is ajax validation request
 		if(isset($_POST['ajax']) && $_POST['ajax']==='new-login-form')
 		{
@@ -479,7 +473,7 @@ public function actionEquipe()
 		}
 		
 		// display the login form
-		$this->render('_form_login',array('model'=>$model));
+		$this->render('_restore_pass',array('model'=>$model));
 		
 	}
 	

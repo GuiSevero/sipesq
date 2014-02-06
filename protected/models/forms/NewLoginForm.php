@@ -7,6 +7,7 @@
  */
 class NewLoginForm extends CFormModel
 {
+	public $name;
 	public $login;
 	public $password;
 	public $password_confirm;
@@ -56,6 +57,14 @@ class NewLoginForm extends CFormModel
 				}
 					
 	}
-	
+
+	public function __construct($model=null) {
+       parent::__construct();
+       
+       if($model != null){
+       	$this->login = $model->login;
+       	$this->name = $model->nome;
+       }
+   }
 	
 }

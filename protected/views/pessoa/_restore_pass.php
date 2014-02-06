@@ -7,14 +7,9 @@
 	), 
 )); ?>
 
-	<h2>Alteração de senha do usuário</h2>
+	<h3>Alteração de senha<h3>
+	<h4><i><?php echo $model->name?></i></h4>
 	<p><b>Login: <?php echo $model->login; ?></b></p>
-	
-	<div class="input">
-		<?php echo $form->labelEx($model,'old_password'); ?>
-		<?php echo $form->passwordField($model,'old_password'); ?>
-		<?php echo $form->error($model,'old_password'); ?>
-	</div>
 	
 	<div class="input">
 		<?php echo $form->labelEx($model,'password'); ?>
