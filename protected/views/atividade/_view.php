@@ -1,4 +1,4 @@
-<div class="view atividade" <?php echo $data->isParticipating() ? 'style="background-color: #bdc3c7;"' : '' ?>>
+<div class="view atividade" <?php echo $data->isParticipating() ? 'style="background-color: #ecf0f1;"' : '' ?>>
 
 	<b><?php echo CHtml::link(CHtml::encode($data->nome_atividade), array('atividade/view', 'id'=>$data->cod_atividade)); ?></b>
 	 ( <?php echo CHtml::encode(Sipesq::date($data->data_inicio));?> a <?php echo CHtml::encode(Sipesq::date($data->data_fim));?> )
