@@ -34,6 +34,7 @@ class Calendar
 		//Cria comando para execução
 		$where = " ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end)) ";
 		$where .= " AND atividade.cod_atividade = atividade_pessoa.cod_atividade ";
+		$where  .= " AND atividade.estagio = FALSE";
 		
 
 		$where .= " AND atividade_pessoa.cod_pessoa = :id";
@@ -140,6 +141,7 @@ class Calendar
 		
 		//Se não for do suporte mostra só as atividades dele
 		$where .= " AND cod_pessoa = :id ";
+		$where .= " AND finalizado = FALSE";
 		$params['id'] = Yii::app()->user->getId();
 		
 		$command =  Yii::app()->db->createCommand()
