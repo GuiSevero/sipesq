@@ -135,7 +135,7 @@ class ProjetoController extends Controller
 			*==============================
 			**/
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-					'actions'=>array('info', 'view', 'index'),
+					'actions'=>array('info', 'view', 'index', 'excelExport'),
 					'expression'=> function($user, $rules){
 
 						if(isset($_GET['id'])){
@@ -1447,6 +1447,34 @@ public function actionRelatorio($id)
 		echo json_encode($result);
 		Yii::app()->end();
 
+	}
+
+	public function actionExcelExport(){
+
+		$command =  Yii::app()->db->createCommand();
+
+		$command->select = 'nome, situacao, natureza';
+		$command->from('projeto');
+		$command->order = 'situacao, natureza, nome';
+
+		$projeto = new Projeto();
+
+		//Return array
+		$results = $command->queryAll();
+
+		echo "<table border='1'>";
+		foreach ($results as $item) {
+				echo implode(" ", array(
+					"<tr><td>",				
+					$item['nome'],
+					"</td><td>",
+					$projeto->situacoes[$item['situacao']],
+					"</td><td>",
+					$item['natureza'],
+					"</td></tr>"
+				));
+		}
+		echo "</table>";	
 	}
 	
 }
