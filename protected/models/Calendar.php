@@ -43,7 +43,7 @@ class Calendar
 		$union = implode(" ", array(
 			"SELECT nome_atividade, data_inicio, data_fim, atividade.cod_pessoa, atividade.cod_atividade",
 			"FROM atividade",
-			"WHERE cod_pessoa = :id",
+			"WHERE cod_pessoa = :id AND estagio = FALSE ",
 			" AND ((data_inicio >= :start AND data_inicio <= :end) OR (data_fim >= :start AND data_fim <= :end))",
 		)); 
 		
