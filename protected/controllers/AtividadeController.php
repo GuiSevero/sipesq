@@ -72,7 +72,7 @@ class AtividadeController extends Controller
 					$model = Atividade::model()->findByPk($id);
 					if($model == null) return false;
 
-					foreach($model->projetos as $projetos){
+					foreach($model->projetos as $projeto){
 						if($projeto->getPermition('atividades') > 1) return true;
 					}
 					
