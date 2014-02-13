@@ -88,7 +88,7 @@
 			<br />
 
 			<b><?php echo $model->getAttributeLabel('cod_bolsista_responsavel'); ?>:</b>
-			<?php if(is_object($model->fiscal)):?>
+			<?php if(is_object($model->bolsista_responsavel)):?>
 				<?php echo CHtml::encode($model->bolsista_responsavel->nome); ?>
 			<?php else:?>
 			Não há bolsista responsável.
