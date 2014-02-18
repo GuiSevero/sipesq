@@ -93,6 +93,31 @@ $this->menu=array(
 <h3>Balanço de Atividades</h3>
 <div id="morris-atividades"></div>
 
+<?php 
+$rubricas = Rubrica::model()->findAll(array('order'=>'nome'));
 
+?>
 
+<table class="table table-bordered">
+<?php foreach($rubricas as $rubrica): ?>
+  <tr align="center">
+   <td><h3><?php echo $rubrica->nome; ?></h3></td>
+   <tr><td>
+  <table class="table table-striped table-hover table-condensed">
+    <tr>
+      <th>Projeto</th><th>Início</th><th>Fim</th><th>Recebido</th><th>Gasto</th><th>Saldo</th>
+    </tr>
+  <?php foreach($rubrica->receitas as $receita): ?>
+  <tr class="<?php echo $receita->gasto > $receita->recebido ? 'error' : '' ?>">
+    <td><?php echo $receita->projeto->nome ?></td> 
+    <td><?php echo date('M/Y', strtotime($receita->projeto->data_inicio)) ?></td>
+    <td><?php echo date('M/Y', strtotime($receita->projeto->data_fim)) ?></td>
+    <td><?php echo number_format($receita->recebido,2,',','.') ?></td>
+    <td><?php echo number_format($receita->gasto,2,',','.') ?></td>
+    <td><?php echo number_format($receita->recebido - $receita->gasto,2,',','.') ?></td>
+  </tr>
+  <?php endforeach;?>
+  </tr></table></td></tr>
+<?php endforeach;?>
+</table>
 

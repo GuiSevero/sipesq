@@ -84,6 +84,7 @@ class ProjetoVerba extends CActiveRecord
 			'desembolsos' =>array(self::HAS_MANY, 'ProjetoDesembolso', 'cod_verba'),
 			'despesas' =>array(self::HAS_MANY, 'ProjetoDespesa', 'cod_verba', 'order'=>'data_compra desc'),
 			'recebido'=>array(self::STAT, 'ProjetoDesembolso','cod_verba' ,'select'=>'SUM(valor)'),
+			'gasto' =>array(self::STAT, 'ProjetoDespesa', 'cod_verba', 'select'=>'SUM(valor)'),
 		);
 	}
 
