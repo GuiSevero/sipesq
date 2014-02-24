@@ -308,12 +308,15 @@ class AtividadeController extends Controller
 				
 
 			$model->data_edicao = date('Y-m-d');
+
+			
 			
 			$connection = Yii::app()->db; 
 			$transaction=$connection->beginTransaction();
 			try
 			{
 				if($model->save()){
+
 
 					if(count($model->pessoas) > 0)
 						if(!$this->salvaPessoas($model->cod_atividade, $model->pessoas))
@@ -905,7 +908,7 @@ class AtividadeController extends Controller
 				,	'atividade.cod_pessoa as responsavel'
 				,	'atividade_categoria.nome as categoria'
 				,	'pessoa.nome as responsavel_nome'
-				,	'status'
+				,	'estagio'
 		);
 		
 		$params = array();
@@ -969,14 +972,14 @@ class AtividadeController extends Controller
 		}
 		
 		
-		if(isset($_GET['status']) && $_GET['status'] != ''){
+		if(isset($_GET['estagio']) && $_GET['estagio'] != ''){
 			
-			$params['status'] = $_GET['status'];
+			$params['estagio'] = $_GET['estagio'];
 			
 			if(count($where) < 1)
-				$where[] = "atividade.status = :status";
+				$where[] = "atividade.estagio = :estagio";
 			else 
-				$where[] = "AND atividade.status = :status";
+				$where[] = "AND atividade.estagio = :estagio";
 		}
 				
 		
@@ -992,7 +995,6 @@ class AtividadeController extends Controller
 		
 		$atvs = array_map(
 			function($atv){
-				$statusNames = array("A Fazer", "Em Andamento", "Finalizada");
 				return array(
 							'cod_atividade'=>$atv['id']
 						,	'nome'=>$atv['nome_atividade']
@@ -1002,7 +1004,7 @@ class AtividadeController extends Controller
 						,	'descricao'=>$atv['descricao']
 						,	'responsavel'=>$atv['responsavel_nome']
 						, 	'url'=>Yii::app()->createUrl('/atividade/view', array('id'=>$atv['id']))
-						,	'status'=>$statusNames[$atv['status']]
+						,	'status'=>$atv['estagio'] ? 'Finalizada' : 'A Fazer'
 			);
 			}
 			

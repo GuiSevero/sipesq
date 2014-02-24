@@ -40,9 +40,11 @@
 	<?php echo CHtml::link('Adicionar Atividade', array('/atividade/create'), array('class'=>'btn btn-primary')); ?>
 	</div>	
 	<div class="span4">
-		<label>Status</label>
+		<label>Finalizada</label>
 		<?php //echo CHtml::checkBox('finalizado',true, array('id'=>"atv-finalizado", 'data-target'=>'finalizado'))?>
-		<?php echo CHtml::dropDownList('status', null, array('0'=>"A Fazer",'2'=>"Finalizada"), array('id'=>"atv-status", 'data-target'=>'status', 'prompt'=>'Selecione um status'))?>
+		<?php /* echo CHtml::dropDownList('status', null, array('0'=>"A Fazer",'2'=>"Finalizada"), array('id'=>"atv-status", 'data-target'=>'status', 'prompt'=>'Selecione um status')) */?>
+
+		<?php echo CHtml::checkBox('estagio', false, array('id'=>"atv-estagio", 'data-target'=>'estagio')); ?>
 		
 		<label>Respoonsável / Participante</label>
 		<?php echo CHtml::dropDownList('responsavel', null, array('0'=>"Participante",'1'=>"Responsável"), array('id'=>"atv-responsavel", 'data-target'=>'responsavel'))?>
@@ -59,6 +61,7 @@
 
 	var options = {
 		pessoa: <?php echo $data->cod_pessoa?>
+		, estagio: false
 	};
 	var atividade = new Atividade('#atv-json', options);
 
@@ -77,9 +80,10 @@
 		
 	});
 
-	$('#atv-status').change(function(){
+	$('#atv-estagio').change(function(){
 		$('#atv-json').html('');
-		options.status = $(this).val();
+		options.estagio = this.checked;
+		console.log(options.estagio);
 		options.count = 0;
 		atividade.load(options);
 	});
