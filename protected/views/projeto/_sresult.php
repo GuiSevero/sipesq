@@ -21,7 +21,7 @@
 		<br />
 	<?php endif;?>
 
-	<?php if($data->fiscal != null):?>
+	<?php if($data->bolsista_responsavel != null):?>
 		<i class="icon icon-user"  rel="tooltip" title="Bolsista Responsável"></i>
 		<?php echo CHtml::link(CHtml::encode($data->bolsista_responsavel->nome), array('/pessoa/view', 'id'=>$data->bolsista_responsavel->cod_pessoa)); ?>
 		<br />
