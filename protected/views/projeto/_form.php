@@ -6,8 +6,6 @@
 	'htmlOptions'=>array('class'=>'form-horizontal'),
 )); ?>
 
-	
-	
 	<?php
 		 $header = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>";
 		 $footer = "</div>";
@@ -21,10 +19,7 @@
 	  <li class="active"><a href="#tab-info" data-toggle="tab">Informações</a></li>
 	  <li><a href="#tab-juridico" data-toggle="tab">Instrumento Jurídico</a></li>
 	  <li><a href="#tab-convenio" data-toggle="tab">Convênio</a></li>
-	  <li><a href="#tab-equipe" data-toggle="tab">Equipe</a></li>
-	  <?php if(Sipesq::getPermition('projeto.financeiro') >= 2) :?>
-	  	<li><a href="#tab-financeiro" data-toggle="tab">Financeiro</a></li>
-	  <?php endif;?>
+	  <li><a href="#tab-equipe" data-toggle="tab">Equipe</a></li>	  
 	</ul>
 
 	<div class="alert alert-info">
@@ -51,13 +46,6 @@
 			<?php $this->renderPartial('forms/_form_convenio', array('model'=>$model->convenio, 'form'=>$form)); ?>
 		</fieldset>		
 	  </div>
-	  
-	  <?php if(Sipesq::getPermition('projeto.financeiro') >= 2) :?>
-	   <div class="tab-pane" id="tab-financeiro">
-	   	<?php $this->renderPartial('forms/_financeiro', array('model'=>$model, 'form'=>$form)); ?>
-	  </div>	
-	  <?php endif; ?>
-	  
 	</div>
 
 	<hr>
@@ -68,7 +56,3 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-
-
-
-

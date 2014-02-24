@@ -391,12 +391,12 @@ public function actionFileBrowser()
 		
 
 		$dataProviderPessoas=new CActiveDataProvider('Pessoa', array( 
-							'pagination'=>array('pageSize'=>10,),
+							'pagination'=>array('pageSize'=>999,),
 							'criteria'=>$criteriaPessoas
     						));
     						
     	$dataProviderProjetos=new CActiveDataProvider('Projeto', array( 
-							'pagination'=>array('pageSize'=>10,),
+							'pagination'=>array('pageSize'=>999,),
 							'criteria'=>$criteriaProjetos
     						));
     						

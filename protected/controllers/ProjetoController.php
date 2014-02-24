@@ -419,7 +419,7 @@ public function actionRelatorio($id)
 							$model->addError('orcamentos', "Erro ao salvar orçamentos");
 
 					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas))) 
-						$model->addError('pessoas', "Erro ao adicionar equipe");
+						$model->addError('pessoas', "Erro ao adicionar equipe: Verifique os participantes e coordenadores");
 
 					//Verifica erros e gera exceção
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
@@ -433,6 +433,8 @@ public function actionRelatorio($id)
 					//Redireciona
 					$this->redirect(array('view','id'=>$model->cod_projeto));
 					
+				}else{
+					throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
 				}
 			} catch (Exception $e)
 			{
@@ -1318,9 +1320,9 @@ public function actionRelatorio($id)
 
 		$receivers = Array();
 
-		$receivers[$model->cod_professor] = $model->professor;
-		$receivers[$model->cod_pos_grad] = $model->pos_graduando;
-		$receivers[$model->cod_grad] = $model->graduando;
+		$receivers[$model->cod_professor] = $model->coordenador;
+		$receivers[$model->cod_pos_grad] = $model->vice_coordenador;
+		$receivers[$model->cod_grad] = $model->fiscal;
 
 		foreach ($model->pessoas as $p) {
 			$receivers[$p->cod_pessoa] = $p;
