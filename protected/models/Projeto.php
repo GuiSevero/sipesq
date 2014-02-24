@@ -132,7 +132,6 @@ class Projeto extends CActiveRecord
 			//array('cod_grad', 'validaResponsavel', 'cod_pos_grad', 'cod_professor'),
 			//array('cod_pos_grad', 'validaResponsavel', 'cod_professor', 'cod_grad'),
 			array('cod_professor, cod_grad, cod_pos_grad,  cod_categoria, cod_bolsista_responsavel', 'numerical', 'integerOnly'=>true),
-			array('verba_custeio, verba_capital, verba_bolsa', 'numerical'),
 			array('codigo_projeto, finalizado, situacao, data_inicio, data_fim, data_relatorio,ultima_modificacao, descricao, pessoas, nome_curto, instrumento_juridico, convenio, skydrive, gt, natureza', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

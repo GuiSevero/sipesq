@@ -407,11 +407,11 @@ public function actionRelatorio($id)
 			} 
 			
 
-			$connection = Yii::app()->db; 
-			$transaction=$connection->beginTransaction();
+			//$connection = Yii::app()->db; 
+			//$transaction=$connection->beginTransaction();
 
-			try
-			{
+			//try
+			//{
 				if($model->save()){
 
 					
@@ -425,23 +425,21 @@ public function actionRelatorio($id)
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
 					
 					//Notifica usuarios
-					$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
+					//$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
 
 					//Salva definitivamente todas as alterações no banco
-					$transaction->commit();
+					//$transaction->commit();
 
 					//Redireciona
 					$this->redirect(array('view','id'=>$model->cod_projeto));
 					
-				}else{
-					throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
 				}
-			} catch (Exception $e)
+			/*} catch (Exception $e)
 			{
 			    $transaction->rollBack();	
 			    $model->instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
 				$model->convenio = Convenio::load(json_decode($model->convenio));	
-			}
+			} */
 		}
 
 		$this->render('create',array(
@@ -876,37 +874,6 @@ public function actionRelatorio($id)
 		return true;
 	}
 	
-	
-	
-	/**
-	 * Pega as informações do financeiro do projeto
-	 */
-	public function actionJsonFinanceiro($id){
-		$model = Projeto::model()->findByPk($id);
-		
-		
-		
-		$json = array(
-			'cols'=>array(
-				array('label'=>'Origem', 'type'=>'String'),
-				array('label'=>'Orcamentado', 'type'=>'number'),
-				array('label'=>'Recebido', 'type'=>'number'),
-				array('label'=>'Gasto', 'type'=>'number'),
-				array('label'=>'Saldo', 'type'=>'number'),
-			),
-			
-			'rows'=>array(
-				array('c'=>array(array('v'=>'Bolsas', 'c'=>'Bolsas'), array('v'=>$model->verba_bolsa, 'c'=>$model->verba_bolsa), array('v'=>$model->recebido_bolsa, 'c'=>$model->recebido_bolsa), array('v'=>$model->gasto_bolsa, 'c'=>$model->gasto_bolsa), array('v'=>$model->recebido_bolsa - $model->gasto_bolsa, 'c'=>$model->recebido_bolsa - $model->gasto_bolsa))),
-				array('c'=>array(array('v'=>'Custeio', 'c'=>'Custeio'), array('v'=>$model->verba_custeio, 'c'=>$model->verba_custeio), array('v'=>$model->recebido_custeio, 'c'=>$model->recebido_custeio), array('v'=>$model->gasto_custeio, 'c'=>$model->gasto_custeio), array('v'=>$model->recebido_custeio - $model->gasto_custeio, 'c'=>$model->recebido_custeio - $model->gasto_custeio))),
-				array('c'=>array(array('v'=>'Capital', 'c'=>'Capital'), array('v'=>$model->verba_capital, 'c'=>$model->verba_capital), array('v'=>$model->recebido_capital, 'c'=>$model->recebido_capital), array('v'=>$model->gasto_capital, 'c'=>$model->gasto_capital), array('v'=>$model->recebido_capital - $model->gasto_capital, 'c'=>$model->recebido_capital - $model->gasto_capital))),
-				array('c'=>array(array('v'=>'Outros', 'c'=>'Outros'), array('v'=>$model->verba_outros, 'c'=>$model->verba_outros), array('v'=>$model->verba_outros, 'c'=>$model->verba_outros), array('v'=>$model->gasto_outros, 'c'=>$model->gasto_outros), array('v'=>$model->verba_outros - $model->gasto_outros, 'c'=>$model->verba_outros - $model->gasto_outros))),
-			),
-		
-		);
-		
-		echo json_encode($json);
-		Yii::app()->end();
-	}
 	
 	
 	/**
