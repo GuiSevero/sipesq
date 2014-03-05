@@ -150,6 +150,11 @@ class ProjetoController extends Controller
 			
 			),
 
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('json'),
+				'users'=>array('@'),
+			),
+
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('update', 'create' , 'setMembro'),
 				'expression'=> function(){
@@ -1133,6 +1138,7 @@ public function actionRelatorio($id)
 				$result = array(
 						'id'=> "" .$projeto['id']
 						,'value'=>$projeto['nome']
+						,'name'=>$projeto['nome']
 						,'tokens'=>explode(" ", $projeto['nome'])
 						,'url'=>"" .Yii::app()->createUrl('/projeto/view', array('id'=>$projeto['id']))
 				);
