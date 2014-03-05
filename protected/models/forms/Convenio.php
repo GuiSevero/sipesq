@@ -52,6 +52,7 @@ class Convenio extends CFormModel
 	}
 	
 	public static function load($data){
+		
 		$perm = new Convenio();
 		foreach($data as $key=>$val) $perm->$key = $val;
 		return $perm;
