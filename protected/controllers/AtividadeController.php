@@ -201,8 +201,8 @@ class AtividadeController extends Controller
 				
 			if($model->save()){
 					
-					$this->salvaProjetos($model->cod_atividade, $model->projetos);
-					$this->salvaPessoas($model->cod_atividade, $model->pessoas);
+					$this->salvaProjetos($model->cod_atividade, explode(',',$model->projetos));
+					$this->salvaPessoas($model->cod_atividade, explode(',', $model->pessoas));
 				
 				$this->broadCast($model->cod_atividade, "adicionou você na atividade");
 						
@@ -319,11 +319,11 @@ class AtividadeController extends Controller
 
 
 					if(count($model->pessoas) > 0)
-						if(!$this->salvaPessoas($model->cod_atividade, $model->pessoas))
+						if(!$this->salvaPessoas($model->cod_atividade, explode(',', $model->pessoas)))
 							$model->addError('pessoas', "Erro ao salvar pessoas");
 				
 					if(count($model->projetos) > 0)
-						if(!$this->salvaProjetos($model->cod_atividade, $model->projetos))
+						if(!$this->salvaProjetos($model->cod_atividade, explode(',', $model->projetos)))
 							$model->addError('projetos', "Erro ao salvar projetos");
 
 					$this->broadCast($model->cod_atividade, "atualizou a atividade");

@@ -177,11 +177,12 @@ var socket = io && io.connect(server);
 		echo $form->errorSummary($model, $header, $footer); 
 	?>
 	
-		<div class="input">
+	<div class="input">
 		<?php echo $form->labelEx($model,'nome_atividade'); ?>
 		<?php echo $form->textField($model, 'nome_atividade', array('class'=>'input-xxlarge'))?>
 		<?php echo $form->error($model,'nome_atividade'); ?>
 	</div>
+	
 	<div class="input">
 	<label><b>Categoria Primária</b></label>
 	<?php $cPai = ''?>
@@ -229,7 +230,6 @@ var socket = io && io.connect(server);
 	
 		<div class="input">
 		<?php echo $form->labelEx($model,'data_inicio'); ?>
-		<?php //echo $form->textField($model,'data_inicio'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
     			'name'=>'Atividade[data_inicio]',
 				'value'=>isset($model->data_inicio) ? $model->data_inicio : date('d/m/Y'),
@@ -253,12 +253,7 @@ var socket = io && io.connect(server);
 		?>
 		<?php echo $form->error($model,'data_fim'); ?>
 	</div>
-	
-	<div class="input">
-		<?php echo $form->labelEx($model,'turnos_trabalho'); ?>
-		<?php echo $form->textField($model,'turnos_trabalho'); ?>
-		<?php echo $form->error($model,'turnos_trabalho'); ?>
-	</div> */?>
+	 */?>
 
 	<div class="input">
 		<?php echo $form->labelEx($model,'projetos'); ?>

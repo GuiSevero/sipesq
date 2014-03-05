@@ -16,4 +16,4 @@ $this->menu=array(
 <h3>Editar Atividade</h3>
 <p><strong><?php echo $model->nome_atividade; ?></strong></p>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_formnew', array('model'=>$model)); ?>
