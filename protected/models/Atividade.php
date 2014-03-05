@@ -119,6 +119,7 @@ class Atividade extends CActiveRecord
 			'status'=>'Estágio',
 			'data_criacao'=>'Data de criação',
 			'data_edicao'=>'Útima Edição',
+			'pessoas'=>'Participantes',
 			
 		);
 	}
