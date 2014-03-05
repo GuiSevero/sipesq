@@ -406,45 +406,35 @@ public function actionRelatorio($id)
 			}
 			
 			
-			if(isset($_POST['Orcamento'])){
-				$model->orcamentos = $_POST['Orcamento'];
-				
-			} 
-			
+			$connection = Yii::app()->db; 
+			$transaction=$connection->beginTransaction();
 
-			//$connection = Yii::app()->db; 
-			//$transaction=$connection->beginTransaction();
-
-			//try
-			//{
+			try
+			{
 				if($model->save()){
 
-					
-					if(!$this->salvaOrcamento($model->cod_projeto, $model->orcamentos))
-							$model->addError('orcamentos', "Erro ao salvar orçamentos");
-
-					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas))) 
-						$model->addError('pessoas', "Erro ao adicionar equipe: Verifique os participantes e coordenadores");
+					$this->salvaPessoas($model, $model->pessoas); 
 
 					//Verifica erros e gera exceção
+					
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
 					
 					//Notifica usuarios
-					//$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
+					$this->broadCast($model->cod_projeto, "adicionou você ao projeto");
 
 					//Salva definitivamente todas as alterações no banco
-					//$transaction->commit();
+					$transaction->commit();
 
 					//Redireciona
 					$this->redirect(array('view','id'=>$model->cod_projeto));
 					
 				}
-			/*} catch (Exception $e)
+			} catch (Exception $e)
 			{
 			    $transaction->rollBack();	
 			    $model->instrumento_juridico = InstrumentoJuridico::load(json_decode($model->instrumento_juridico));
 				$model->convenio = Convenio::load(json_decode($model->convenio));	
-			} */
+			}
 		}
 
 		$this->render('create',array(
@@ -468,12 +458,6 @@ public function actionRelatorio($id)
 			}
 			
 			
-			$orcamentos = null;
-			if(isset($_POST['Orcamento'])){
-				$orcamentos = $_POST['Orcamento'];
-			
-			}
-
 			if(isset($_POST['InstrumentoJuridico'])){
 				$model->instrumento_juridico = json_encode($_POST['InstrumentoJuridico']);
 			}
@@ -494,14 +478,10 @@ public function actionRelatorio($id)
 
 			    if($model->save()){
 					
-					if(!$this->salvaOrcamento($model->cod_projeto, $orcamentos))
-						$model->addError('orcamentos', "Erro ao salvar orçamentos");
-					
 					//Atualiza permissão do coordenador
 					//$this->createDafaultPermissions($model);
 
-					if(!$this->salvaPessoas($model->cod_projeto, explode(',', $model->pessoas))) 
-						$model->addError('pessoas', "Erro ao adicionar equipe");
+					$this->salvaPessoas($model, $model->pessoas); 
 
 					//Verifica erros e gera exceção
 					if($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PROJETO");
@@ -835,14 +815,25 @@ public function actionRelatorio($id)
 	 * @param unknown $cod_projeto
 	 * @param unknown $pessoas
 	 */
-	private function salvaPessoas($cod_projeto,$pessoas){
+	private function salvaPessoas($model,$pessoas){
 
-			ProjetoPessoaAtuante::model()->deleteAll('cod_projeto = '.$cod_projeto);
-			foreach ($pessoas as $p){
+			$arr_pessoas = explode(',',$pessoas);
+
+			if((count($arr_pessoas) < 1) || ($pessoas == '')){
+				$model->addError('pessoas', 'Você deve especificar pelo menos 1 participante da equipe');
+				return false;
+			}
+
+			ProjetoPessoaAtuante::model()->deleteAll('cod_projeto = '.$model->cod_projeto);
+
+			foreach ($arr_pessoas as $p){
 				$a = new ProjetoPessoaAtuante();
-				$a->cod_projeto = $cod_projeto;
+				$a->cod_projeto = $model->cod_projeto;
 				$a->cod_pessoa = $p;
-				if(!$a->save()) return false;
+				if(!$a->save()){
+					$model->addError('pessoas', "erro ao adicionar o participante " .$p  ." na equipe");
+					return false;	
+				} 
 				unset($a);		
 			}
 		
