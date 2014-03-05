@@ -822,5 +822,28 @@ class Projeto extends CActiveRecord
 
 		return ($permissao_sipesq > $permissao) ? $permissao_sipesq : $permissao;
 	}
+
+	/**
+	 * Auxilia na utilizacao do TokenInput 
+	 * 
+	 **/
+	public static function listDataToken($arr=null, $valueField='cod_projeto', $textField='nome', $json=true){
+		if ($arr == null || $arr == '') return ($json) ? '[]' : array();
+
+		if (!is_array($arr)) {
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('cod_projeto', explode(',',$arr));
+			$arr = Projeto::model()->findAll($criteria);
+		}
+			
+		$result = Array(); 
+		foreach($arr as $item) {
+			$result[] = array('id'=>$item->$valueField,'name'=>$item->$textField); 
+		}
+
+		if($json)
+			return json_encode($result);
+		else return $result;
+	}
 	
 }

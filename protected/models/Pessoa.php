@@ -319,5 +319,29 @@ class Pessoa extends CActiveRecord
 	
 		return $atividades;
 	}
+
+	/**
+	 * Auxilia na utilizacao do TokenInput 
+	 * 
+	 **/
+	public static function listDataToken($arr=null, $valueField='cod_pessoa', $textField='nome', $json=true){
+		if ($arr == null || $arr == '') return ($json) ? '[]' : array();
+
+		if (!is_array($arr)) {
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('cod_pessoa', explode(',',$arr));
+			$arr = Pessoa::model()->findAll($criteria);
+		}
+			
+		$result = Array(); 
+		foreach($arr as $item) {
+			$result[] = array('id'=>$item->$valueField,'name'=>$item->$textField); 
+		}
+
+		if($json)
+			return json_encode($result);
+		else return $result;
+	}
+
 	
 }
