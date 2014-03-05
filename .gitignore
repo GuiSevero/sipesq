@@ -230,3 +230,5 @@ themes/
 *.tar
 .*
 .sublime-workspace
+.htaccess
+*.htaccess
