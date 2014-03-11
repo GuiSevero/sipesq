@@ -1,5 +1,7 @@
 <?php
 
+
+
 class AtividadeController extends Controller
 {
 	protected $idMenu = 'menuGerencial';
