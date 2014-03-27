@@ -535,7 +535,7 @@ public function actionRelatorio($id)
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($situacao=0)
+	public function actionIndex($situacao=3)
 	{	$criteria = new CDbCriteria();
 	
 		/*/Se o usuário não for admin ou do suporte só mostra os seus próprios projetos
