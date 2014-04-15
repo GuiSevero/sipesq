@@ -47,17 +47,17 @@
 </div> <!--/row-->
 	<div class="row-fluid">
 		<div class="span6">
-			<h5>Instrumento Jurídico Fundação de Apoio</h5>
+			<h5><?php echo $model->getAttributeLabel('convenio'); ?></h5>
 			<?php $this->renderPartial('_view_convenio', array('model'=>$model->convenio)); ?>
 		</div>
 		<div class="span6">
-			<h5>Instrumento Jurídico Parceiro Institucional</h5>
+			<h5><?php echo $model->getAttributeLabel('instrumento_juridico'); ?></h5>
 			<?php $this->renderPartial('_view_inst_juridico', array('model'=>$model->instrumento_juridico)); ?>
 		</div>
 	</div>
 	<div class="row-fluid">
 		<div class="span12">
-			<h5>Descrição do Projeto</h5>
+			<h5><?php echo $model->getAttributeLabel('descricao'); ?></h5>
 			<p><?php echo $model->descricao; ?></p>
 		</div>
 	</div>

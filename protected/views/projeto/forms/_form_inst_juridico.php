@@ -49,3 +49,9 @@
 	<div class="controls"><?php echo $form->textField($model, 'vigencia', array('class'=>'input-xxlarge'));?></div>
 	<?php echo $form->error($model,'vigencia'); ?>
 </div>
+
+<div class="control-group">
+	<?php echo $form->labelEx($model,'previsao_termino', array('class'=>'control-label')); ?>
+	<div class="controls"><?php echo $form->textField($model, 'previsao_termino', array('class'=>'input-xxlarge'));?></div>
+	<?php echo $form->error($model,'previsao_termino'); ?>
+</div>

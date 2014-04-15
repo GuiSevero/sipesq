@@ -185,10 +185,10 @@ class Projeto extends CActiveRecord
 			'nome' => 'Nome',
 			'nome_curto'=>'Abreviatura',
 			'codigo_projeto'=>'Código do Projeto',
-			'data_inicio'=>'Início',
-			'data_fim' =>'Término',
+			'data_inicio'=>'Início do Projeto',
+			'data_fim' =>'Término do Projeto',
 			'data_relatorio'=> 'Data do Relatório',
-			'descricao' =>'Descricao',
+			'descricao' =>'Resumo do Projeto',
 			'situacao'=>'Situação',			
 			'situacao_text'=>'Situação',
 			'verba_custeio' =>'Verba Custeio',
@@ -218,6 +218,8 @@ class Projeto extends CActiveRecord
 			'cod_pos_grad'=>'Pós-Graduando',
 			'cod_grad'=>'Graduando',*/
 			'skydrive'=>'Pasta no Skydrive',
+			'instrumento_juridico'=>'Instrumento Jurídico UFRGS - Parceiro Institucional',
+			'convenio'=>'Instrumento Jurídico UFRGS - Fundação de Apoio',
 		);
 	}
 

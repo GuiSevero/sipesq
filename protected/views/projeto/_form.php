@@ -17,8 +17,8 @@
 	
 	<ul class="nav nav-tabs" id="tab-form">
 	  <li class="active"><a href="#tab-info" data-toggle="tab">Informações</a></li>
-	  <li><a href="#tab-juridico" data-toggle="tab">Instrumento Jurídico</a></li>
-	  <li><a href="#tab-convenio" data-toggle="tab">Convênio</a></li>
+	  <li><a href="#tab-juridico" data-toggle="tab">Parceiro Institucional</a></li>
+	  <li><a href="#tab-convenio" data-toggle="tab">Fundação de Apoio</a></li>
 	  <li><a href="#tab-equipe" data-toggle="tab">Equipe</a></li>	  
 	</ul>
 
@@ -36,13 +36,13 @@
 	  </div>
 	  <div class="tab-pane" id="tab-juridico">
 	  	<fieldset>
-			<legend>Instrumento Jurídico</legend>
+			<legend><h5><?php echo $model->getAttributeLabel('instrumento_juridico'); ?></h5></legend>
 			<?php $this->renderPartial('forms/_form_inst_juridico', array('model'=>$model->instrumento_juridico, 'form'=>$form)); ?>
 		</fieldset>
 	  </div>
 	  <div class="tab-pane" id="tab-convenio">
 	  	<fieldset>
-			<legend>Convênio</legend>
+			<legend><h5><?php echo $model->getAttributeLabel('convenio'); ?></h5></legend>
 			<?php $this->renderPartial('forms/_form_convenio', array('model'=>$model->convenio, 'form'=>$form)); ?>
 		</fieldset>		
 	  </div>
