@@ -793,7 +793,7 @@ class Projeto extends CActiveRecord
 		if ($id == $this->cod_professor) return 100; //Professor Responsável
 		if ($id == $this->cod_grad) return 2; //Graduando Responsável
 		if ($id == $this->cod_pos_grad) return 2; //Pós-Graduando Responsável
-
+		if ($id == $this->cod_bolsista_responsavel) return 2; //Pós-Graduando Responsável
 
 
 		$permissao_projeto = PermissaoProjeto::model()->findByPk(array('cod_pessoa'=>$id, 'cod_projeto'=>$this->cod_projeto));
