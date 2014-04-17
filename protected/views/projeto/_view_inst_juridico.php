@@ -25,3 +25,7 @@
 <b><?php echo CHtml::encode($model->getAttributeLabel('vigencia')); ?>:</b>
 <?php echo CHtml::encode($model->vigencia); ?>
 <br />
+
+<b><?php echo CHtml::encode($model->getAttributeLabel('previsao_termino')); ?>:</b>
+<?php echo CHtml::encode($model->previsao_termino); ?>
+<br />

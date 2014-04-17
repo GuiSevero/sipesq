@@ -47,7 +47,7 @@ Yii::app()->clientScript->registerScript('cep',"
 	
 <div class="row-fluid">
 <div class="span12 view">
-<?php if($model->isNewRecord || Sipesq::isSupport()):?>
+<?php if ( $model->isNewRecord || (Sipesq::getPermition('pessoa.informacoes_avancadas') >= 100) ):?>
 	<div class="input">
 		<?php echo $form->labelEx($model,'login'); ?>
 		<?php echo $form->textField($model,'login'); ?>
@@ -63,13 +63,14 @@ Yii::app()->clientScript->registerScript('cep',"
 		</div>
 	<?php endif;?>
 	
-	<?php if(Sipesq::isAdmin()):?>
+	<?php if(Sipesq::getPermition('pessoa.informacoes_avancadas') >= 100 && false):?>
 	<div class="input">
 		<?php echo $form->labelEx($model,'nivel_acesso');?>
 		<?php  echo $form->dropDownList($model,'nivel_acesso', Sipesq::listPermitionData()); ?>
 		<?php echo $form->error($model,'nivel_acesso'); ?>
 	</div>
 	<?php endif;?>
+
 </div>
 </div>	
 <div class="row-fluid">
@@ -158,11 +159,12 @@ Yii::app()->clientScript->registerScript('cep',"
 	
 	</div>
 	
+	
 	<div class="span11">	
 		<div class="input">
 		<?php echo $form->labelEx($model,'projetos_atuante'); ?>
 			<div class="checkboxlist">
-			<?php //echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-block-level',)  ); ?>
+			<?php echo $form->listBox($model,'projetos_atuante', CHtml::listData(Projeto::model()->findAll(array('order'=>'nome')), 'cod_projeto', 'nome'), array("multiple"=>"multiple", "size"=>"10", 'class'=>'input-block-level',)  ); ?>
 			</div>
 		</div>
 		<div class="hint">Segure a tecla <b>CTRL</b> para selecionar mais de um projeto.</div><br>

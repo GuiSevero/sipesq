@@ -15,6 +15,7 @@ class Convenio extends CFormModel
 		,	$protocolo_financeiro
 		,	$nome_proplan
 		,	$portal_siconv
+		,	$tipo_inst_juridico
 		,	$cod_projeto_faufrgs
 		,	$fundacao_apoio
 		,	$previsao_termino;
@@ -26,7 +27,7 @@ class Convenio extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('nro_convenio, titulo, protocolo_financeiro, protocolo_convenio, data_assinatura, vigencia, cod_projeto_faufrgs, portal_siconv, nome_proplan, previsao_termino' ,'safe'),
+			array('nro_convenio, tipo_inst_juridico, titulo, protocolo_financeiro, protocolo_convenio, data_assinatura, vigencia, cod_projeto_faufrgs, portal_siconv, nome_proplan, previsao_termino' ,'safe'),
 		);
 	}
 
@@ -40,6 +41,7 @@ class Convenio extends CFormModel
 		return array(
 			'nro_convenio'=>'Número do Convênio'
 			, 'fundacao_apoio'=>'Fundação de Apoio'
+			, 'tipo_inst_juridico'=>'Tipo de Instrumento Jurídico'
 			, 'titulo'=>'Título do Convênio'
 			, 'protocolo_convenio'=>'Protocolo do Convênio'
 			, 'data_assinatura'=>'Data da Assinatura'

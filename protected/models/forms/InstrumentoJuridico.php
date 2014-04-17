@@ -39,7 +39,7 @@ class InstrumentoJuridico extends CFormModel
 			, 'tipo_inst_juridico'=>'Tipo de Instrumento Jurídico'
 			, 'unidade_admin_responsavel'=>'Unidade Administrativa Responsável'
 			, 'gestao_recebedora'=>'U/G Gestão Recebedora'
-			, 'gestao_repassadora'=>'U/G Gestão Recepassadora'
+			, 'gestao_repassadora'=>'U/G Gestão Repassadora'
 			, 'data_assinatura'=>'Data de Assinatura'
 			, 'vigencia'=>'Vigência (em meses)'
 			, 'previsao_termino'=>'Previsão do Término da Vigência'

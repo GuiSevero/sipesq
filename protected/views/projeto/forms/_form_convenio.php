@@ -7,6 +7,17 @@
 </div>
 
 <div class="control-group">
+	<?php echo $form->labelEx($model,'tipo_inst_juridico', array('class'=>'control-label')); ?>
+	<div class="controls">
+		<?php echo $form->dropDownList($model, 'tipo_inst_juridico', array(
+				'Convênio'=>'Convênio'
+			,	'Contrato'=>'Contrato'
+		),array('prompt'=>'Tipo de Instrumento', 'class'=>'input-xxlarge')); ?>
+	</div>
+	<?php echo $form->error($model,'tipo_inst_juridico'); ?>
+</div>
+
+<div class="control-group">
 	<?php echo $form->labelEx($model,'titulo', array('class'=>'control-label')); ?>
 	<div class="controls"><?php echo $form->textField($model, 'titulo', array('class'=>'input-xxlarge'));?></div>
 	<?php echo $form->error($model,'titulo'); ?>

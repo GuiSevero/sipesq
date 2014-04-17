@@ -2,6 +2,11 @@
 <b><?php echo CHtml::encode($model->getAttributeLabel('fundacao_apoio')); ?>:</b>
 <?php echo CHtml::encode($model->fundacao_apoio); ?>
 <br />
+
+<b><?php echo CHtml::encode($model->getAttributeLabel('tipo_inst_juridico')); ?>:</b>
+<?php echo CHtml::encode($model->tipo_inst_juridico); ?>
+<br />
+
 <b><?php echo CHtml::encode($model->getAttributeLabel('titulo')); ?>:</b>
 <?php echo CHtml::encode($model->titulo); ?>
 <br />
@@ -32,6 +37,10 @@
 
 <b><?php echo CHtml::encode($model->getAttributeLabel('vigencia')); ?>:</b>
 <?php echo CHtml::encode($model->vigencia); ?>
+<br />
+
+<b><?php echo CHtml::encode($model->getAttributeLabel('previsao_termino')); ?>:</b>
+<?php echo CHtml::encode($model->previsao_termino); ?>
 <br />
 
 <b><?php echo CHtml::encode($model->getAttributeLabel('cod_projeto_faufrgs')); ?>:</b>
