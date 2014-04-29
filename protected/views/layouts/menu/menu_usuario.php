@@ -32,6 +32,7 @@
                 </ul>
               </li>
               <?php $this->renderPartial('/layouts/menu/_notificacoes');?>
+              <li><a href="https://docs.google.com/forms/d/10rmvJRGbGj1k2dzK5sw5tu9m6hM7Y1-R4FkRhvms_vk/viewform?usp=send_form" target="_blank">Suporte TI</a></li>
 
             </ul>
             <?php $this->renderPartial('/layouts/menu/_menu_suporte');?>
