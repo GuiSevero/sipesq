@@ -16,11 +16,6 @@
 	</div>
 
 	<div class="input">
-		<?php echo $form->label($model,'codigo_projeto'); ?>
-		<?php echo $form->textField($model,'codigo_projeto'); ?>
-	</div>
-
-	<div class="input">
 		<?php echo $form->label($model,'data_inicio'); ?>
 		<?php echo $form->textField($model,'data_inicio'); ?>
 	</div>

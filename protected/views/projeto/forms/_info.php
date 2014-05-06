@@ -38,12 +38,7 @@ Yii::app()->clientScript->registerScript('text-areas',
 					<div class="controls"><?php  echo $form->dropDownList($model,'situacao', $model->situacoes, array('class'=>'input-xxlarge')); ?></div>
 					<?php echo $form->error($model,'situacao'); ?>
 				</div>
-				<?php if(!$model->isNewRecord):?>
-				<div class="control-group">
-					<?php echo $form->labelEx($model,'codigo_projeto', array('class'=>'control-label')); ?>
-					<div class="controls"><?php echo $form->textField($model,'codigo_projeto'); ?></div>
-					<?php echo $form->error($model,'codigo_projeto'); ?>
-				</div>
+				<?php if(!$model->isNewRecord):?>				
 				<?php endif;?>
 				<div class="control-group">
 					<?php echo $form->labelEx($model,'cod_categoria', array('class'=>'control-label')); ?>

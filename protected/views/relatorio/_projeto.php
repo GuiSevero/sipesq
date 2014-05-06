@@ -19,11 +19,7 @@
 					<b><?php echo CHtml::encode("Tipo de Projeto"); ?>:</b>
 					<?php echo CHtml::encode($data->categoria->nome); ?>
 					<br />
-
-					<b><?php echo CHtml::encode($data->getAttributeLabel('codigo_projeto')); ?>:</b>
-					<?php echo CHtml::encode($data->codigo_projeto); ?>
-					<br />
-
+							
 					<b><?php echo CHtml::encode($data->getAttributeLabel('data_relatorio')); ?>:</b>
 					<?php echo CHtml::encode(Sipesq::date($data->data_relatorio)); ?>
 					<br />

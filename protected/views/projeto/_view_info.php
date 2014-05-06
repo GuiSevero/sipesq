@@ -20,11 +20,7 @@
 
 	<b><?php echo CHtml::encode($model->getAttributeLabel('gt')); ?>:</b>
 	<?php echo CHtml::encode($model->gt); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('codigo_projeto')); ?>:</b>
-	<?php echo CHtml::encode($model->codigo_projeto); ?>
-	<br />
+	<br />	
 
 	<b><?php echo CHtml::encode($model->getAttributeLabel('data_inicio')); ?>:</b>
 	<?php echo CHtml::encode(Sipesq::date($model->data_inicio)); ?>
