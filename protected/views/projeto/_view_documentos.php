@@ -1,7 +1,11 @@
 <?php $permition = $model->getPermition('documentos'); ?>
 <a id="documentos"></a>
 <div id="tabDocumentos">
-<h2>Documentos</h2>
+<h3>
+	Documentos 
+	<?php echo CHtml::link('<i class="icon icon-help icon-white"></i> Ajuda' , '#help-doc', array('class'=>'btn btn-small btn-primary', 'data-toggle'=>'modal', 'role'=>'button')); ?>
+</h3>
+
 <table id="tbl-documentos" class="table table-hover table-striped">
 	<tr>
 		<th>Nome</th>
@@ -29,9 +33,15 @@
 <?php endforeach;?>
 </table>
 
+
+
 <?php 
-if($permition >= 2)
-	echo CHtml::link('<i class="icon icon-cloud-upload icon-white"></i> Incluir Documento' , array('/projeto/createFile', 'id'=>$model->cod_projeto), array('class'=>'btn btn-small btn-primary', 'style'=>'text-decoration: none'))
+if($permition >= 2){
+
+	echo CHtml::link('<i class="icon icon-cloud-upload icon-white"></i> Incluir Documento' , array('/projeto/createFile', 'id'=>$model->cod_projeto), array('class'=>'btn btn-small btn-primary', 'style'=>'text-decoration: none'));
+	
+}
+	
 ?>
 
 <?php Yii::app()->clientScript->registerScript('documentos', "
@@ -51,4 +61,6 @@ if($permition >= 2)
  })();		
 		
 ");?>
+
 </div>
+<?php $this->renderPartial('/projeto/_help_documentos'); ?>

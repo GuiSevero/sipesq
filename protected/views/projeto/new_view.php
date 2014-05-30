@@ -15,7 +15,7 @@ Yii::app()->clientScript->registerScript("activeTabs", "
 
 ?>
 
-<h2><?php echo $model->nome; ?></h2>
+<h3><?php echo $model->nome; ?></h3>
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs" id="myTab">
   <li id="tab-info"><?php echo CHtml::link("Informações", array('/projeto/info', 'id'=>$model->cod_projeto))?></li>
