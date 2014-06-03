@@ -4,6 +4,7 @@
 <tr>
 <th>Nome do Gasto</th>
 <th>Rubrica</th>
+<th>Beneficiário</th>
 <th>Data</th>
 <th>Duração (meses)</th>
 <th>Valor</th>
@@ -17,6 +18,7 @@
 		<?php echo CHtml::link($desp->nome,array('/projetoDespesa/viewAjax', 'id'=>$desp->cod_despesa), array('class'=>'link', 'data-toggle'=>'modal', 'data-target'=>'#modal-info'));?>
 		</td>
 		<td><?php echo $desp->rubrica->nome;?></td>
+		<td><?php echo CHtml::encode($desp->comprador);?></td>
 		<td><?php echo Date('d/m/Y', strtotime($desp->data_compra));?></td>
 		<td><?php echo CHtml::encode($desp->quantidade);?></td>
 		<td>R$ <?php echo number_format($desp->valor, 2, ',','.');?></td>
