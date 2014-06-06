@@ -43,7 +43,7 @@ class SiteController extends Controller
 		return array(
 		
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'agenda', 'download', 'error', 'login'),
+				'actions'=>array('index', 'agenda', 'download', 'error', 'login', 'migracao'),
 				'users'=>array('*'),
 			),
 			
@@ -64,6 +64,24 @@ class SiteController extends Controller
 			),
 			
 		);
+	}
+
+
+	public function actionMigracao(){
+
+
+		$command =  Yii::app()->db->createCommand();
+		$command->from('pessoa');
+		$command->select = 'email';
+		$command->where = "email <> ''";
+		$command->order = 'email ASC';
+		$results = $command->queryAll();
+
+		$emails = array_map(function($email){
+				return "'" .trim($email['email']) ."'";
+		}, $results);
+
+		$this->render('script', array('emails'=>$emails));
 	}
 
 	/**
