@@ -105,7 +105,7 @@ return array(
 			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sipesq',
 			//'emulatePrepare' => true, //causa bug na conversao de boolean
 			'username' => 'postgres',
-			'password' => 'cegovbrasil',
+			'password' => 'cegov',
 			'charset' => 'utf8',
 		), 
 		

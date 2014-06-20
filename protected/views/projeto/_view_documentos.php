@@ -3,7 +3,7 @@
 <div id="tabDocumentos">
 <h3>
 	Documentos 
-	<?php echo CHtml::link('<i class="icon icon-help icon-white"></i> Ajuda' , '#help-doc', array('class'=>'btn btn-small btn-primary', 'data-toggle'=>'modal', 'role'=>'button')); ?>
+	<?php echo CHtml::link('Ajuda', '#help-doc', array('class'=>'btn btn-small btn-warning', 'data-toggle'=>'modal', 'role'=>'button')); ?>
 </h3>
 
 <table id="tbl-documentos" class="table table-hover table-striped">
