@@ -232,3 +232,4 @@ themes/
 .sublime-workspace
 .htaccess
 *.htaccess
+protected/config/main.php

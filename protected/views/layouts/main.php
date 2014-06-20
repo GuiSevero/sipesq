@@ -19,6 +19,8 @@
    <!-- User Styles -->
    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/sipesq.less" rel="stylesheet/less">
    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/elements.less" rel="stylesheet/less">
+
+   <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,700,300,900,700italic' rel='stylesheet' type='text/css'>
    
    
    <?php //Yii::app()->clientScript->registerCoreScript('jquery'); ?>
