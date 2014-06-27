@@ -233,3 +233,11 @@ themes/
 .sublime-workspace
 .htaccess
 *.htaccess
+<<<<<<< HEAD
+=======
+protected/config/main.php
+
+protected/data/despesas/33129_RelatÃ³rio Cases 2.docx
+
+*.docx
+>>>>>>> 6783a79a4cc8bde530b8c44fb89482e4ed569bc8
