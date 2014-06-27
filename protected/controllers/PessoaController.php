@@ -95,10 +95,13 @@ class PessoaController extends Controller
 	public function actionView($id)
 	{
 		
-		
+		$model=$this->loadModel($id);
+		$model->endereco_residencial =EnderecoResidencial::load(json_decode($model->endereco_residencial));
 		$this->render('_fullview',array(
-			'data'=>$this->loadModel($id),
+			'data'=>$model,
 		));
+
+		
 	}
 
 	/**
@@ -108,7 +111,12 @@ class PessoaController extends Controller
 	public function actionCreate()
 	{
 		$model=new Pessoa;
+		$endereco_res = new EnderecoResidencial();
 		
+		if(isset($_POST["EnderecoResidencial"])){
+			$model->endereco_residencial = json_encode($_POST["EnderecoResidencial"]);
+		}
+
 		$model->password = '';			
 		if(isset($_POST['Pessoa']))
 		{
@@ -152,6 +160,7 @@ class PessoaController extends Controller
 		
 		$this->render('create',array(
 			'model'=>$model,
+			'endereco_res'=>$endereco_res,
 		));
 	}
 	
