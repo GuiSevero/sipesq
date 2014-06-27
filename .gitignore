@@ -215,6 +215,7 @@ pip-log.txt
 .mr.developer.cfg
 
 ##User Ignore
+protected/config/main.php
 assets/
 protected/runtime/
 protected/temp/

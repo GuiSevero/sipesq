@@ -66,7 +66,7 @@ return array(
 		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-			'caseSensitive'=>false, 
+			//'caseSensitive'=>false, 
 			//'showScriptName'=>false,
 			'rules'=>array(
 				'projeto/despesas/<id:\d+>'=>'projetoDespesa/view',
@@ -105,7 +105,7 @@ return array(
 			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sipesq',
 			//'emulatePrepare' => true, //causa bug na conversao de boolean
 			'username' => 'postgres',
-			'password' => 'cegovbrasil',
+			'password' => 'ecepik',
 			'charset' => 'utf8',
 		), 
 		
