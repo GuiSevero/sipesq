@@ -120,21 +120,34 @@ class PessoaController extends Controller
 			if($model->validate())
 				$model->password = md5($model->password);
 			
-			if(isset($_POST['Atividade']['projetos_atuante']))
+			if(isset($_POST['Pessoa']['projetos_atuante']))
 				$model->projetos_atuante = $_POST['Pessoa']['projetos_atuante'];
-				
-			if($model->save()){
-						
-					foreach ($model->projetos_atuante as $p){
-						$ppa = new ProjetoPessoaAtuante();
-						$ppa->cod_pessoa = $model->cod_pessoa;
-						$ppa->cod_projeto = $p;
-						$ppa->save();
-						unset($ppa);		
-					}
-					
+
+
+			$transaction= Yii::app()->db->beginTransaction(); 
+
+			try
+			{
+
+				if ($model->save()){
+
+					$this->salvaProjetos($model);
+
+					if ($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PESSOA");
+
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
+
 					$this->redirect(array('view','id'=>$model->cod_pessoa));
+
 				}
+
+			}catch (Exception $e)
+			{
+			    $transaction->rollBack();
+			    $model->isNewRecord = true;
+			}
+			
 		}
 		
 		$this->render('create',array(
@@ -177,31 +190,35 @@ class PessoaController extends Controller
 			
 			$model->attributes=$_POST['Pessoa'];
 			
-			if(isset($_POST['Pessoa']['projetos_atuante'])){
-				$connection=Yii::app()->db;
-				$sql = "delete from projeto_pessoa_atuante where cod_pessoa = :cod_pessoa";
-				$command = $connection->createCommand($sql);
-				$command->bindParam(":cod_pessoa",$id,PDO::PARAM_STR);
-				$command->execute();
-
+			if (isset($_POST['Pessoa']['projetos_atuante'])){
 				$model->projetos_atuante = $_POST['Pessoa']['projetos_atuante'];
 			}
-				
-				
-			
-			if($model->save()){
-				if(isset($_POST['Pessoa']['projetos_atuante']))
-					foreach ($model->projetos_atuante as $p){
-						$ppa = new ProjetoPessoaAtuante();
-						$ppa->cod_pessoa = $model->cod_pessoa;
-						$ppa->cod_projeto = $p;
-						$ppa->save();
-						unset($ppa);		
-					}
-				
-				$this->redirect(array('view','id'=>$model->cod_pessoa));
+
+
+			$transaction= Yii::app()->db->beginTransaction(); 
+
+			try
+			{
+
+				if ($model->save()){
+
+					$this->salvaProjetos($model);
+
+					if ($model->hasErrors()) throw new CHttpException(500, "ERRO AO SALVAR PESSOA");
+
+					//Salva definitivamente todas as alterações no banco
+					$transaction->commit();
+
+					$this->redirect(array('view','id'=>$model->cod_pessoa));
+
+				}
+
+			}catch (Exception $e)
+			{
+			    $transaction->rollBack();
 			}
-				
+						
+						
 		}
 
 		$this->render('update',array(
@@ -475,6 +492,31 @@ public function actionEquipe()
 		// display the login form
 		$this->render('_restore_pass',array('model'=>$model));
 		
+	}
+
+	/**
+	 * Salva todas as pessoas do projeto
+	 * @param unknown $cod_projeto
+	 * @param unknown $pessoas
+	 */
+	private function salvaProjetos($model){		
+
+			$arr_projetos =  $model->projetos_atuante;
+
+			ProjetoPessoaAtuante::model()->deleteAll('cod_pessoa = '.$model->cod_pessoa);
+
+			foreach ($arr_projetos as $p){
+				$a = new ProjetoPessoaAtuante();
+				$a->cod_pessoa = $model->cod_pessoa;
+				$a->cod_projeto = $p;
+				if(!$a->save()){
+					$model->addError('projetos_atuante', "erro ao adicionar o projeto " .$p);
+					return false;	
+				} 
+				unset($a);		
+			}
+
+		return true;
 	}
 	
 }
