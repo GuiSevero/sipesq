@@ -104,11 +104,6 @@
 	<?php echo CHtml::encode($data->cartao_ufrgs); ?>
 	<br />
 	
-	<?php if(isset($data->categoria)):?>
-		<b><?php echo CHtml::encode($data->getAttributeLabel('categoria')); ?>:</b>
-		<?php echo CHtml::encode($data->categoria->nome); ?>
-		<br />
-	<?php endif;?>
 	
 	<b><?php echo CHtml::encode($data->getAttributeLabel('lattes')); ?>:</b>
 	<b><?php echo CHtml::link(CHtml::encode($data->lattes), $data->lattes, array('target'=>'_blank')); ?></b>
